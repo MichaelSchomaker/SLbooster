@@ -1,0 +1,37 @@
+export("predict.SL.dbarts",
+       "predict.SL.hal", "predict.SL.mgcv",
+       "screen.cramersv",
+       "screen.glmnet_boost",
+       "screen.glmnet_nVar",
+       "screen.randomForest_boost",
+       "SL.dbarts", "SL.earth_boost",
+       "SL.gam_boost", "SL.glmnet_boost",
+       "SL.hal", "SL.median", "SL.mgcv",
+       "SL.randomForest_boost",
+       "SL.rpart_boost",
+       "SL.step.interaction_boost",
+       "SL.xgboost_boost")
+S3method(predict, SL.dbarts)
+S3method(predict, SL.hal)
+S3method(predict, SL.mgcv)
+import(SuperLearner)
+importFrom(stats, predict)
+importFrom(vcd, assocstats)
+importFrom(glmnet, cv.glmnet)
+importFrom(randomForest, randomForest)
+importFrom(dbarts, bart)
+importFrom(stats, pnorm)
+importFrom(earth, earth)
+importFrom(gam, gam)
+importFrom(gam, gam.control)
+importFrom(hal9001, fit_hal)
+importFrom(matrixStats, weightedMedian)
+importFrom(mgcv, gam)
+importFrom(mgcv, predict.gam)
+importFrom(rpart, rpart.control)
+importFrom(rpart, rpart)
+importFrom(xgboost, xgb.DMatrix)
+importFrom(xgboost, xgboost)
+importFrom("stats", "as.formula", "binomial", "coef", "glm",
+             "model.matrix", "quantile", "step", "var")
+importFrom("utils", "packageVersion")

@@ -1,0 +1,13 @@
+Package: SLbooster
+Type: Package
+Title: What it does
+Version: 0.9
+Date: 2024-06-22
+Author: Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: This package offers a collection of tools for data manipulation,
+    visualization, and statistical analysis. It aims to simplify the data
+    analysis workflow for researchers and data scientists.
+Depends: R (>= 4.0), SuperLearner
+Imports: mgcv, gam, rms, glmnet, dbarts, randomForest, xgboost, rpart, hal9001, vcd, earth, matrixStats
+License: GPL-2
