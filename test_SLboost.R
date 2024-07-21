@@ -87,6 +87,40 @@ ltmle2$fit$Q
 # lmtp test
 
 #@Katy: ToDo
+# multiple time points
+lmtp1 <- lmtp_sdr(data = EFV,
+                  trt = c("efv.0","efv.1","efv.2","efv.3","efv.4"), 
+                  outcome = c("VL.4"), 
+                  baseline = c("sex", "metabolic", "log_age", "NRTI"),
+                  time_vary = list(c("weight.0"),
+                                   c("adherence.1","weight.1", "VL.0"),
+                                   c("adherence.2","weight.2", "VL.1"),
+                                   c("adherence.3","weight.3", "VL.2"),
+                                   c("adherence.4","weight.4", "VL.3")),
+                  shift = static_binary_off, # abar = c(0,0,0,0,0) 
+                  verbose = F,
+                  mtp = TRUE, 
+                  folds = 3, 
+                  outcome_type = "continuous",
+                  learners_trt = ll$g, 
+                  learners_outcome = ll$Q)
+
+lmtp1
+
+# single time point
+lmtp2 <- lmtp_sdr(data = EFV, 
+                  trt = "efv.0", 
+                  outcome = "VL.0", 
+                  baseline = c("sex", "metabolic", "log_age", "NRTI", "weight.0"),
+                  shift = static_binary_off, # abar = 0
+                  verbose = F,
+                  mtp = TRUE, 
+                  folds = 3, 
+                  outcome_type = "continuous",
+                  learners_trt = ll$g, 
+                  learners_outcome = ll$Q)
+
+lmtp2
 
 ################################################################################
 # tmle test
