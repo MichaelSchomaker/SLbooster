@@ -126,6 +126,30 @@ lmtp2
 # tmle test
 # @Han: ToDo
 
+# tmle only allows binary treatment
+# A: VL.0
+# Y: efv.1
+# L: sex, metabolic, log_age, NRTI, weight.0
+tmle_1 <- tmle(Y = EFV[["efv.1"]],
+               A = EFV[["VL.0"]],
+               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
+               Q.SL.library = ll$Q,
+               g.SL.library = ll$g
+)
+tmle_1
+
+# A: VL.1
+# Y: efv.2
+# L: sex, metabolic, log_age, NRTI, weight.0, adherence.1, weight.1, efv.1, VL.0
+tmle_2 <- tmle(Y = EFV[["efv.2"]],
+               A = EFV[["VL.1"]],
+               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0",
+                          "adherence.1", "weight.1", "efv.1", "VL.0")],
+               Q.SL.library = ll$Q,
+               g.SL.library = ll$g
+)
+tmle_2
+
 ################################################################################
 # tmle3 test
 # @Christoph: ToDo
