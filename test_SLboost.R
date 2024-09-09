@@ -126,6 +126,46 @@ lmtp2
 # tmle test
 # @Han: ToDo
 
+#
+create_hal <- create.Learner("SL.hal",
+                                tune=list(runtime=c("default", "fast")),
+                                detailed_names = T)
+create_hal
+
+create_earth <- create.Learner("SL.earth_boost",
+                             tune=list(degree=c(2,3),
+                                       penalty=c(2,3)),
+                             detailed_names = T)
+create_earth
+
+create_step <- create.Learner("SL.step.interaction_boost",
+                               tune=list(direction=c("both","forward"),
+                                         steps=c(500,1000)),
+                               detailed_names = T)
+create_step
+
+screen_glmnet_boost <- create.Learner("screen.glmnet_boost", params=list(nfolds=5),
+                                     tune = list(
+                                       nscreen = c(4,6),
+                                       alpha=c(0.8,1)),
+                                     detailed_names = T)
+screen_glmnet_boost
+#
+
+
+ll <- list(Q=list(
+  c("SL.median"),
+  c("SL.hal", "screen.glmnet_boost_4_0.8"),
+  c("SL.hal_fast"),
+  c("SL.glm","screen.glmnet_nVar_6"),
+  c("SL.earth_boost_2_2")
+),
+g=list("SL.glm",
+       "SL.step.interaction_boost_both_500"
+       )
+)
+attr(ll$Q, "return.fit") <- TRUE
+
 # tmle only allows binary treatment
 # A: VL.0
 # Y: efv.1

@@ -2,10 +2,11 @@
 \alias{screen.glmnet_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Variable Screening using Elastic Net Regularization with Cross-Validation
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Performs variable selection using the Elastic Net regularization via \code{glmnet} with cross-validation. If Elastic Net fails to select any variables, the function falls back on Cramer's V for screening.
+
 }
 \usage{
 screen.glmnet_boost(Y, X, family, alpha = 1, verbose = T, nfolds = 10, nlambda = 200, nscreen = 2, ...)
@@ -13,157 +14,67 @@ screen.glmnet_boost(Y, X, family, alpha = 1, verbose = T, nfolds = 10, nlambda =
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
-}
+    Response variable, either a numeric vector for regression or a binary vector (0/1) for classification.
+  }
   \item{X}{
-%%     ~~Describe \code{X} here~~
-}
+    Predictor variables in a data frame or matrix format. Factors are internally handled by creating dummy variables.
+  }
   \item{family}{
-%%     ~~Describe \code{family} here~~
-}
+    A list specifying the error distribution and link function to be used in the model. Default is determined based on the response variable.
+  }
   \item{alpha}{
-%%     ~~Describe \code{alpha} here~~
-}
+    Elastic Net mixing parameter, with \code{alpha = 1} being the Lasso (default) and \code{alpha = 0} being the Ridge regression.
+  }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
-}
+    Logical. If \code{TRUE}, prints detailed information during the execution. Default is \code{TRUE}.
+  }
   \item{nfolds}{
-%%     ~~Describe \code{nfolds} here~~
-}
+    Number of folds used in cross-validation to select the best model. Default is 10.
+  }
   \item{nlambda}{
-%%     ~~Describe \code{nlambda} here~~
-}
+    Number of lambda values considered during the cross-validation. Default is 200.
+  }
   \item{nscreen}{
-%%     ~~Describe \code{nscreen} here~~
-}
+    Number of top variables to select if the fallback screening method (Cramer's V) is used. Default is 2.
+  }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (Y, X, family, alpha = 1, verbose = T, nfolds = 10, 
-    nlambda = 200, nscreen = 2, ...) 
-{
-    if (verbose == T) {
-        cat("screen.glmnet with alpha=", alpha, " and ", nfolds, 
-            " fold CV \n", sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("glmnet")
-    X <- as.data.frame(X)
-    Y <- as.vector(as.matrix(Y))
-    if (all(Y == 0 | Y == 1)) {
-        family$family <- "binomial"
-    }
-    else {
-        family$family <- "gaussian"
-    }
-    saveY <- Y
-    saveX <- X
-    if (ncol(X) > 26 * 27) 
-        stop("Find further column names for X!")
-    let <- c(letters, sort(do.call("paste0", expand.grid(letters, 
-        letters[1:26]))))
-    names(X) <- let[1:ncol(X)]
-    is_fact_var <- sapply(X, is.factor)
-    X <- try(model.matrix(~-1 + ., data = X), silent = FALSE)
-    successfulfit <- FALSE
-    fitCV <- try(glmnet::cv.glmnet(x = X, y = Y, lambda = NULL, 
-        type.measure = "deviance", nfolds = nfolds, family = family$family, 
-        alpha = alpha, nlambda = nlambda, keep = T), silent = TRUE)
-    if (all(fitCV$nzero == 0) | all(is.na(fitCV$nzero))) {
-        fitCV <- try(glmnet::cv.glmnet(x = X, y = Y, lambda = log(fitCV$glmnet.fit$lambda + 
-            1), type.measure = "deviance", nfolds = nfolds, family = family$family, 
-            alpha = alpha, keep = T), silent = TRUE)
-    }
-    if (class(fitCV) == "try-error") {
-        successfulfit <- FALSE
-    }
-    else {
-        successfulfit <- TRUE
-    }
-    whichVariable <- NULL
-    if (successfulfit == TRUE) {
-        coefs <- coef(fitCV$glmnet.fit, s = fitCV$lambda.min)
-        if (all(coefs[-1] == 0)) {
-            whichVariable <- screen.cramersv_base(Y = saveY, 
-                X = saveX, nscreen = nscreen)
-            if (verbose == T) {
-                cat("Lasso screened away all variables and screening was thus based on Cramer's V \n")
-            }
-        }
-        else {
-            var_nms <- coefs@Dimnames[[1]]
-            if (any(is_fact_var)) {
-                nms_fac <- names(which(is_fact_var))
-                is_selected <- coefs[-1] != 0
-                var_nms_sel <- gsub("[^::a-z::]", "", var_nms[-1][is_selected])
-                sel_fac <- nms_fac[nms_fac \%in\% var_nms_sel]
-                sel_numer <- var_nms_sel[!var_nms_sel \%in\% sel_fac]
-                all_sel_vars <- c(sel_fac, sel_numer)
-                whichVariable <- names(is_fact_var) \%in\% all_sel_vars
-            }
-            else {
-                whichVariable <- coefs[-1] != 0
-            }
-        }
-    }
-    if (is.null(whichVariable)) {
-        whichVariable <- screen.cramersv_base(Y, X)
-        if (verbose == T) {
-            cat("Lasso failed and screening was based on Cramer's V\n")
-        }
-    }
-    if (verbose == T) {
-        cat("screened ", sum(whichVariable), " variables: ", 
-            paste(colnames(saveX)[whichVariable], sep = " "), 
-            "\n")
-        cat("sample size:", dim(X)[1], "; ")
-    }
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("time:", round(difftime(end_time, start_time, units = "mins"), 
-            digits = 4), "mins \n")
-    }
-    return(whichVariable)
+    Additional arguments passed to \code{glmnet::cv.glmnet}.
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+\details{
+The function first attempts variable selection using Elastic Net regularization via \code{glmnet}. If the model fails to select any variables (due to overly strong penalization), a fallback method based on Cramer's V is used to screen variables. The function accommodates factors by converting them into dummy variables and adjusts for variable selection by considering factor levels as a group.
+}
+\value{
+Returns a logical vector indicating which variables are selected by the screening process. If a variable is selected, the corresponding position in the vector is \code{TRUE}.
+}
+\references{
+\code{glmnet}: Friedman, J., Hastie, T., & Tibshirani, R. (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22.
+}
+\author{
+Michael Schomaker, Han Bao
+}
+\note{
+Use this function when performing feature selection in the context of regression or binary classification tasks.
+}
+\seealso{
+\code{\link[glmnet]{cv.glmnet}}, \code{\link{screen.cramersv}}
+}
+\examples{
+# Example usage:
+
+# Generating sample data
+set.seed(123)
+n <- 100
+p <- 10
+X <- data.frame(matrix(rnorm(n * p), nrow = n))
+Y <- rnorm(n)
+
+# Running the screen.glmnet_boost function
+selected_vars <- screen.glmnet_boost(Y, X, family = stats::gaussian())
+
+# Display selected variables
+print(selected_vars)
+}
+\keyword{variable selection}
+\keyword{elastic net}
+\keyword{cross-validation}

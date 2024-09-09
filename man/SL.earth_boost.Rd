@@ -2,135 +2,116 @@
 \alias{SL.earth_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+SL.earth_boost: SuperLearner Wrapper for Boosted Earth Models
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+This function serves as a wrapper for the \code{earth} function within the \code{SuperLearner} framework, enabling the use of Multivariate Adaptive Regression Splines (MARS) with boosting for regression and classification tasks. It fits an \code{earth} model (MARS) to the data and generates predictions for new observations.
 }
 \usage{
-SL.earth_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, degree = 2, penalty = 3, nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, minspan = 0, endspan = 0, verbose = F, ...)
+SL.earth_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
+               nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, 
+               minspan = 0, endspan = 0, verbose = F, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+  A \code{numeric} vector of outcomes (dependent variable). For binary classification, it should be a binary factor or 0/1 values.
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+  A \code{matrix} or \code{data.frame} of predictor variables (independent variables).
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+  An optional \code{matrix} or \code{data.frame} of new data on which to predict outcomes using the fitted model. If not supplied, predictions will be generated on the training data.
 }
   \item{family}{
-%%     ~~Describe \code{family} here~~
+  A \code{list} describing the error distribution and link function to be used in the model. For Gaussian regression, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.
 }
   \item{obsWeights}{
-%%     ~~Describe \code{obsWeights} here~~
+  Optional observation weights. Defaults to \code{NULL}, implying equal weights for all observations.
 }
   \item{id}{
-%%     ~~Describe \code{id} here~~
+  Optional vector of IDs for clustering/grouping, currently unused in this function.
 }
   \item{degree}{
-%%     ~~Describe \code{degree} here~~
+  Maximum degree of interaction terms in the MARS model. Default is \code{2}.
 }
   \item{penalty}{
-%%     ~~Describe \code{penalty} here~~
+  The penalty for adding a term to the model. Default is \code{3}.
 }
   \item{nk}{
-%%     ~~Describe \code{nk} here~~
+  Maximum number of model terms (including intercept). Defaults to \code{max(21, 2 * ncol(X) + 1)}.
 }
   \item{pmethod}{
-%%     ~~Describe \code{pmethod} here~~
+  Pruning method to use: \code{"backward"} (default), \code{"none"}, \code{"exhaustive"}, or \code{"forward"}. Determines how to simplify the model.
 }
   \item{nfold}{
-%%     ~~Describe \code{nfold} here~~
+  Number of cross-validation folds. Default is \code{0}, which implies no cross-validation.
 }
   \item{ncross}{
-%%     ~~Describe \code{ncross} here~~
+  Number of cross-validation repetitions. Default is \code{1}.
 }
   \item{minspan}{
-%%     ~~Describe \code{minspan} here~~
+  Minimum number of observations between knots. Default is \code{0}.
 }
   \item{endspan}{
-%%     ~~Describe \code{endspan} here~~
+  Minimum number of observations required between the end of the data and the nearest knot. Default is \code{0}.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+  Logical; if \code{TRUE}, the function prints detailed progress messages. Default is \code{FALSE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+  Additional arguments passed to \code{earth::earth()}.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The \code{SL.earth_boost} function fits an \code{earth} model (MARS) to the data using specified parameters and generates predictions for new data. It supports both regression and classification tasks and provides a flexible set of options for model tuning, including boosting through cross-validation repetitions.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A \code{list} containing:
+\item{pred}{A \code{numeric} vector of predicted values for the new data (\code{newX}).}
+\item{fit}{An object of class \code{"SL.earth"}, which includes the fitted \code{earth} model and related information.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Milborrow, S. (2021). earth: Multivariate Adaptive Regression Spline Models. R package version 5.3.0. \url{https://cran.r-project.org/package=earth}
+
+Friedman, J. H. (1991). Multivariate Adaptive Regression Splines. The Annals of Statistics, 19(1), 1-67.
 }
 \author{
-%%  ~~who you are~~
+Michael Schomaker, Han Bao
 }
 \note{
-%%  ~~further notes~~
+Ensure that \code{earth} is installed and loaded correctly, as this function relies on the MARS model implemented in the \code{earth} package.
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[earth]{earth}}, \code{\link[SuperLearner]{SuperLearner}}, \code{\link[SuperLearner]{SL.glm}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+# Generate synthetic data
+set.seed(123)
+n <- 200 # Number of observations
+p <- 10  # Number of predictors
+X <- matrix(rnorm(n * p), nrow = n, ncol = p)
+colnames(X) <- paste0("X", 1:p)
+Y <- 3 * X[, 1] - 2 * X[, 2] + rnorm(n) # Generate response variable
 
-## The function is currently defined as
-function (Y, X, newX = NULL, family = list(), obsWeights = NULL, 
-    id = NULL, degree = 2, penalty = 3, nk = max(21, 2 * ncol(X) + 
-        1), pmethod = "backward", nfold = 0, ncross = 1, minspan = 0, 
-    endspan = 0, verbose = F, ...) 
-{
-    if (verbose == T) {
-        cat("SL.earth started (degrees=", degree, "). ", sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("earth")
-    if (family$family == "gaussian") {
-        fit.earth <- earth::earth(x = X, y = Y, degree = degree, 
-            nk = nk, penalty = penalty, pmethod = pmethod, nfold = nfold, 
-            ncross = ncross, minspan = minspan, endspan = endspan)
-    }
-    if (family$family == "binomial") {
-        fit.earth <- earth::earth(x = X, y = Y, degree = degree, 
-            nk = nk, penalty = penalty, pmethod = pmethod, nfold = nfold, 
-            ncross = ncross, minspan = minspan, endspan = endspan, 
-            glm = list(family = binomial))
-    }
-    pred <- predict(fit.earth, newdata = newX, type = "response")
-    fit <- list(object = fit.earth)
-    out <- list(pred = pred, fit = fit)
-    class(out$fit) <- c("SL.earth")
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("SL.earth finished. Time:", round(difftime(end_time, 
-            start_time, units = "mins"), digits = 4), "mins \n\n")
-    }
-    return(out)
-  }
+# Split the data into training and testing sets
+train_indices <- sample(1:n, size = 0.7 * n) # 70% for training
+test_indices <- setdiff(1:n, train_indices) # Remaining 30% for testing
+
+# Create training and testing datasets
+X_train <- X[train_indices, ]
+Y_train <- Y[train_indices]
+X_test <- X[test_indices, ]
+
+# Fit the model using SL.earth_boost
+fit_result <- SL.earth_boost(Y = Y_train, X = X_train, newX = X_test, family = list(family = "gaussian"))
+
+# Print predictions
+print(fit_result$pred)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+\keyword{MARS}
+\keyword{regression}
+\keyword{classification}
+\concept{Multivariate Adaptive Regression Splines}
+\concept{SuperLearner}
