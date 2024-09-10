@@ -2,10 +2,10 @@
 \alias{SL.gam_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Generalized Additive Model (GAM) with Boosting for SuperLearner
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+The \code{SL.gam_boost} function fits a Generalized Additive Model (GAM) using the \code{gam} package and adds boosting for model improvement. It automatically adjusts for metric and categorical predictors and applies smoothing splines to variables with more than \code{cts.num} unique values.
 }
 \usage{
 SL.gam_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
@@ -13,123 +13,78 @@ SL.gam_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, df.gam = 2, 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+The response variable. This is typically a numeric vector or factor representing the outcome of interest.
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+A matrix or data frame of predictor variables. Each column represents a feature used in model fitting.
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+A matrix or data frame of new predictor values for generating predictions. If \code{NULL}, predictions are not made.
 }
   \item{family}{
-%%     ~~Describe \code{family} here~~
+A description of the error distribution and link function to be used in the model (e.g., \code{binomial()} or \code{gaussian()}). It is passed to the \code{gam} function for model fitting.
 }
   \item{obsWeights}{
-%%     ~~Describe \code{obsWeights} here~~
+An optional vector of observation-specific weights to be used in the fitting process. It is passed to the \code{gam} function.
 }
   \item{df.gam}{
-%%     ~~Describe \code{df.gam} here~~
+Degrees of freedom for the smoothing splines applied to the metric variables in the GAM model. The default is 2.
 }
   \item{cts.num}{
-%%     ~~Describe \code{cts.num} here~~
+The minimum number of unique values a variable must have for it to be considered a continuous (metric) variable and have a spline added. The default is 10.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+Logical flag indicating whether to print progress and timing information. The default is \code{TRUE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to the underlying \code{gam} function for fine-tuning model fitting.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The \code{SL.gam_boost} function automatically determines whether each predictor in \code{X} should be treated as a categorical or metric variable based on the number of unique values. If a predictor has more than \code{cts.num} unique values, it is treated as metric, and a smoothing spline is added using the \code{s()} function from the \code{gam} package. For categorical variables, no splines are applied. If the model fails to converge, an intercept-only model is fitted as a fallback.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list containing:
+  \item{pred}{Predicted values for the observations in \code{newX}.}
+  \item{fit}{The fitted GAM model object, which can be used for further examination or diagnostics.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Hastie T., Tibshirani R. (1990). \emph{Generalized Additive Models}. Chapman & Hall.
+The \code{gam} package documentation: \url{https://cran.r-project.org/web/packages/gam/index.html}
 }
 \author{
-%%  ~~who you are~~
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+This function requires the \code{gam} package to be installed and loaded. It uses smoothing splines for continuous variables with more than a specified number of unique values.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{SuperLearner}}, \code{\link{gam}}, \code{\link{SL.mean}}, \code{\link{SL.glm}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+## Example usage of SL.gam_boost:
+library(SuperLearner)
+library(gam)
 
-## The function is currently defined as
-function (Y, X, newX = NULL, family = list(), obsWeights = NULL, 
-    df.gam = 2, cts.num = 10, verbose = T, ...) 
-{
-    if (verbose == T) {
-        cat("SL.gam with ", df.gam, " df for smoothing spline started (>", 
-            cts.num, " unique values = spline added). ", sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("gam")
-    s <- gam:::s
-    metric_var <- apply(X, 2, function(x) (length(unique(x)) > 
-        cts.num))
-    if (sum(metric_var) != 0 & sum(metric_var) != length(metric_var)) {
-        gam.model <- as.formula(paste("Y~", paste(paste("s(", 
-            colnames(X[, metric_var, drop = FALSE]), ",", df.gam, 
-            ")", sep = ""), collapse = "+"), "+", paste(colnames(X[, 
-            !metric_var, drop = FALSE]), collapse = "+")))
-    }
-    else {
-        if (all(metric_var)) {
-            gam.model <- as.formula(paste("Y~", paste(paste("s(", 
-                colnames(X[, metric_var, drop = FALSE]), ",", 
-                df.gam, ")", sep = ""), collapse = "+")))
-        }
-        else {
-            gam.model <- as.formula(paste("Y~", paste(colnames(X), 
-                collapse = "+"), sep = ""))
-        }
-    }
-    fit.gam <- try(gam::gam(gam.model, data = X, family = family, 
-        control = gam::gam.control(maxit = 50, bf.maxit = 50), 
-        weights = obsWeights))
-    if (class(fit.gam)[1] == "try-error") {
-        gam.model <- as.formula(paste("Y~1"))
-        fit.gam <- try(gam::gam(gam.model, data = X, family = family, 
-            control = gam::gam.control(maxit = 50, bf.maxit = 50), 
-            weights = obsWeights))
-        if (verbose == T) {
-            cat("GAM failed with variables provided. Intercept-only GAM fitted.")
-        }
-    }
-    pred <- gam::predict.Gam(fit.gam, newdata = newX, type = "response")
-    fit <- list(object = fit.gam)
-    out <- list(pred = pred, fit = fit)
-    class(out$fit) <- c("SL.gam")
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("SL.gam finished. Time:", round(difftime(end_time, 
-            start_time, units = "mins"), digits = 4), "mins \n\n")
-    }
-    return(out)
-  }
+# Generate some example data
+set.seed(123)
+n <- 100
+X <- data.frame(X1 = rnorm(n), X2 = sample(letters[1:3], n, replace = TRUE))
+Y <- rnorm(n)
+
+# Fit the SL.gam_boost model
+fit <- SL.gam_boost(Y = Y, X = X, df.gam = 3)
+
+# Generate predictions on new data
+pred <- fit$pred
+print(pred)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+\keyword{regression}
+\keyword{SuperLearner}
+\concept{generalized additive models}
+\concept{boosting}

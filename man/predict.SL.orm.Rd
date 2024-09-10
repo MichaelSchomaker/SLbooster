@@ -2,10 +2,10 @@
 \alias{predict.SL.orm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Predict Method for SL.orm
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+This function generates predictions for new data based on a model fitted by \code{SL.orm}. It uses the \code{predict.orm} function from the \code{rms} package to return the expected means for ordinal outcomes.
 }
 \usage{
 \method{predict}{SL.orm}(object, newdata, ...)
@@ -13,63 +13,57 @@ Test
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-%%     ~~Describe \code{object} here~~
+The fitted model object returned by \code{SL.orm}, containing the ordinal regression model or an alternative model (e.g., GLM or mean) depending on the original data.
 }
   \item{newdata}{
-%%     ~~Describe \code{newdata} here~~
+A data frame or matrix of new predictor values for which predictions are to be made. The function automatically converts a matrix to a data frame if necessary.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to the underlying prediction function from the \code{rms} package, such as options related to the type of prediction.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The \code{predict.SL.orm} function works specifically with objects created by the \code{SL.orm} function. It uses the \code{predict.orm} method from the \code{rms} package to predict the expected mean of ordinal outcomes based on the new data provided. If the \code{SL.orm} model used a GLM or a mean-based model instead of an ordinal regression, the predictions will reflect that.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A vector of predicted values representing the expected means of the ordinal categories for each observation in \code{newdata}.
 }
 \references{
-%% ~put references to the literature/web site here ~
+Harrell FE Jr. (2023). \emph{Regression Modeling Strategies}. Springer Series in Statistics.
+The \code{rms} package: \url{https://cran.r-project.org/web/packages/rms/index.html}
 }
 \author{
-Michael Schomaker
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+The function requires the \code{rms} package to be installed and loaded. It assumes that the \code{object} argument contains a valid ordinal regression model from the \code{SL.orm} function.
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{SL.orm}}, \code{\link{predict.orm}}, \code{\link{SuperLearner}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+## Example usage of predict.SL.orm:
+library(SuperLearner)
+library(rms)
 
-## The function is currently defined as
-function (object, newdata, ...) 
-{
-    require("rms")
-    if (is.matrix(newdata)) {
-        newdata = as.data.frame(newdata)
-    }
-    pred <- rms:::predict.orm(object = object$object, newdata = newdata, 
-        type = "mean")
-    pred
-  }
+# Generate example data
+set.seed(123)
+n <- 100
+X <- data.frame(X1 = rnorm(n), X2 = rnorm(n))
+Y <- ordered(sample(c('low', 'medium', 'high'), n, replace = TRUE))
+
+# Fit an SL.orm model
+fit <- SL.orm(Y = Y, X = X, newX = NULL)
+
+# Make predictions on new data
+pred <- predict.SL.orm(fit, newdata = X)
+print(pred)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
+% \keyword{prediction}
+% \keyword{regression}
 % Use only one keyword per line.
 % For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+% \concept{ordinal regression}
+% \concept{ensemble learning}
