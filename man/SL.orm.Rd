@@ -52,6 +52,26 @@ This function is a part of the \code{SuperLearner} package. It automatically sel
 \seealso{
 \code{\link{SuperLearner}}, \code{\link{SL.glm}}, \code{\link{orm}}, \code{\link{SL.mean}}
 }
+\examples{
+# Load necessary packages
+library(SuperLearner)
+
+# Generate some example data
+set.seed(123)
+n <- 300
+X <- data.frame(X1 = rnorm(n), X2 = rnorm(n))
+#Y <- ordered(sample(c('low', 'medium', 'high'), n, replace = TRUE))
+#Y <- (sample(c('low', 'medium', 'high'), n, replace = TRUE))
+Y <- rbinom(n, 1, 0.5)
+
+# Prepare the model using SL.orm
+fit <- SL.orm(Y = Y, X = X, newX = NULL)
+
+# View model summary
+fit$fit$object
+#View predictions
+head(fit$pred) 
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 \keyword{regression}
