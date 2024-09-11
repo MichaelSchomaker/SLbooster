@@ -1,17 +1,17 @@
-SL.orm <- function (Y, X, newX, verbose = TRUE, ...) {
+SL.orm <- function (Y, X, newX, verbose = T, ...) {
   # Check if outcome is binary
   if (all(Y == 0 | Y == 1)) {
-    if (verbose == TRUE) {
+    if (verbose == T) {
       cat("SL.orm started.\n")
     }
     start_time <- Sys.time()
-    if (verbose == TRUE) {
+    if (verbose == T) {
       cat("Binary outcome: GLM used instead of ORM.\n")
     }
     obsWeights = rep(1, length(Y))
     out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = binomial(), obsWeights = obsWeights, ...)
   } else {
-    if (verbose == TRUE) {
+    if (verbose == T) {
       cat("SL.orm started.\n")
     }
     start_time <- Sys.time()
@@ -22,7 +22,7 @@ SL.orm <- function (Y, X, newX, verbose = TRUE, ...) {
       # Use SL.mean if not enough unique values in Y
       out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
       
-      if (verbose == TRUE) {
+      if (verbose == T) {
         cat("Not enough different unique values in Y: mean used instead of ORM.\n")
       }
     } else {
@@ -47,7 +47,7 @@ SL.orm <- function (Y, X, newX, verbose = TRUE, ...) {
         # If ORM fails, fallback to GLM
         out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
         
-        if (verbose == TRUE) {
+        if (verbose == T) {
           cat("Technical problem with ORM: GLM used instead.\n")
         }
       }
@@ -55,7 +55,7 @@ SL.orm <- function (Y, X, newX, verbose = TRUE, ...) {
   }
   
   end_time <- Sys.time()
-  if (verbose == TRUE) {
+  if (verbose == T) {
     cat("SL.orm finished. Time:", round(difftime(end_time, start_time, units = "mins"), digits = 4), "mins\n\n")
   }
   
