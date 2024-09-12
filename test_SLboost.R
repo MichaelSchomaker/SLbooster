@@ -88,7 +88,7 @@ ltmle2$fit$Q
 
 #@Katy: ToDo
 # multiple time points
-lmtp1 <- lmtp_sdr(data = EFV,
+lmtp1 <- lmtp_tmle(data = EFV2,
                   trt = c("efv.0","efv.1","efv.2","efv.3","efv.4"), 
                   outcome = c("VL.4"), 
                   baseline = c("sex", "metabolic", "log_age", "NRTI"),
@@ -98,28 +98,28 @@ lmtp1 <- lmtp_sdr(data = EFV,
                                    c("adherence.3","weight.3", "VL.2"),
                                    c("adherence.4","weight.4", "VL.3")),
                   shift = static_binary_off, # abar = c(0,0,0,0,0) 
-                  verbose = F,
-                  mtp = TRUE, 
-                  folds = 3, 
-                  outcome_type = "continuous",
+                  folds = 1,
+                  outcome_type = "binomial",
                   learners_trt = ll$g, 
-                  learners_outcome = ll$Q)
-
+                  learners_outcome = ll$Q,
+                  control = lmtp_control(.learners_outcome_folds = 5, .learners_trt_folds = 5)
+)
 lmtp1
+# results differ quite a lot from ltmle, but confidence interval is wide, so it might be okay?
 
-# single time point
-lmtp2 <- lmtp_sdr(data = EFV, 
-                  trt = "efv.0", 
-                  outcome = "VL.0", 
+# continuous Y
+lmtp2 <- lmtp_sdr(data = EFV[,1:10], 
+                  trt = "VL.0", 
+                  outcome = "efv.1", 
                   baseline = c("sex", "metabolic", "log_age", "NRTI", "weight.0"),
+                  time_vary = list(c("adherence.1","weight.1")),
                   shift = static_binary_off, # abar = 0
-                  verbose = F,
-                  mtp = TRUE, 
-                  folds = 3, 
+                  folds = 1, 
                   outcome_type = "continuous",
                   learners_trt = ll$g, 
-                  learners_outcome = ll$Q)
-
+                  learners_outcome = ll$Q,
+                  control = lmtp_control(.learners_outcome_folds = 5, .learners_trt_folds = 5)
+)
 lmtp2
 
 ################################################################################
