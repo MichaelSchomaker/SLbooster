@@ -38,13 +38,13 @@ SL.mgcv <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL,
   }
   fit.gam <- try(mgcv::gam(gam.model,
                            data = X, family = family,
-                           weights = obsWeights
+                           weights = obsWeights, ...
   ))
   if(class(fit.gam)[1]=="try-error"){
     gam.model <- as.formula(paste("Y~1"))
     fit.gam <- try(mgcv::gam(gam.model,
                              data = X, family = family,
-                             weights = obsWeights
+                             weights = obsWeights, ...
     ))
     if(verbose==T){cat("GAM failed with variables provided. Intercept-only GAM fitted.")}
   }

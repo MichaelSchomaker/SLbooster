@@ -2,10 +2,10 @@
 \alias{SL.mgcv}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-test
+Generalized Additive Model (SL.mgcv)
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Fits a generalized additive model (GAM) to data with smooth terms. If the fitting fails on the provided variables \code{X}, an intercept only model is fitted.
 }
 \usage{
 SL.mgcv(Y, X, newX = NULL, family = list(), obsWeights = NULL, cts.num = 10, by = NA, verbose = F, ...)
@@ -13,57 +13,63 @@ SL.mgcv(Y, X, newX = NULL, family = list(), obsWeights = NULL, cts.num = 10, by 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+The response variable, which can be numeric or binary.
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
 }
-  \item{family}{
-%%     ~~Describe \code{family} here~~
+  \item{family}{This is a family object specifying the distribution and link to use in fitting etc.
+As well as the standard families (of class \code{family}) documented in \code{family} (see also \code{glm}), \code{mgcv} also supplies some extra families. These are described in \code{?mgcv::family.mgcv}. Defaults to \code{list()}.
 }
   \item{obsWeights}{
-%%     ~~Describe \code{obsWeights} here~~
+An optional vector of observation-specific weights to be used in the fitting process. Defaults to \code{NULL}.
 }
   \item{cts.num}{
-%%     ~~Describe \code{cts.num} here~~
+Determines the threshold for treating a variable as continuous and therefore introducing a smooth term in the \code{formula}. Defaults to \code{10}.
 }
   \item{by}{
-%%     ~~Describe \code{by} here~~
+  Either a string describing one variable that is passed to all smooth terms as an interaction term or a vector of strings providing an interaction variable for each smooth term. See more under \code{mgcv::s}.
+Defaults to \code{NA}.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{FALSE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to \code{mgcv::gam()} and via this route to e.g. \code{gam.fit}.
 }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list containing:
+  \item{pred}{Predicted values from the fitted model, based on \code{newX} if provided.}
+  \item{fit}{The fitted GAM model.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+
+Wood, S.N., N. Pya and B. Saefken (2016), Smoothing parameter and model selection for general
+smooth models (with discussion). Journal of the American Statistical Association 111, 1548-1575
+doi:10.1080/01621459.2016.1180986
+
+Wood, S. N. (2020) Inference and computation with generalized additive models and their extensions.
+Test 29(2): 307-339. doi:10.1007/s11749020007115
+
+The \code{mgcv} package: \url{https://cran.r-project.org/web/packages/mgcv/index.html}
+
+The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-%%  ~~who you are~~
+original author of the mgcv package: Simon Wood
+
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+Ensure that \code{mgcv} is installed and loaded correctly, as this function relies on the GAM model implemented in the \code{mgcv} package.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[mgcv]{mgcv}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----
@@ -128,12 +134,9 @@ function (Y, X, newX = NULL, family = list(), obsWeights = NULL,
     return(out)
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+
+  \keyword{gam}
+  \keyword{regression}
+  \keyword{classification}
+  \concept{Generalized Additive Models}
+  \concept{SuperLearner}
