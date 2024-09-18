@@ -2,80 +2,100 @@
 \alias{SL.glmnet_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Elastic Net Generalized Linear Model
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Fits a Generalized Linear Model (GLM) with Elastic Net regularization. The parameter lambda, which is used for regularization, is found via cross validation. The mixing parameter alpha is fixed.
 }
 \usage{
-SL.glmnet_boost(Y, X, newX, family, obsWeights, id, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
+SL.glmnet_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+The response variable, which can be numeric or binary.
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
 }
   \item{family}{
-%%     ~~Describe \code{family} here~~
+A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}. Defaults to \code{list()} and is inferred from \code{Y} if not provided.
 }
   \item{obsWeights}{
-%%     ~~Describe \code{obsWeights} here~~
+An optional vector of weights to be used in the fitting process. Defaults to \code{NULL}.
 }
   \item{id}{
-%%     ~~Describe \code{id} here~~
+Optional vector of IDs for clustering/grouping, currently unused in this function. Defaults to \code{NULL}.
 }
   \item{alpha}{
-%%     ~~Describe \code{alpha} here~~
+The elastic net mixing parameter. Must be between 0 (Ridge) and 1 (Lasso). Defaults to \code{1}.
 }
   \item{nfolds}{
-%%     ~~Describe \code{nfolds} here~~
+Number of folds. Although nfolds can be as large as the sample
+size (leave-one-out CV), it is not recommended for large datasets. Smallest
+value allowable is nfolds=3. Default is \code{10}.
 }
   \item{nlambda}{
-%%     ~~Describe \code{nlambda} here~~
+The number of lambda (controlling regularization) values. Default is \code{100}.
 }
   \item{useMin}{
-%%     ~~Describe \code{useMin} here~~
+Boolean specifying whether to use the lambda with minimum cross-validated error (\code{lambda.min}) or the lambda within 1 standard error of the minimum (\code{lambda.1se}). Defaults to \code{TRUE}.
 }
   \item{loss}{
-%%     ~~Describe \code{loss} here~~
+Loss to use for cross-validation. Currently five options, not all available for all
+models. The default is \code{type.measure="deviance"}, which uses squared-error
+for gaussian models (a.k.a \code{type.measure="mse"} there), deviance for logistic
+and poisson regression, and partial-likelihood for the Cox model. \code{type.measure="class"}
+applies to binomial and multinomial logistic regression only, and gives misclassification
+error. \code{type.measure="auc"} is for two-class logistic regression only,
+and gives area under the ROC curve. \code{type.measure="mse"} or \code{type.measure="mae"}
+(mean absolute error) can be used by all models except the "cox"; they measure
+the deviation from the fitted mean to the response. \code{type.measure="C"} is Harrel's
+concordance measure, only available for cox models.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to \code{cv.glment} or \code{glmnet}.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+If family is set as \code{family = list(family = "binomial")}, but \code{Y} consists not only of 0 and 1, the Gaussian family will be used for prediction, but predictions falling outside [0,1] will be set as 0/1.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list containing:
+  \item{pred}{Predicted values from the fitted model, based on \code{newX} if provided.}
+  \item{fit}{The fitted GLMNET model.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models
+via Coordinate Descent (2010), Journal of Statistical Software, Vol. 33(1), 1-22, doi:10.18637/
+jss.v033.i01.
+
+Simon, N., Friedman, J., Hastie, T. and Tibshirani, R. (2011) Regularization Paths for Cox's Proportional
+Hazards Model via Coordinate Descent, Journal of Statistical Software, Vol. 39(5), 1-13,
+doi:10.18637/jss.v039.i05.
+
+The \code{glmnet} package: \url{https://cran.r-project.org/web/packages/glmnet/index.html}
+
+The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-%%  ~~who you are~~
+original authors of glmnet
+Jerome Friedman, Trevor Hastie and Rob Tibshirani
+
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+Ensure that \code{glmnet} is installed and loaded correctly, as this function relies on the elastic net generalized linear model implemented in the \code{glmnet} package.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[glmnet]{glmnet}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----
@@ -135,12 +155,8 @@ function (Y, X, newX, family, obsWeights, id, alpha = 1, nfolds = 10,
     return(out)
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+  \keyword{glmnet}
+  \keyword{regression}
+  \keyword{classification}
+  \concept{Elastic Net}
+  \concept{SuperLearner}

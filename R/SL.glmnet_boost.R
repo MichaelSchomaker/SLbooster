@@ -1,5 +1,6 @@
-SL.glmnet_boost <- function (Y, X, newX, family, obsWeights, id, alpha = 1, nfolds = 10, 
-                            nlambda = 100, useMin = TRUE, loss = "deviance", verbose=T, ...) 
+SL.glmnet_boost <- function (Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, 
+                             alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", 
+                             verbose=T, ...) 
 {
   #
   if(verbose==T){cat("SL.glmnet started with alpha=", alpha, ", ", nfolds, "-fold CV, and ", nlambda, " candidate lambdas. ", sep="")}

@@ -20,7 +20,8 @@ screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 2
         rank.rf.fit <- randomForest::randomForest(Y ~ .,
                                                   data = X,
                                                   ntree = ntree, mtry = mtry, nodesize = nodesize,
-                                                  keep.forest = FALSE, maxnodes = maxnodes, importance = TRUE
+                                                  keep.forest = FALSE, maxnodes = maxnodes, importance = TRUE,
+                                                  ...
         )
         # variables with the largest %IncMSE are the most important ones
         # negative scores mean zero or low importance
@@ -31,7 +32,8 @@ screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 2
         rank.rf.fit <- randomForest::randomForest(as.factor(Y) ~ .,
                                                   data = X,
                                                   ntree = ntree, mtry = mtry, nodesize = nodesize,
-                                                  keep.forest = FALSE, maxnodes = maxnodes, importance = TRUE
+                                                  keep.forest = FALSE, maxnodes = maxnodes, importance = TRUE,
+                                                  ...
         )
         # variables with the largest mean decrease in accuracy are the most important ones
         # negative scores mean zero or low importance

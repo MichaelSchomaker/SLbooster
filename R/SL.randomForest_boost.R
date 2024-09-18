@@ -19,7 +19,7 @@ SL.randomForest_boost <- function(Y, X, newX = NULL, family = list(), verbose=T,
                                          data = X,
                                          ntree = ntree, xtest = newX, keep.forest = TRUE,
                                          mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
-                                         importance = importance
+                                         importance = importance, ...
     )
     try(pred <- fit.rf$test$predicted, silent = TRUE)
     if (any(class(fit.rf) == "try-error")) {
@@ -33,7 +33,7 @@ SL.randomForest_boost <- function(Y, X, newX = NULL, family = list(), verbose=T,
       y = as.factor(Y),
       x = X, ntree = ntree, xtest = newX, keep.forest = TRUE,
       mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
-      importance = importance
+      importance = importance, ...
     )
     try(pred <- fit.rf$test$votes[, 2], silent = TRUE)
     if (any(class(fit.rf) == "try-error")) {

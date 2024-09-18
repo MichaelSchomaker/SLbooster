@@ -2,77 +2,93 @@
 \alias{SL.rpart_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Recursive Partitioning
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Using the \code{rpart} package, fits a decision tree model using ANOVA for both regression and classification tasks, handles binary and continuous outcomes, and provides options for cross-validation and tree depth control. 
 }
 \usage{
-SL.rpart_boost(Y, X, newX, family, obsWeights, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
+SL.rpart_boost(Y, X, newX = NULL, family = list(), obsWeights, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+A response vector. 
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
 }
   \item{family}{
-%%     ~~Describe \code{family} here~~
+A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.  Defaults to \code{list()} and is inferred from \code{Y} if not provided.
 }
   \item{obsWeights}{
-%%     ~~Describe \code{obsWeights} here~~
+An optional vector of weights to be used in the fitting process. Defaults to \code{NULL}.
 }
   \item{cp}{
-%%     ~~Describe \code{cp} here~~
+The complexity parameter. Any split that does not decrease the overall lack of fit by
+a factor of cp is not attempted. This means
+that the overall R-squared must increase by cp at each step. The main role of
+this parameter is to save computing time by pruning off splits that are obviously
+not worthwhile. Essentially,the user informs the program that any split which
+does not improve the fit by cp will likely be pruned off by cross-validation, and
+that hence the program need not pursue it. Defaults to \code{0.1}.
 }
   \item{minsplit}{
-%%     ~~Describe \code{minsplit} here~~
+The minimum number of observations that must exist in a node in order for a
+split to be attempted. Defaults to \code{20}.
 }
   \item{xval}{
-%%     ~~Describe \code{xval} here~~
+Number of cross-validations. Defaults to \code{0L}.
 }
   \item{maxdepth}{
-%%     ~~Describe \code{maxdepth} here~~
+Set the maximum depth of any node of the final tree, with the root node counted
+as depth 0. For values greater than 30, rpart will give nonsense results on 32-bit
+machines. Defaults to \code{30}.
 }
   \item{minbucket}{
-%%     ~~Describe \code{minbucket} here~~
+The minimum number of observations in any terminal leaf node. If only
+one of \code{minbucket} or \code{minsplit} is specified, the code either sets \code{minsplit} to
+\code{minbucket*3} or \code{minbucket} to \code{minsplit/3}, as appropriate. Defaults to \code{minsplit/3}.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to \code{rpart::rpart()} or \code{rpart.control}.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+If family is set as \code{family = list(family = "binomial")}, but \code{Y} consists not only of 0 and 1, the Gaussian family will be used for prediction, but predictions falling outside [0,1] will be set as 0/1.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list containing:
+  \item{pred}{Predicted values from the fitted model, based on \code{newX} if provided.}
+  \item{fit}{The fitted Tree model.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression
+Trees. Wadsworth.
+
+The \code{rpart} package: \url{https://cran.r-project.org/web/packages/rpart/index.html}
+
+The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-%%  ~~who you are~~
+rpart package:
+Terry Therneau,
+Beth Atkinson,
+Brian Ripley
+
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+Ensure that \code{rpart} is installed and loaded correctly, as this function relies on the Tree model implemented in the \code{rpart} package.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[rpart]{rpart}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----
@@ -133,12 +149,8 @@ function (Y, X, newX, family, obsWeights, cp = 0.01, minsplit = 20,
     return(out)
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+  \keyword{rpart}
+  \keyword{regression}
+  \keyword{classification}
+  \concept{Tree Models}
+  \concept{SuperLearner}

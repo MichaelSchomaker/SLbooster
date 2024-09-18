@@ -69,7 +69,7 @@ Number of MCMC iterations to be treated as burn in. Defaults to \code{100}.
 As the MCMC runs, a message is printed every \code{printevery} draws. Defaults to \code{100}.
 }
   \item{keepevery}{
-Every \code{keepevery} draw is kept to be returned to the user. Useful for \dQuote{thinning} samples. Defaults to \code{1}.
+Every \code{keepevery} draw is kept to be returned to the user. Useful for thinning samples. Defaults to \code{1}.
 }
   \item{keeptrainfits}{
 If \code{TRUE} the draws of \eqn{f(x)} for \eqn{x} corresponding to the rows of \code{x.train} are returned.  Defaults to \code{TRUE}.
@@ -112,9 +112,7 @@ Chipman, H., George, E., and McCulloch R. (2006) Bayesian Ensemble Learning. Adv
 Neural Information Processing Systems 19, Scholkopf, Platt and Hoffman, Eds., MIT Press, Cambridge,
 MA, 265-272.
 
-both of the above at: \link{https://www.rob-mcculloch.org}
-
-Friedman, J.H. (1991) Multivariate adaptive regression splines. The Annals of Statistics, 19, 1–67.
+Friedman, J.H. (1991) Multivariate adaptive regression splines. The Annals of Statistics, 19, 1-67.
 
 The \code{dbarts} package: \url{https://cran.r-project.org/web/packages/dbarts/index.html}
 

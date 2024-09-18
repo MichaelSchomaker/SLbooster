@@ -2,10 +2,10 @@
 \alias{SL.randomForest_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Test
+Random Forest for SuperLearner
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+The \code{SL.randomForest_boost} function fits a Random Forest using the \code{randomForest} package and adds boosting for model improvement. If the fitting procedure fails, the mean of \code{Y} is provided as the prediction.
 }
 \usage{
 SL.randomForest_boost(Y, X, newX = NULL, family = list(), verbose = T, mtry = ifelse(family$family == "gaussian", max(floor(ncol(X)/3), 1), floor(sqrt(ncol(X)))), ntree = 100, nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, importance = FALSE, ...)
@@ -13,63 +13,64 @@ SL.randomForest_boost(Y, X, newX = NULL, family = list(), verbose = T, mtry = if
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+A response vector. 
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-%%     ~~Describe \code{newX} here~~
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
 }
   \item{family}{
-%%     ~~Describe \code{family} here~~
+If \code{family = list(family = "binomial")}, classification is assumed, with \code{family = list(family = "gaussian")} regression is assumed. Defaults to \code{list()}. If no family is provided, no random forest is fitted.
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
+A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{mtry}{
-%%     ~~Describe \code{mtry} here~~
+Number of variables randomly sampled as candidates at each split. Note that the default values are different for classification (sqrt(p) where p is number of variables in \code{X}) and regression (p/3).
 }
   \item{ntree}{
-%%     ~~Describe \code{ntree} here~~
+Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times. Defaults to \code{100}.
 }
   \item{nodesize}{
-%%     ~~Describe \code{nodesize} here~~
+Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5).
 }
   \item{maxnodes}{
-%%     ~~Describe \code{maxnodes} here~~
+Maximum number of terminal nodes that trees in the forest can have. If not given, trees are grown to the maximum possible (subject to limits by \code{nodesize}). If set larger than maximum possible, a warning is issued. Defaults to \code{NULL}.
 }
   \item{importance}{
-%%     ~~Describe \code{importance} here~~
+Should importance of predictors be assessed? Defaults to \code{FALSE}.
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Additional arguments passed to \code{randomForest::randomForest} or \code{randomForest.default}
 }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list containing:
+  \item{pred}{Predicted values from the fitted model, based on \code{newX} if provided.}
+  \item{fit}{The fitted Random Forest model.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Breiman, L. (2001), Random Forests, Machine Learning 45(1), 5-32.
+
+Breiman, L (2002), ``Manual On Setting Up, Using, And Understanding Random Forests V3.1'', https://www.stat.berkeley.edu/~breiman/Using_random_forests_V3.1.pdf.
+
+The \code{randomForest} package: \url{https://cran.r-project.org/web/packages/randomForest/index.html}
+
+The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-%%  ~~who you are~~
+Fortran original by Leo Breiman and Adele Cutler, R port by Andy Liaw and MatthewWiener.
+
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-%%  ~~further notes~~
+Ensure that \code{randomForest} is installed and loaded correctly, as this function relies on the Random Forest model implemented in the \code{randomForest} package.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link[randomForest]{randomForest}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----
@@ -132,12 +133,8 @@ function (Y, X, newX = NULL, family = list(), verbose = T, mtry = ifelse(family$
     return(out)
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+  \keyword{randomforest}
+  \keyword{regression}
+  \keyword{classification}
+  \concept{Random Forest}
+  \concept{SuperLearner}
