@@ -1,4 +1,4 @@
-SL.xgboost_boost <- function (Y, X, newX, family, obsWeights, id, ntrees = 1000, 
+SL.xgboost_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL, ntrees = 1000, 
                              max_depth = 4, eta = 0.1, minobspernode = 10, params = list(), 
                              nthread = 1, verb = 0, save_period = NULL, verbose=T, ...) 
 {
@@ -21,19 +21,19 @@ SL.xgboost_boost <- function (Y, X, newX, family, obsWeights, id, ntrees = 1000,
     model = xgboost::xgboost(data = xgmat, objective = objective, 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period)
+                             params = params, save_period = save_period, ...)
   }
   if (family$family == "binomial") {
     model = xgboost::xgboost(data = xgmat, objective = "binary:logistic", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period, eval_metric = "logloss")
+                             params = params, save_period = save_period, eval_metric = "logloss", ...)
   }
   if (family$family == "multinomial") {
     model = xgboost::xgboost(data = xgmat, objective = "multi:softmax", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, num_class = length(unique(Y)), 
-                             nthread = nthread, params = params, save_period = save_period)
+                             nthread = nthread, params = params, save_period = save_period, ...)
   }
   if (!is.matrix(newX)) {
     newX = model.matrix(~. - 1, newX)

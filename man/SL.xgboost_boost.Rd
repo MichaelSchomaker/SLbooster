@@ -8,7 +8,7 @@ It includes additional features, such as printing progress information (e.g., tr
 and maximum tree depth. 
 }
 \usage{
-SL.xgboost_boost(Y, X, newX, family, obsWeights, id, ntrees = 1000, max_depth = 4, eta = 0.1, minobspernode = 10, params = list(), nthread = 1, verb = 0, save_period = NULL, verbose = T, ...)
+SL.xgboost_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, ntrees = 1000, max_depth = 4, eta = 0.1, minobspernode = 10, params = list(), nthread = 1, verb = 0, save_period = NULL, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,10 +25,10 @@ A matrix or data frame of new data for which to generate predictions. As with \c
 A description of the error distribution and link function to be used in the model. Can be \code{"gaussian"} for continuous outcomes, \code{"binomial"} for binary classification, or \code{"multinomial"} for classification with more than two classes.
 }
   \item{obsWeights}{
-Optional observation-level weights. A numeric vector of weights corresponding to each observation in \code{Y}.
+Optional observation-level weights. A numeric vector of weights corresponding to each observation in \code{Y}. Default is \code{NULL}.
 }
   \item{id}{
-Optional. A numeric vector of IDs for each observation, which can be used for grouping during cross-validation or fitting.
+Optional. A numeric vector of IDs for each observation, which can be used for grouping during cross-validation or fitting. Default is \code{NULL}.
 }
   \item{ntrees}{
 The maximum number of boosting iterations (trees) to be fitted. Defaults to 1000.

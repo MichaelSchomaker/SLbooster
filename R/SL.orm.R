@@ -1,4 +1,4 @@
-SL.orm <- function (Y, X, newX, verbose = T, ...) {
+SL.orm <- function (Y, X, newX = NULL, verbose = T, ...) {
   # Check if outcome is binary
   if (all(Y == 0 | Y == 1)) {
     if (verbose == T) {

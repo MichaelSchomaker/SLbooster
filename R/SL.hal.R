@@ -71,7 +71,7 @@ SL.hal <- function (Y, X, newX, verbose=T, family=stats::gaussian(),
         use_min = TRUE,
         lambda.min.ratio = 1e-04,
         prediction_bounds = "default"
-      )
+      ), ...
     ), 
     silent = FALSE
   )

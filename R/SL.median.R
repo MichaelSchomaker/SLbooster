@@ -1,7 +1,7 @@
-SL.median <- function (Y, X, newX, family, obsWeights, id, ...) 
+SL.median <- function (Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, ...) 
 {
   SuperLearner:::.SL.require("matrixStats")
-  medianY <- matrixStats::weightedMedian(Y, w = obsWeights)
+  medianY <- matrixStats::weightedMedian(Y, w = obsWeights, ...)
   pred <- rep.int(medianY, times = nrow(newX))
   fit <- list(object = medianY)
   out <- list(pred = pred, fit = fit)

@@ -25,13 +25,13 @@ screen.glmnet_boost <- function(Y, X, family, alpha = 1, verbose=T,
   fitCV <- try(glmnet::cv.glmnet(
     x = X, y = Y, lambda = NULL, type.measure = "deviance",
     nfolds = nfolds, family = family$family, alpha = alpha,
-    nlambda = nlambda, keep = T
+    nlambda = nlambda, keep = T, ...
   ), silent = TRUE)
   # if no variable was selected, penalization might have been too strong, try log(lambda)
   if (all(fitCV$nzero == 0) | all(is.na(fitCV$nzero))) {
     fitCV <- try(glmnet::cv.glmnet(
       x = X, y = Y, lambda = log(fitCV$glmnet.fit$lambda + 1), type.measure = "deviance",
-      nfolds = nfolds, family = family$family, alpha = alpha, keep = T
+      nfolds = nfolds, family = family$family, alpha = alpha, keep = T, ...
     ), silent = TRUE)
   }
   if(class(fitCV)=="try-error"){successfulfit <- FALSE}else{successfulfit <- TRUE}

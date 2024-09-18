@@ -8,7 +8,7 @@ Prediction Method for SL.dbarts Objects
 This function provides a prediction method for objects of class \code{SL.dbarts}, which are fitted Bayesian Additive Regression Tree (BART) models wrapped within the \code{SuperLearner} framework. It uses the fitted BART model to generate predictions on new data.
 }
 \usage{
-\method{predict}{SL.dbarts}(object, newdata, family, ...)
+\method{predict}{SL.dbarts}(object, newdata, family = list(), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,7 +19,7 @@ A fitted object of class \code{SL.dbarts}, typically produced by the \code{SL.db
   A \code{data.frame} of new observations on which to obtain predictions. 
 }
   \item{family}{
-A \code{list} describing how the prediction should be calculated (currently not used).
+A \code{list} describing how the prediction should be calculated (currently not used). Default is \code{list()}.
 }
   \item{\dots}{
 Additional arguments (currently not used).

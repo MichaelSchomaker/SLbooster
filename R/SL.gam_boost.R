@@ -37,14 +37,14 @@ SL.gam_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL,
   fit.gam <- try(gam::gam(gam.model,
                           data = X, family = family,
                           control = gam::gam.control(maxit = 50, bf.maxit = 50),
-                          weights = obsWeights
+                          weights = obsWeights, ...
   ))
   if(class(fit.gam)[1]=="try-error"){
     gam.model <- as.formula(paste("Y~1"))
     fit.gam <- try(gam::gam(gam.model,
                             data = X, family = family,
                             control = gam::gam.control(maxit = 50, bf.maxit = 50),
-                            weights = obsWeights
+                            weights = obsWeights, ...
     ))
     if(verbose==T){cat("GAM failed with variables provided. Intercept-only GAM fitted.")}
   }

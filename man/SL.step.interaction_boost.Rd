@@ -37,7 +37,7 @@ SL.step.interaction_boost(Y, X, newX, family, direction = "both", trace = 0, k =
   A \code{logical} value. If \code{TRUE}, additional information about the function's progress is printed to the console.
 }
   \item{\dots}{
-  Additional arguments passed to the underlying \code{glm} and \code{step} functions.
+  Additional arguments passed to the underlying \code{step} function.
 }
 }
 \details{
