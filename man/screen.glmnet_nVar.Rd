@@ -47,7 +47,7 @@ The \code{screen.glmnet_nVar} function uses elastic net regularization to perfor
 A logical vector indicating which variables in \code{X} were selected (\code{TRUE}) and which were not (\code{FALSE}).
 }
 \references{
-Friedman J, Hastie T, Tibshirani R (2010). \emph{Regularization Paths for Generalized Linear Models via Coordinate Descent}. Journal of Statistical Software, 33(1), 1–22.
+Friedman J, Hastie T, Tibshirani R (2010). \emph{Regularization Paths for Generalized Linear Models via Coordinate Descent}. Journal of Statistical Software, 33(1), 1-22.
 The \code{glmnet} package documentation: \url{https://cran.r-project.org/web/packages/glmnet/index.html}
 }
 \author{
