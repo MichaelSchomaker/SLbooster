@@ -8,7 +8,7 @@ Generalized Additive Model (GAM) with Boosting for SuperLearner
 The \code{SL.gam_boost} function fits a Generalized Additive Model (GAM) using the \code{gam} package and adds boosting for model improvement. It automatically adjusts for metric and categorical predictors and applies smoothing splines to variables with more than \code{cts.num} unique values.
 }
 \usage{
-SL.gam_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
+SL.gam_boost(Y, X, newX = NULL, family = family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -80,7 +80,7 @@ X <- data.frame(
 # Simulate a response variable Y (linear + noise)
 Y <- 3 * X$cont1 - 2 * X$cont2 + rnorm(n)
 
-fit <- SuperLearner(Y=Y, X=X,verbose=F,SL.library="SL.gam_boost")
+fit <- SuperLearner(Y=Y, X=X,verbose=FALSE,SL.library="SL.gam_boost")
 print(fit$fit)
 
 }
