@@ -60,12 +60,10 @@ library(SuperLearner)
 set.seed(123)
 n <- 300
 X <- data.frame(X1 = rnorm(n), X2 = rnorm(n))
-#Y <- ordered(sample(c('low', 'medium', 'high'), n, replace = TRUE))
-#Y <- (sample(c('low', 'medium', 'high'), n, replace = TRUE))
-Y <- rbinom(n, 1, 0.5)
 
-# Prepare the model using SL.orm
-fit <- SL.orm(Y = Y, X = X, newX = NULL)
+# Example 1: Binary Numeric Outcome
+Y_binary_numeric <- rbinom(n, 1, 0.5)
+fit <- SL.orm(Y = Y_binary_numeric, X = X, newX = NULL)
 
 # View model summary
 fit$fit$object

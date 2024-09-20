@@ -1,4 +1,4 @@
-SL.gam_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL, 
+SL.gam_boost <- function(Y, X, newX = NULL, family = family, obsWeights = NULL, 
                         df.gam = 2, cts.num = 10, verbose=T,
                         ...) {
   #
@@ -59,3 +59,8 @@ SL.gam_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL,
   #
   return(out)
 }
+
+
+
+
+

@@ -1,5 +1,5 @@
 
-SL.orm <- function (Y, X, newX = NULL, verbose = T, ...) {
+SL.orm <- function (Y, X, newX = NULL, obsWeights = NULL, verbose = T, ...) {
   # Check if outcome is binary numeric or binary factor
   is_binary_numeric <- is.numeric(Y) && all(Y == 0 | Y == 1)
   is_binary_factor <- is.factor(Y) && length(levels(Y)) == 2
@@ -15,7 +15,6 @@ SL.orm <- function (Y, X, newX = NULL, verbose = T, ...) {
     }
     start_time <- Sys.time()
     
-    obsWeights <- rep(1, length(Y))
     out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = binomial(), obsWeights = obsWeights, ...)
   } else {
     if (verbose == T) {
@@ -34,7 +33,6 @@ SL.orm <- function (Y, X, newX = NULL, verbose = T, ...) {
     # Check if there are enough unique values
     if (unique_vals < 3) {
       # Use SL.mean if not enough unique values in Y
-      obsWeights <- rep(1, length(Y))
       out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
       
       if (verbose == T) {
@@ -64,7 +62,7 @@ SL.orm <- function (Y, X, newX = NULL, verbose = T, ...) {
         out <- list(pred = pred, fit = fit)
       } else {
         # If ORM fails, fallback to GLM
-        out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, obsWeights = rep(1, length(Y)), ...)
+        out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
         
         if (verbose == T) {
           cat("Technical problem with ORM: GLM used instead.\n")

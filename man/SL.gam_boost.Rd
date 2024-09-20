@@ -67,20 +67,22 @@ This function requires the \code{gam} package to be installed and loaded. It use
 \examples{
 ## Example usage of SL.gam_boost:
 library(SuperLearner)
-library(gam)
 
 # Generate some example data
-set.seed(123)
-n <- 100
-X <- data.frame(X1 = rnorm(n), X2 = sample(letters[1:3], n, replace = TRUE))
-Y <- rnorm(n)
+set.seed(123)  # For reproducibility
+n <- 500  # Number of observations
+X <- data.frame(
+  cont1 = rnorm(n),                # Continuous predictor 1
+  cont2 = runif(n, 0, 10),         # Continuous predictor 2
+  cat1 = factor(sample(letters[1:3], n, replace = TRUE)),  # Categorical predictor
+  cat2 = factor(sample(letters[4:5], n, replace = TRUE))   # Another categorical predictor
+)
+# Simulate a response variable Y (linear + noise)
+Y <- 3 * X$cont1 - 2 * X$cont2 + rnorm(n)
 
-# Fit the SL.gam_boost model
-fit <- SL.gam_boost(Y = Y, X = X, df.gam = 3)
+fit <- SuperLearner(Y=Y, X=X,verbose=F,SL.library="SL.gam_boost")
+print(fit$fit)
 
-# Generate predictions on new data
-pred <- fit$pred
-print(pred)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
