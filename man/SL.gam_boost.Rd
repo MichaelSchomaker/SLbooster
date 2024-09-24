@@ -8,10 +8,9 @@ Generalized Additive Model (GAM) with Boosting for SuperLearner
 The \code{SL.gam_boost} function fits a Generalized Additive Model (GAM) using the \code{gam} package and adds boosting for model improvement. It automatically adjusts for metric and categorical predictors and applies smoothing splines to variables with more than \code{cts.num} unique values.
 }
 \usage{
-SL.gam_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
+SL.gam_boost(Y, X, newX = NULL, family = family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
 }
-%- maybe also 'usage' for other objects documented here.
-\arguments{
+ \arguments{
   \item{Y}{
 The response variable. This is typically a numeric vector or factor representing the outcome of interest.
 }
@@ -71,14 +70,20 @@ library(SuperLearner)
 library(gam)
 
 # Generate some example data
-set.seed(123)
-n <- 100
-X <- data.frame(X1 = rnorm(n), X2 = sample(letters[1:3], n, replace = TRUE))
-Y <- rnorm(n)
+set.seed(123)  # For reproducibility
+n <- 500  # Number of observations
+X <- data.frame(
+  cont1 = rnorm(n),                # Continuous predictor 1
+  cont2 = runif(n, 0, 10),         # Continuous predictor 2
+  cat1 = factor(sample(letters[1:3], n, replace = TRUE)),  # Categorical predictor
+  cat2 = factor(sample(letters[4:5], n, replace = TRUE))   # Another categorical predictor
+)
+# Simulate a response variable Y (linear + noise)
+Y <- 3 * X$cont1 - 2 * X$cont2 + rnorm(n)
 
-# Fit the SL.gam_boost model
-fit <- SL.gam_boost(Y = Y, X = X, df.gam = 3)
-
+# Fit SuperLearner with defaults of 'SL.gam_boost'
+fit <- SuperLearner(Y=Y, X=X,verbose=FALSE,SL.library="SL.gam_boost")
+print(fit$fit)
 # Generate predictions on new data
 pred <- fit$pred
 print(pred)
