@@ -3,7 +3,7 @@
 \alias{SLbooster}
 \docType{package}
 \title{
-SLbooster: Enhanced Learning with Boosted Screening and GAM Models for SuperLearner
+SLbooster: Enhanced Learning with Boosted Screening and GAM Models for SuperLearner 
 }
 \description{
 The \code{SLbooster} package extends the \code{SuperLearner} framework by providing additional learners and screening functions. It integrates advanced algorithms like Generalized Additive Models (GAM), Elastic Net, and boosted learning techniques. The package also includes custom screening methods such as Cramer's V-based screening and variable selection using Elastic Net with cross-validation. These functions are designed to enhance predictive performance, particularly in settings with complex interactions between continuous and categorical variables.
@@ -29,6 +29,7 @@ Maintainer: Michael Schomaker <michael.schomaker@stat.uni-muenchen.de>
 }
 
 \examples{
+\donttest{
 # Example of creating a custom learner with SLbooster
 library(SuperLearner)
 
@@ -40,15 +41,9 @@ create_glmnet_boost <- create.Learner("SL.glmnet_boost",
 
 # Use the learner in the SuperLearner framework
 set.seed(123)
-n <- 500  # Number of observations
-X <- data.frame(
-  cont1 = rnorm(n),                # Continuous predictor 1
-  cont2 = runif(n, 0, 10),         # Continuous predictor 2
-  cat1 = factor(sample(letters[1:3], n, replace = TRUE)),  # Categorical predictor
-  cat2 = factor(sample(letters[4:5], n, replace = TRUE))   # Another categorical predictor
-)
-# Simulate a response variable Y (for example, linear + noise)
-Y <- 3 * X$cont1 - 2 * X$cont2 + rnorm(n)
+n <- 100
+X <- data.frame(X1 = rnorm(n), X2 = rnorm(n), X3 = rnorm(n))
+Y <- rnorm(n)
 
 # Define the SuperLearner library with the custom glmnet_boost learner
 SL.library <- c("SL.mean", create_glmnet_boost$names)
@@ -62,4 +57,6 @@ print(fit)
 # Example using screen.cramersv
 selected_vars <- screen.cramersv(Y = factor(sample(c(0, 1), n, replace = TRUE)), 
                                  X = X, nscreen = 2)
-print(selected_vars)}
+print(selected_vars)
+}
+}
