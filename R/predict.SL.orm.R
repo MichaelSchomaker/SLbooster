@@ -1,6 +1,6 @@
 predict.SL.orm <- function(object, newdata, ...) {
   # Load necessary package
-  require("rms")
+  requireNamespace("rms") # require("rms")
   
   # Check if the input model is of class "SL.orm"
   if (!inherits(object, "SL.orm")) {
@@ -14,14 +14,7 @@ predict.SL.orm <- function(object, newdata, ...) {
   
   # Check the type of the response variable (yunique)
   y_type <- class(object$object$yunique)
-  
-  if (y_type == "numeric") {
-    # If yunique is numeric, predict with type = "mean"
-    pred <- rms:::predict.orm(object = object$object, newdata = newdata, type = "mean")
-  } else {
-    # Otherwise, predict with the default settings
-    pred <- rms:::predict.orm(object = object$object, newdata = newdata)
-  }
+  pred <- stats::predict(object = object$object, newdata = newdata)
   
   return(pred)
 }

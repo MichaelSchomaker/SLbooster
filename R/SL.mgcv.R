@@ -1,14 +1,14 @@
-SL.mgcv <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL, 
+SL.mgcv <- function(Y, X, newX = NULL, family = family, obsWeights = NULL, 
                          cts.num = 10, by=NA, verbose=F,
                          ...) {
   #
   if(verbose==T){cat("SL.mgcv started (if >", cts.num, " unique values = spline added; it interacts with: ", by, "). ", sep="")}
   start_time <- Sys.time()
-  require("mgcv")
+  requireNamespace("mgcv") # require("mgcv")
   #
   if(all(by %in% colnames(X))==FALSE){if(verbose==T){cat(paste(by, "not in column names of X. `by=NA' is used.\n"))};by<-NA}
   #
-  s <- mgcv:::s # s() is also used by 'gam' package - avoid clash
+  s <- mgcv::s # s() is also used by 'gam' package - avoid clash
   # adjust model formula for metric and categorical predictors
   metric_var <- apply(X, 2, function(x) (length(unique(x)) > cts.num))
   if (sum(metric_var) != 0 & sum(metric_var) != length(metric_var)) {

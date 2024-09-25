@@ -1,5 +1,5 @@
 
-SL.orm <- function (Y, X, newX = NULL, obsWeights = NULL, verbose = T, ...) {
+SL.orm <- function (Y, X, newX = NULL, family = family, obsWeights = NULL, verbose = T, ...) {
   # Check if outcome is binary numeric or binary factor
   is_binary_numeric <- is.numeric(Y) && all(Y == 0 | Y == 1)
   is_binary_factor <- is.factor(Y) && length(levels(Y)) == 2
@@ -15,13 +15,13 @@ SL.orm <- function (Y, X, newX = NULL, obsWeights = NULL, verbose = T, ...) {
     }
     start_time <- Sys.time()
     
-    out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = binomial(), obsWeights = obsWeights, ...)
+    out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
   } else {
     if (verbose == T) {
       cat("SL.orm started.\n")
     }
     start_time <- Sys.time()
-    SuperLearner:::.SL.require("rms")
+    #requireNamespaces("rms")
     
     # Determine the number of unique values based on Y's type
     if (is.factor(Y)) {
@@ -49,14 +49,11 @@ SL.orm <- function (Y, X, newX = NULL, obsWeights = NULL, verbose = T, ...) {
       if (length(class(fit.orm)) == 2 && fit.orm$fail == FALSE) {
         if (is.matrix(newX)) {
           newX <- as.data.frame(newX)
+        } else if (is.null(newX)) {
+          newX <- X
         }
+        pred <- stats::predict(fit.orm, newdata = newX) 
         
-        # Predict with fitted ORM model
-        if(is.factor(Y)) {
-          pred <- rms:::predict.orm(fit.orm, newdata = newX) 
-        } else {
-          pred <- rms:::predict.orm(fit.orm, newdata = newX, type = "mean") 
-        }
         fit <- list(object = fit.orm)
         class(fit) <- "SL.orm"
         out <- list(pred = pred, fit = fit)

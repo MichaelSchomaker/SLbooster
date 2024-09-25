@@ -64,7 +64,6 @@ This function requires the \code{gam} package to be installed and loaded. It use
 \code{\link{SuperLearner}}, \code{\link{gam}}, \code{\link{SL.mean}}, \code{\link{SL.glm}}
 }
 \examples{
-\donttest{
 ## Example usage of SL.gam_boost:
 library(SuperLearner)
 library(gam)
@@ -87,7 +86,6 @@ print(fit$fit)
 # Generate predictions on new data
 pred <- fit$pred
 print(pred)
-}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

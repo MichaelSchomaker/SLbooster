@@ -8,7 +8,7 @@ Ordinal Regression Model (SL.orm)
 The \code{SL.orm} function is a wrapper for the ordinal regression model (ORM) used within the \code{SuperLearner} framework. It fits an ORM when the response is ordinal and uses alternative models (GLM or mean) when the outcome is binary or insufficient for ORM.
 }
 \usage{
-SL.orm(Y, X, newX = NULL, obsWeights = NULL, verbose = T, ...)
+SL.orm(Y, X, newX = NULL, family = family, obsWeights = NULL, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,10 @@ A data frame or matrix of predictor variables used to fit the model. Each column
   \item{newX}{
 A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
 }
+\item{family}{
+A description of the error distribution and link function to be used in the model (e.g., \code{binomial} or \code{gaussian}). It is passed to the \code{gam} function for model fitting.
+}
+
   \item{obsWeights}{
 An optional vector of observation-specific weights to be used in the fitting process. Defaults to \code{NULL}.
 }

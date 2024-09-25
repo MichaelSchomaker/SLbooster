@@ -41,24 +41,6 @@ The function requires the \code{rms} package to be installed and loaded. It assu
 \seealso{
 \code{\link{SL.orm}}, \code{\link{predict.orm}}, \code{\link{SuperLearner}}
 }
-\examples{
-## Example usage of predict.SL.orm:
-library(SuperLearner)
-library(rms)
-
-# Generate example data
-set.seed(123)
-n <- 100
-X <- data.frame(X1 = rnorm(n), X2 = rnorm(n))
-Y <- ordered(sample(c('low', 'medium', 'high'), n, replace = TRUE))
-
-# Fit an SL.orm model
-fit <- SL.orm(Y = Y, X = X, newX = NULL)
-
-# Make predictions on new data
-pred <- predict.SL.orm(fit, newdata = X)
-print(pred)
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{prediction}
