@@ -87,7 +87,7 @@ ltmle2$fit$Q
 library(lmtp)
 
 # multiple time points
-lmtp1 <- lmtp_tmle(data = EFV2,
+lmtp1 <- lmtp_tmle(data = EFV,
                    trt = c("efv.0","efv.1","efv.2","efv.3","efv.4"), 
                    outcome = c("VL.4"), 
                    baseline = c("sex", "metabolic", "log_age", "NRTI"),
@@ -106,13 +106,14 @@ lmtp1 <- lmtp_tmle(data = EFV2,
 lmtp1
 # results differ quite a lot from ltmle, but confidence interval is wide, so it might be okay?
 # Michael: to discuss after update
+# Katy: still 0.159 (tmle, CI: 0.092151-0.22529) vs. 0.1049 (lmtp, CI 0.0249-0.185)
 
 # continuous Y
-lmtp2 <- lmtp_sdr(data = EFV[,1:10], 
-                  trt = "VL.0", 
-                  outcome = "efv.1", 
+lmtp2 <- lmtp_sdr(data = EFV[,1:9], 
+                  trt = "efv.0", 
+                  outcome = "weight.1", 
                   baseline = c("sex", "metabolic", "log_age", "NRTI", "weight.0"),
-                  time_vary = list(c("adherence.1","weight.1")),
+                  time_vary = list(c("VL.0","adherence.1")),
                   shift = static_binary_off, # abar = 0
                   folds = 1, 
                   outcome_type = "continuous",
