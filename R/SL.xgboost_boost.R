@@ -21,19 +21,19 @@ SL.xgboost_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL, 
     model = xgboost::xgboost(data = xgmat, objective = objective, 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period, ...)
+                             params = params, save_period = save_period)
   }
   if (family$family == "binomial") {
     model = xgboost::xgboost(data = xgmat, objective = "binary:logistic", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period, eval_metric = "logloss", ...)
+                             params = params, save_period = save_period, eval_metric = "logloss")
   }
   if (family$family == "multinomial") {
     model = xgboost::xgboost(data = xgmat, objective = "multi:softmax", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, num_class = length(unique(Y)), 
-                             nthread = nthread, params = params, save_period = save_period, ...)
+                             nthread = nthread, params = params, save_period = save_period)
   }
   if (!is.matrix(newX)) {
     newX = model.matrix(~. - 1, newX)

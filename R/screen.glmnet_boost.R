@@ -1,4 +1,4 @@
-screen.glmnet_boost <- function(Y, X, family, alpha = 1, verbose=T,
+screen.glmnet_boost <- function(Y, X, family = list(), alpha = 1, verbose=T,
                                nfolds = 10, nlambda = 200, nscreen=2, ...){
   if(verbose==T){cat("screen.glmnet with alpha=", alpha, " and ", nfolds, " fold CV \n", sep="")}
   start_time <- Sys.time()

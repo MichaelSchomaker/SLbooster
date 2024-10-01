@@ -9,7 +9,7 @@ Performs variable selection using the Elastic Net regularization via \code{glmne
 
 }
 \usage{
-screen.glmnet_boost(Y, X, family, alpha = 1, verbose = T, nfolds = 10, nlambda = 200, nscreen = 2, ...)
+screen.glmnet_boost(Y, X, family = list(), alpha = 1, verbose = T, nfolds = 10, nlambda = 200, nscreen = 2, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,7 +20,7 @@ screen.glmnet_boost(Y, X, family, alpha = 1, verbose = T, nfolds = 10, nlambda =
     Predictor variables in a data frame or matrix format. Factors are internally handled by creating dummy variables.
   }
   \item{family}{
-    A list specifying the error distribution and link function to be used in the model. Default is determined based on the response variable.
+    A list specifying the error distribution and link function to be used in the model. Default is \code{list()} and the family is determined based on the response variable.
   }
   \item{alpha}{
     Elastic Net mixing parameter, with \code{alpha = 1} being the Lasso (default) and \code{alpha = 0} being the Ridge regression.

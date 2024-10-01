@@ -58,7 +58,7 @@ Optional. An integer that specifies how often the model should be saved during t
 If \code{TRUE}, progress information such as the number of trees, depth, and training time will be printed during model fitting. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments passed to the \code{xgboost} function.
+Additional arguments currently unused.
 }
 }
 \details{

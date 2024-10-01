@@ -7,7 +7,7 @@ SL.step.interaction_boost <-
     #
     fit.glm <- glm(Y ~ ., data = X, family = family)
     fit.step <- step(fit.glm, scope = Y ~ .^2, direction = direction, 
-                     trace = trace, k = k, ...)
+                     trace = trace, k = k)
     pred <- predict(fit.step, newdata = newX, type = "response")
     fit <- list(object = fit.step)
     out <- list(pred = pred, fit = fit)

@@ -1,4 +1,4 @@
-SL.hal <- function (Y, X, newX, verbose=T, family=stats::gaussian(),
+SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
                     runtime=c("default", "fast", "slow", "custom"),
                     custom_params = NULL,
                     obsWeights = rep(1,length(Y)), ...){
@@ -71,14 +71,14 @@ SL.hal <- function (Y, X, newX, verbose=T, family=stats::gaussian(),
         use_min = TRUE,
         lambda.min.ratio = 1e-04,
         prediction_bounds = "default"
-      ), ...
+      )
     ), 
     silent = FALSE
   )
   #
   if(class(fit.hal)[1]=="try-error"){
     if(verbose==T){cat("Technical failure: GLM used instead of HAL.")}
-    out <- SuperLearner::SL.glm(Y=Y,X=X,newX=newX,family=family, obsWeights=rep(1,length(Y)),...)
+    out <- SuperLearner::SL.glm(Y=Y,X=X,newX=newX,family=family, obsWeights=rep(1,length(Y)))
   }else{
     if (!is.null(newX)) {
       pred <- stats::predict(fit.hal, new_data = newX)

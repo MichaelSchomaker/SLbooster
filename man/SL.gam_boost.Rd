@@ -8,7 +8,7 @@ Generalized Additive Model (GAM) with Boosting for SuperLearner
 The \code{SL.gam_boost} function fits a Generalized Additive Model (GAM) using the \code{gam} package and adds boosting for model improvement. It automatically adjusts for metric and categorical predictors and applies smoothing splines to variables with more than \code{cts.num} unique values.
 }
 \usage{
-SL.gam_boost(Y, X, newX = NULL, family = family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
+SL.gam_boost(Y, X, newX, family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
 }
  \arguments{
   \item{Y}{
@@ -18,7 +18,7 @@ The response variable. This is typically a numeric vector or factor representing
 A matrix or data frame of predictor variables. Each column represents a feature used in model fitting.
 }
   \item{newX}{
-A matrix or data frame of new predictor values for generating predictions. If \code{NULL}, predictions are not made.
+A matrix or data frame of new predictor values for generating predictions.
 }
   \item{family}{
 A description of the error distribution and link function to be used in the model (e.g., \code{binomial()} or \code{gaussian()}). It is passed to the \code{gam} function for model fitting.
@@ -36,7 +36,7 @@ The minimum number of unique values a variable must have for it to be considered
 Logical flag indicating whether to print progress and timing information. The default is \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments passed to the underlying \code{gam} function for fine-tuning model fitting.
+Additional arguments currently unused.
 }
 }
 \details{

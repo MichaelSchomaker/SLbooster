@@ -1,4 +1,4 @@
-SL.median <- function (Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, ...) 
+SL.median <- function (Y, X, newX, family = list(), obsWeights = NULL, id = NULL, ...) 
 {
   SuperLearner:::.SL.require("matrixStats")
   medianY <- matrixStats::weightedMedian(Y, w = obsWeights, ...)

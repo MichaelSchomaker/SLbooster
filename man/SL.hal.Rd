@@ -5,7 +5,7 @@
   A wrapper function for the \code{SuperLearner} package that enables the use of the \code{hal9001} package for Highly Adaptive Lasso (HAL) estimation. This integration allows users to fit models and make predictions using HAL within the SuperLearner framework, facilitating advanced modeling techniques for various types of data.
 }
 \usage{
-SL.hal(Y, X, newX, verbose = T, family = stats::gaussian(),
+SL.hal(Y, X, newX = NULL, verbose = T, family = stats::gaussian(),
         runtime = c("default", "fast", "slow", "custom"),
         custom_params = NULL,
         obsWeights = rep(1, length(Y)), ...)
@@ -41,7 +41,7 @@ SL.hal(Y, X, newX, verbose = T, family = stats::gaussian(),
     A \code{numeric} vector of observation weights, with the same length as \code{Y}. Defaults to equal weights for all observations.
   }
   \item{\dots}{
-    Additional arguments passed to \code{hal9001::fit_hal} for more customized model fitting options.
+    Additional arguments currently unused.
   }
 }
 \details{

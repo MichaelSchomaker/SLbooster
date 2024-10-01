@@ -8,7 +8,7 @@ SL.median: SuperLearner Wrapper for Weighted Median Predictions
 The \code{SL.median} function is a wrapper for calculating weighted median predictions within the \code{SuperLearner} framework. This function calculates the weighted median of the response variable \code{Y} using the observation weights and generates constant predictions based on this median for new data.
 }
 \usage{
-SL.median(Y, X, newX = NULL, family, obsWeights, id, ...)
+SL.median(Y, X, newX, family, obsWeights, id, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,7 +19,7 @@ SL.median(Y, X, newX = NULL, family, obsWeights, id, ...)
   A \code{matrix} or \code{data.frame} of predictor variables (independent variables). This argument is not used in the function but is required for compatibility with the \code{SuperLearner} package.
 }
   \item{newX}{
-  A \code{matrix} or \code{data.frame} of new observations on which to generate predictions. Predictions are constant and equal to the weighted median of \code{Y}. Default is \code{NULL}.
+  A \code{matrix} or \code{data.frame} of new observations on which to generate predictions. Predictions are constant and equal to the weighted median of \code{Y}.
 }
   \item{family}{A \code{\link[stats]{family}} object (one that is required for compatibility with \code{SuperLearner}). Currently unused. Default is \code{list()}.
 }
@@ -30,7 +30,7 @@ SL.median(Y, X, newX = NULL, family, obsWeights, id, ...)
   Optional vector of IDs for clustering/grouping, currently unused in this function. Default is \code{NULL}.
 }
   \item{\dots}{
-  Additional arguments passed to \code{matrixStats::weightedMedian}.
+  Additional arguments currently unused.
 }
 }
 \details{

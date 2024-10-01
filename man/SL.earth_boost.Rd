@@ -8,7 +8,7 @@ SL.earth_boost: SuperLearner Wrapper for Boosted Earth Models
 This function serves as a wrapper for the \code{earth} function within the \code{SuperLearner} framework, enabling the use of Multivariate Adaptive Regression Splines (MARS) with boosting for regression and classification tasks. It fits an \code{earth} model (MARS) to the data and generates predictions for new observations.
 }
 \usage{
-SL.earth_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
+SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
                nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, 
                minspan = 0, endspan = 0, verbose = F, ...)
 }
@@ -60,7 +60,7 @@ SL.earth_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL,
   Logical; if \code{TRUE}, the function prints detailed progress messages. Default is \code{FALSE}.
 }
   \item{\dots}{
-  Additional arguments passed to \code{earth::earth()}.
+  Additional arguments currently unused.
 }
 }
 \details{

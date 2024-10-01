@@ -1,5 +1,5 @@
 
-SL.orm <- function (Y, X, newX = NULL, family = family, obsWeights = NULL, verbose = T, ...) {
+SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
   # Check if outcome is binary numeric or binary factor
   is_binary_numeric <- is.numeric(Y) && all(Y == 0 | Y == 1)
   is_binary_factor <- is.factor(Y) && length(levels(Y)) == 2
@@ -15,7 +15,7 @@ SL.orm <- function (Y, X, newX = NULL, family = family, obsWeights = NULL, verbo
     }
     start_time <- Sys.time()
     
-    out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+    out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights)
   } else {
     if (verbose == T) {
       cat("SL.orm started.\n")
@@ -33,7 +33,7 @@ SL.orm <- function (Y, X, newX = NULL, family = family, obsWeights = NULL, verbo
     # Check if there are enough unique values
     if (unique_vals < 3) {
       # Use SL.mean if not enough unique values in Y
-      out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
+      out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, obsWeights = obsWeights)
       
       if (verbose == T) {
         cat("Not enough different unique values in Y: mean used instead of ORM.\n")

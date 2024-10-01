@@ -1,4 +1,4 @@
-SL.earth_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, degree = 2, penalty = 3,
+SL.earth_boost <- function(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3,
                           nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0,
                           ncross = 1, minspan = 0, endspan = 0, verbose=F, ...) {
   #
@@ -10,7 +10,7 @@ SL.earth_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL
     fit.earth <- earth::earth(
       x = X, y = Y, degree = degree,
       nk = nk, penalty = penalty, pmethod = pmethod, nfold = nfold,
-      ncross = ncross, minspan = minspan, endspan = endspan, ...
+      ncross = ncross, minspan = minspan, endspan = endspan
     )
   }
   if (family$family == "binomial") {
@@ -18,7 +18,7 @@ SL.earth_boost <- function(Y, X, newX = NULL, family = list(), obsWeights = NULL
       x = X, y = Y, degree = degree,
       nk = nk, penalty = penalty, pmethod = pmethod, nfold = nfold,
       ncross = ncross, minspan = minspan, endspan = endspan,
-      glm = list(family = binomial), ...
+      glm = list(family = binomial)
     )
   }
   #
