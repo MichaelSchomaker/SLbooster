@@ -8,7 +8,7 @@ Prediction Method for SL.dbarts Objects
 This function provides a prediction method for objects of class \code{SL.dbarts}, which are fitted Bayesian Additive Regression Tree (BART) models wrapped within the \code{SuperLearner} framework. It uses the fitted BART model to generate predictions on new data.
 }
 \usage{
-\method{predict}{SL.dbarts}(object, newdata, family = list(), ...)
+\method{predict}{SL.dbarts}(object, newdata,  ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,9 +17,6 @@ A fitted object of class \code{SL.dbarts}, typically produced by the \code{SL.db
 }
   \item{newdata}{
   A \code{data.frame} of new observations on which to obtain predictions. 
-}
-  \item{family}{
-A \code{list} describing how the prediction should be calculated (currently not used). Default is \code{list()}.
 }
   \item{\dots}{
 Additional arguments (currently not used).
@@ -47,16 +44,10 @@ Ensure that the \code{object} provided is a valid \code{SL.dbarts} object, as th
 \code{\link{SL.dbarts}}, \code{\link[dbarts]{bart}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (object, newdata, family, ...) 
-{
-    pred = colMeans(predict(object$object, newdata = newdata))
-    return(pred)
-  }
+data(EFV)
+result <- SL.dbarts(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+predict(object = result$fit, newdata = EFV[, c("efv.0", "metabolic", "weight.0")])
 }
   \keyword{bart}
   \keyword{regression}

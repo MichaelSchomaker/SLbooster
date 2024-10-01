@@ -8,7 +8,7 @@ Generalized Additive Model (SL.mgcv)
 Fits a generalized additive model (GAM) to data with smooth terms. If the fitting fails on the provided variables \code{X}, an intercept only model is fitted.
 }
 \usage{
-SL.mgcv(Y, X, newX = NULL, family = family, obsWeights = NULL, cts.num = 10, by = NA, verbose = F, ...)
+SL.mgcv(Y, X, newX, family, obsWeights = NULL, cts.num = 10, by = NA, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,10 +19,10 @@ The response variable, which can be numeric or binary.
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. 
 }
   \item{family}{This is a family object specifying the distribution and link to use in fitting etc.
-As well as the standard families (of class \code{family}) documented in \code{family} (see also \code{glm}), \code{mgcv} also supplies some extra families. These are described in \code{?mgcv::family.mgcv}. Defaults to \code{list()}.
+As well as the standard families (of class \code{family}) documented in \code{family} (see also \code{glm}), \code{mgcv} also supplies some extra families. These are described in \code{?mgcv::family.mgcv}. 
 }
   \item{obsWeights}{
 An optional vector of observation-specific weights to be used in the fitting process. Defaults to \code{NULL}.
@@ -35,10 +35,10 @@ Determines the threshold for treating a variable as continuous and therefore int
 Defaults to \code{NA}.
 }
   \item{verbose}{
-A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{FALSE}.
+A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments passed to \code{mgcv::gam()} and via this route to e.g. \code{gam.fit}.
+Additional arguments currently unused.
 }
 }
 \value{
@@ -72,9 +72,16 @@ Ensure that \code{mgcv} is installed and loaded correctly, as this function reli
 \code{\link[mgcv]{mgcv}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+library(SuperLearner)
+data(EFV)
+result1 <- SL.mgcv(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.mgcv(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.mgcv", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
 
   \keyword{gam}

@@ -8,7 +8,7 @@ Elastic Net Generalized Linear Model
 Fits a Generalized Linear Model (GLM) with Elastic Net regularization. The parameter lambda, which is used for regularization, is found via cross validation. The mixing parameter alpha is fixed.
 }
 \usage{
-SL.glmnet_boost(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
+SL.glmnet_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,10 +19,10 @@ The response variable, which can be numeric or binary.
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. 
 }
   \item{family}{
-A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}. Defaults to \code{list()} and is inferred from \code{Y} if not provided.
+A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}. 
 }
   \item{obsWeights}{
 An optional vector of weights to be used in the fitting process. Defaults to \code{NULL}.
@@ -60,7 +60,7 @@ concordance measure, only available for cox models.
 A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments passed to \code{cv.glment} or \code{glmnet}.
+Additional arguments currently unused.
 }
 }
 \details{
@@ -98,62 +98,16 @@ Ensure that \code{glmnet} is installed and loaded correctly, as this function re
 \code{\link[glmnet]{glmnet}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (Y, X, newX, family, obsWeights, id, alpha = 1, nfolds = 10, 
-    nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, 
-    ...) 
-{
-    if (verbose == T) {
-        cat("SL.glmnet started with alpha=", alpha, ", ", nfolds, 
-            "-fold CV, and ", nlambda, " candidate lambdas. ", 
-            sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("glmnet")
-    fam.init <- family$family
-    Y <- as.vector(as.matrix(Y))
-    if (all(Y == 0 | Y == 1)) {
-        family$family <- "binomial"
-    }
-    else {
-        family$family <- "gaussian"
-    }
-    fam.end <- family$family
-    if (!is.matrix(X)) {
-        X <- model.matrix(~-1 + ., X)
-        newX <- model.matrix(~-1 + ., newX)
-    }
-    fitCV <- glmnet::cv.glmnet(x = X, y = Y, weights = obsWeights, 
-        lambda = NULL, type.measure = loss, nfolds = nfolds, 
-        family = family$family, alpha = alpha, nlambda = nlambda, 
-        ...)
-    pred <- predict(fitCV, newx = newX, type = "response", s = ifelse(useMin, 
-        "lambda.min", "lambda.1se"))
-    if (fam.init == "binomial" & fam.end == "gaussian") {
-        if (any(pred < 0)) {
-            pred[pred < 0] <- 0
-        }
-        if (any(pred > 1)) {
-            pred[pred > 1] <- 1
-        }
-        if (verbose == T) {
-            cat("Note: predictions falling outside [0,1] have been set as 0/1")
-        }
-    }
-    fit <- list(object = fitCV, useMin = useMin)
-    class(fit) <- "SL.glmnet"
-    out <- list(pred = pred, fit = fit)
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("SL.glmnet finished. Time:", round(difftime(end_time, 
-            start_time, units = "mins"), digits = 4), "mins \n\n")
-    }
-    return(out)
-  }
+library(SuperLearner)
+data(EFV)
+result1 <- SL.glmnet_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.glmnet_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.glmnet_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
   \keyword{glmnet}
   \keyword{regression}

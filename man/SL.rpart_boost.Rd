@@ -8,7 +8,7 @@ Recursive Partitioning
 Using the \code{rpart} package, fits a decision tree model using ANOVA for both regression and classification tasks, handles binary and continuous outcomes, and provides options for cross-validation and tree depth control. 
 }
 \usage{
-SL.rpart_boost(Y, X, newX = NULL, family = list(), obsWeights, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
+SL.rpart_boost(Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
 }
 \arguments{
   \item{Y}{
@@ -18,10 +18,10 @@ A response vector.
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}.
 }
   \item{family}{
-A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.  Defaults to \code{list()} and is inferred from \code{Y} if not provided.
+A \code{list} describing how the fit and the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.
 }
   \item{obsWeights}{
 An optional vector of weights to be used in the fitting process. Defaults to \code{NULL}.
@@ -56,7 +56,7 @@ one of \code{minbucket} or \code{minsplit} is specified, the code either sets \c
 A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments passed to \code{rpart::rpart()} or \code{rpart.control}.
+Additional arguments currently unused.
 }
 }
 \details{
@@ -91,63 +91,16 @@ Ensure that \code{rpart} is installed and loaded correctly, as this function rel
 \code{\link[rpart]{rpart}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (Y, X, newX, family, obsWeights, cp = 0.01, minsplit = 20, 
-    xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), 
-    verbose = T, ...) 
-{
-    if (verbose == T) {
-        cat("SL.rpart started with minsplit=", minsplit, ", maxdepth=", 
-            maxdepth, ", and ", xval, "-fold CV (0=no CV). ", 
-            sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("rpart")
-    fam.init <- family$family
-    Y <- as.vector(as.matrix(Y))
-    if (all(Y == 0 | Y == 1)) {
-        family$family <- "binomial"
-    }
-    else {
-        family$family <- "gaussian"
-    }
-    fam.end <- family$family
-    if (family$family == "gaussian") {
-        fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
-            X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
-            xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-            method = "anova", weights = obsWeights)
-        pred <- predict(fit.rpart, newdata = newX)
-    }
-    if (family$family == "binomial") {
-        fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
-            X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
-            xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-            method = "class", weights = obsWeights)
-        pred <- predict(fit.rpart, newdata = newX)[, 2]
-    }
-    if (fam.init == "binomial" & fam.end == "gaussian") {
-        if (any(pred < 0)) {
-            pred[pred < 0] <- 0
-        }
-        if (any(pred > 1)) {
-            pred[pred > 1] <- 1
-        }
-    }
-    fit <- list(object = fit.rpart)
-    out <- list(pred = pred, fit = fit)
-    class(out$fit) <- c("SL.rpart")
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("SL.rpart finished. Time:", round(difftime(end_time, 
-            start_time, units = "mins"), digits = 4), "mins \n\n")
-    }
-    return(out)
-  }
+library(SuperLearner)
+data(EFV)
+result1 <- SL.rpart_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.rpart_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.rpart_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
   \keyword{rpart}
   \keyword{regression}

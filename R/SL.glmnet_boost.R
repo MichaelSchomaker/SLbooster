@@ -1,4 +1,4 @@
-SL.glmnet_boost <- function (Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, 
+SL.glmnet_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL, 
                              alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", 
                              verbose=T, ...) 
 {
@@ -22,8 +22,7 @@ SL.glmnet_boost <- function (Y, X, newX = NULL, family = list(), obsWeights = NU
   }
   fitCV <- glmnet::cv.glmnet(x = X, y = Y, weights = obsWeights, 
                              lambda = NULL, type.measure = loss, nfolds = nfolds, 
-                             family = family$family, alpha = alpha, nlambda = nlambda, 
-                             ...)
+                             family = family$family, alpha = alpha, nlambda = nlambda)
   pred <- predict(fitCV, newx = newX, type = "response", 
                   s = ifelse(useMin, "lambda.min", "lambda.1se"))
   #

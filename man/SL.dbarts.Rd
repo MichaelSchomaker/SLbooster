@@ -8,7 +8,7 @@ Bayesian Additive Regression Tree (SL.dbarts)
 The \code{SL.dbarts} function is a wrapper for the Bayesian Additve Regression Tree (BART) of the \code{dbarts} package used within the \code{SuperLearner} framework. It fits a BART model and calculates the prediction if the supplied \code{family} argument is either gaussian or binomial.
 }
 \usage{
-SL.dbarts(Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
+SL.dbarts(Y, X, newX, family, obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
             sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
             ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
             keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
@@ -24,10 +24,10 @@ The response variable, which can be numeric or binary. In the numeric case error
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. Defaults to \code{NULL}.
+A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}.
 }
   \item{family}{
-  A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.  Defaults to \code{list()}.
+  A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}.
 }
   \item{obsWeights}{
   An optional vector of weights to be used in the fitting process. When present, BART fits a model with observations \eqn{y \mid x \sim N(f(x), \sigma^2 / w)}{y | x ~ N(f(x), \sigma^2 / w)}, where \eqn{f(x)} is the unknown function. Defaults to \code{NULL}.
@@ -97,7 +97,7 @@ A logical value indicating whether to print detailed information during the exec
 }
 
   \item{\dots}{
-Additional arguments passed to \code{dbarts::bart()}, \code{plot}, \code{dbartsControl}, or \code{extract} when \code{type} is \code{"trees"}.
+Additional arguments currently unused.
 }
 }
   \value{
@@ -133,48 +133,15 @@ Ensure that \code{dbarts} is installed and loaded correctly, as this function re
 \code{\link[dbarts]{dbarts}}, \code{\link[SuperLearner]{SuperLearner}}
 }
   \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (Y, X, newX, family, obsWeights, id, sigest = NA, sigdf = 3, 
-    sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
-    ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
-    keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
-    printcutoffs = 0, nthread = 1, keepcall = TRUE, verb = F, 
-    verbose = TRUE, ...) 
-{
-    if (verbose == T) {
-        cat("SL.dbarts started with ", ntree, " trees and k=", 
-            k, ". ", sep = "")
-    }
-    start_time <- Sys.time()
-    SuperLearner:::.SL.require("dbarts")
-    model <- try(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
-        sigest = sigest, sigdf = sigdf, sigquant = sigquant, 
-        k = k, power = power, base = base, binaryOffset = binaryOffset, 
-        weights = obsWeights, ntree = ntree, ndpost = ndpost, 
-        nskip = nskip, printevery = printevery, keepevery = keepevery, 
-        keeptrainfits = keeptrainfits, usequants = usequants, 
-        numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
-        keepcall = keepcall, keeptrees = TRUE, verbose = verb))
-    if (family$family == "gaussian") {
-        pred = model$yhat.test.mean
-    }
-    if (family$family == "binomial") {
-        pred = colMeans(stats::pnorm(model$yhat.test))
-    }
-    fit = list(object = model)
-    class(fit) = c("SL.dbarts")
-    out = list(pred = pred, fit = fit)
-    end_time <- Sys.time()
-    if (verbose == T) {
-        cat("SL.dbarts finished. Time:", round(difftime(end_time, 
-            start_time, units = "mins"), digits = 4), "mins \n\n")
-    }
-    return(out)
-  }
+library(SuperLearner)
+data(EFV)
+result1 <- SL.dbarts(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.dbarts(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.dbarts", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
   \keyword{bart}
   \keyword{regression}

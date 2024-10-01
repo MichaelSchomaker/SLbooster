@@ -1,5 +1,5 @@
 SL.dbarts <- 
-  function (Y, X, newX = NULL, family = list(), obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
+  function (Y, X, newX, family, obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
             sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
             ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
             keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
@@ -18,8 +18,8 @@ SL.dbarts <-
                               nskip = nskip, printevery = printevery, keepevery = keepevery, 
                               keeptrainfits = keeptrainfits, usequants = usequants, 
                               numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
-                              keepcall = keepcall, keeptrees = TRUE, verbose = verb, 
-                              ...))
+                              keepcall = keepcall, keeptrees = TRUE, verbose = verb))
+
     if (family$family == "gaussian") {
       pred = model$yhat.test.mean
     }

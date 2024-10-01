@@ -1,4 +1,4 @@
-SL.rpart_boost <- function (Y, X, newX = NULL, family = list(), obsWeights, cp = 0.01, minsplit = 20, 
+SL.rpart_boost <- function (Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20, 
                            xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose=T,
                            ...) 
 {
@@ -20,14 +20,14 @@ SL.rpart_boost <- function (Y, X, newX = NULL, family = list(), obsWeights, cp =
     fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
                                                        X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
                                                                                           xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-                              method = "anova", weights = obsWeights, ...)
+                              method = "anova", weights = obsWeights)
     pred <- predict(fit.rpart, newdata = newX)
   }
   if (family$family == "binomial") {
     fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
                                                        X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
                                                                                           xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-                              method = "class", weights = obsWeights, ...)
+                              method = "class", weights = obsWeights)
     pred <- predict(fit.rpart, newdata = newX)[, 2]
   }
   if(fam.init=="binomial" & fam.end=="gaussian"){if(any(pred<0)){pred[pred<0]<-0};if(any(pred>1)){pred[pred>1]<-1}}

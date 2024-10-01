@@ -1,4 +1,4 @@
-SL.randomForest_boost <- function(Y, X, newX = NULL, family = list(), verbose=T, 
+SL.randomForest_boost <- function(Y, X, newX, family, verbose=T, 
                                  mtry = ifelse(family$family =="gaussian", max(floor(ncol(X) / 3), 1), floor(sqrt(ncol(X)))),
                                  ntree = 100, nodesize = ifelse(family$family == "gaussian",5, 1), 
                                  maxnodes = NULL, importance = FALSE, ...) {
@@ -7,7 +7,7 @@ SL.randomForest_boost <- function(Y, X, newX = NULL, family = list(), verbose=T,
   start_time <- Sys.time()
   SuperLearner:::.SL.require("randomForest")
   # avoid infinite search for split points in trees
-  if (all(apply(X,2,var) == 0)) {
+  if (all(suppressWarnings(apply(X,2,var) == 0))) {
     fit.rf <- "Empty"
     attr(fit.rf, "class") <- "try-error"
     pred <- rep(mean(Y), nrow(X))

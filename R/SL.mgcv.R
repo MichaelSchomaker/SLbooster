@@ -1,12 +1,13 @@
-SL.mgcv <- function(Y, X, newX = NULL, family = family, obsWeights = NULL, 
-                         cts.num = 10, by=NA, verbose=F,
+SL.mgcv <- function(Y, X, newX, family, obsWeights = NULL, 
+                         cts.num = 10, by=NA, verbose=T,
                          ...) {
   #
-  if(verbose==T){cat("SL.mgcv started (if >", cts.num, " unique values = spline added; it interacts with: ", by, "). ", sep="")}
+  if(verbose==T & is.na(by)){cat("SL.mgcv started (if >", cts.num, " unique values = spline added). ", sep="")}
+  if(verbose==T & !is.na(by)){cat("SL.mgcv started (if >", cts.num, " unique values = spline added; it interacts with: ", by, "). ", sep="")}
   start_time <- Sys.time()
   requireNamespace("mgcv") # require("mgcv")
   #
-  if(all(by %in% colnames(X))==FALSE){if(verbose==T){cat(paste(by, "not in column names of X. `by=NA' is used.\n"))};by<-NA}
+  if(all(by %in% colnames(X))==FALSE & !is.na(by)){if(verbose==T){cat(paste(by, "not in column names of X. `by=NA' is used.\n"))};by<-NA}
   #
   s <- mgcv::s # s() is also used by 'gam' package - avoid clash
   # adjust model formula for metric and categorical predictors
@@ -38,13 +39,13 @@ SL.mgcv <- function(Y, X, newX = NULL, family = family, obsWeights = NULL,
   }
   fit.gam <- try(mgcv::gam(gam.model,
                            data = X, family = family,
-                           weights = obsWeights, ...
+                           weights = obsWeights
   ))
   if(class(fit.gam)[1]=="try-error"){
     gam.model <- as.formula(paste("Y~1"))
     fit.gam <- try(mgcv::gam(gam.model,
                              data = X, family = family,
-                             weights = obsWeights, ...
+                             weights = obsWeights
     ))
     if(verbose==T){cat("GAM failed with variables provided. Intercept-only GAM fitted.")}
   }
