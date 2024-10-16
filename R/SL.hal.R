@@ -8,7 +8,7 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
   SuperLearner:::.SL.require("hal9001")
   #
   preprocess_data <- function(data) {
-    data <- data.frame(lapply(data, function(x) {
+    data <- data.frame(apply(data, 2, function(x) {
       if (is.factor(x)) {
         as.numeric(x)
       } else if (is.character(x)) {
