@@ -66,18 +66,12 @@ This function requires the \code{glmnet} package to be installed and loaded. It 
 ## Example usage of screen.glmnet_nVar:
 library(SuperLearner)
 library(glmnet)
-
-# Generate example data
-set.seed(123)
-n <- 100
-X <- data.frame(X1 = rnorm(n), X2 = rnorm(n), X3 = sample(letters[1:3], n, replace = TRUE))
-Y <- rbinom(n, 1, 0.5)
-
-# Run the variable screening
-selected_vars <- screen.glmnet_nVar(Y = Y, X = X, nVar = 2)
-
-# Check the selected variables
-print(selected_vars)
+data(EFV)
+result1 <- screen.glmnet_nVar(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")],
+                           family = stats::binomial(), nVar = 2)
+result2 <- screen.glmnet_nVar(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                           family = stats::gaussian(), nnVar = 2)
+print(result1)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

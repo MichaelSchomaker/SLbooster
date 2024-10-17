@@ -67,25 +67,15 @@ This function requires the \code{gam} package to be installed and loaded. It use
 ## Example usage of SL.gam_boost:
 library(SuperLearner)
 library(gam)
-
-# Generate some example data
-set.seed(123)  # For reproducibility
-n <- 500  # Number of observations
-X <- data.frame(
-  cont1 = rnorm(n),                # Continuous predictor 1
-  cont2 = runif(n, 0, 10),         # Continuous predictor 2
-  cat1 = factor(sample(letters[1:3], n, replace = TRUE)),  # Categorical predictor
-  cat2 = factor(sample(letters[4:5], n, replace = TRUE))   # Another categorical predictor
-)
-# Simulate a response variable Y (linear + noise)
-Y <- 3 * X$cont1 - 2 * X$cont2 + rnorm(n)
-
-# Fit SuperLearner with defaults of 'SL.gam_boost'
-fit <- SuperLearner(Y=Y, X=X,verbose=FALSE,SL.library="SL.gam_boost")
-print(fit$fit)
-# Generate predictions on new data
-pred <- fit$pred
-print(pred)
+data(EFV)
+result1 <- SL.gam_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                            newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.gam_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                            newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.gam_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

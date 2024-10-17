@@ -61,22 +61,17 @@ This function is a part of the \code{SuperLearner} package. It automatically sel
 }
 \examples{
 # Load necessary packages
-library(SuperLearner)
-
-# Generate some example data
-set.seed(123)
-n <- 300
-X <- data.frame(X1 = rnorm(n), X2 = rnorm(n))
-
-# Example 1: Binary Numeric Outcome
-Y_binary_numeric <- rbinom(n, 1, 0.5)
-fit <- SL.orm(Y = Y_binary_numeric, X = X, newX = NULL)
-
-# View model summary
-fit$fit$object
-#View predictions
-head(fit$pred) 
-}
+#library(SuperLearner)
+#library(SLbooster)
+#data(EFV)
+#result1 <- SL.orm(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+#                  newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = "binomial")
+#result2 <- SL.orm(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+#                  newX = EFV[, c("sex", "metabolic", "log_age")], family = "gaussian")
+#result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+#                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.orm", 
+#                        cvControl = SuperLearner.CV.control(V = 3L))
+#print(result1$pred)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 \keyword{regression}

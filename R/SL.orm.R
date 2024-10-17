@@ -21,7 +21,7 @@ SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
       cat("SL.orm started.\n")
     }
     start_time <- Sys.time()
-    #requireNamespaces("rms")
+    requireNamespace("rms")
     
     # Determine the number of unique values based on Y's type
     if (is.factor(Y)) {
@@ -33,7 +33,7 @@ SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
     # Check if there are enough unique values
     if (unique_vals < 3) {
       # Use SL.mean if not enough unique values in Y
-      out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, obsWeights = obsWeights)
+      out <- SuperLearner::SL.mean(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights)
       
       if (verbose == T) {
         cat("Not enough different unique values in Y: mean used instead of ORM.\n")
@@ -59,7 +59,7 @@ SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
         out <- list(pred = pred, fit = fit)
       } else {
         # If ORM fails, fallback to GLM
-        out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, obsWeights = obsWeights, ...)
+        out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
         
         if (verbose == T) {
           cat("Technical problem with ORM: GLM used instead.\n")

@@ -81,33 +81,16 @@ This function is specifically designed for integration into the \pkg{SuperLearne
 See also \code{\link{SuperLearner}}, \code{\link{xgboost}}.
 }
 \examples{
-# Generate a synthetic dataset
-set.seed(123)
-n <- 300 # number of observations
-p <- 10  # number of predictors
-data_matrix <- matrix(rnorm(n * p), nrow = n, ncol = p)
-colnames(data_matrix) <- paste0("X", 1:p)
-response <- 3 * data_matrix[,1] - 2 * data_matrix[,2] + rnorm(n) # Generate response variable
-
-# Split the data into training and testing sets
-set.seed(123) # for reproducibility of the split
-train_indices <- sample(1:n, size = 0.7 * n) # 70% for training
-test_indices <- setdiff(1:n, train_indices) # Remaining 30% for testing
-
-# Create training and testing datasets
-X_train <- data_matrix[train_indices, ]
-Y_train <- response[train_indices]
-X_test <- data_matrix[test_indices, ]
-
-# Fit the XGBoost model using the SL.xgboost_boost function
-fit_result <- SL.xgboost_boost(Y = Y_train, X = X_train, newX = NULL, family = "gaussian", 
-                               ntrees = 100, max_depth = 4, eta = 0.1, verbose = TRUE)
-
-# Use the predict function to generate predictions on new data
-predictions <- predict(fit_result$fit$object, newdata = X_test)
-
-# Display the first few predictions
-head(predictions)
+library(SuperLearner)
+data(EFV)
+result1 <- SL.xgboost_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                  newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.xgboost_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                  newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.xgboost_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+head(result1$pred)
 }
 \keyword{xgboost}
 \concept{Extreme Gradient Boosting}

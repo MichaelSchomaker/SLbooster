@@ -54,18 +54,12 @@ This function is particularly useful in situations where the relationship betwee
 # Example usage of screen.cramersv:
 library(SuperLearner)
 library(vcd)
-
-# Generate example data
-set.seed(123)
-n <- 100
-X <- data.frame(X1 = rnorm(n), X2 = sample(letters[1:3], n, replace = TRUE), X3 = rnorm(n))
-Y <- sample(letters[1:2], n, replace = TRUE)
-
-# Run the screening function
-selected_vars <- screen.cramersv(Y = Y, X = X, nscreen = 2)
-
-# Check which variables were selected
-print(selected_vars)
+data(EFV)
+result1 <- screen.cramersv(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")],
+                           family = stats::binomial(), nscreen = 2)
+result2 <- screen.cramersv(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                           family = stats::gaussian(), nscreen = 2)
+print(result1)
 }
 \keyword{Cramer's V}
 \keyword{screening}
