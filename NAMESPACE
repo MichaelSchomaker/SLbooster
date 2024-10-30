@@ -1,5 +1,8 @@
 export("predict.SL.dbarts",
        "predict.SL.hal", "predict.SL.mgcv",
+       "predict.SL.earth_boost",
+       "predict.SL.median",
+       "predict.SL.step.interaction_boost",
        "screen.cramersv",
        "screen.glmnet_boost",
        "screen.glmnet_nVar",
