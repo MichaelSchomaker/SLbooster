@@ -46,7 +46,9 @@ A \code{list} containing:
 - SuperLearner Package: \url{https://cran.r-project.org/package=SuperLearner}
 }
 \author{
-Michael Schomaker, Han Bao
+Original authors of the \code{weightedMedian}: see reference above.
+
+Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
 This function requires the \code{matrixStats} package for computing the weighted median.
@@ -56,25 +58,16 @@ This function requires the \code{matrixStats} package for computing the weighted
 \code{\link[matrixStats]{weightedMedian}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-# Example usage of SL.median
-
-# Simulate some data
-set.seed(123)
-n <- 100 # Number of observations
-p <- 5   # Number of predictors
-X <- matrix(rnorm(n * p), nrow = n, ncol = p)
-Y <- rnorm(n) # Generate response variable
-obsWeights <- runif(n) # Random observation weights
-
-# New data for predictions
-newX <- matrix(rnorm(20 * p), nrow = 20, ncol = p)
-
-# Use SL.median to compute weighted median and predictions
-fit_result <- SL.median(Y = Y, X = X, newX = newX, family = list(family = "gaussian"), obsWeights = obsWeights)
-
-# Print weighted median and predictions
-print(fit_result$fit$object) # Weighted median of Y
-print(fit_result$pred) # Predictions for new data
+library(SuperLearner)
+data(EFV)
+result1 <- SL.median(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.median(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.median", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
 \keyword{median}
 \keyword{robust}

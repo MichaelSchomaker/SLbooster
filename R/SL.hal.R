@@ -8,25 +8,16 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
   SuperLearner:::.SL.require("hal9001")
   #
   preprocess_data <- function(data) {
-    data <- data.frame(apply(data, 2, function(x) {
-      if (is.factor(x)) {
-        as.numeric(x)
-      } else if (is.character(x)) {
-        as.numeric(factor(x))
-      } else {
-        x
-      }
-    }))
-    return(as.matrix(data))
+    data <- data.frame(lapply(data, function(x) {
+        as.numeric(x) 
+    }), stringsAsFactors = FALSE)
+    return(as.matrix(data)) 
   }
   #
   X <- preprocess_data(X)
   if (!is.null(newX)) {
     newX <- preprocess_data(newX)
   }
-  #
-  if(!is.matrix(X)){X <- preprocess_data(X)}
-  if(!is.null(newX) & !is.matrix(newX)){newX <- preprocess_data(newX)}
   #
   runtime <- match.arg(runtime, choices = c("default", "fast", "slow", "custom"))
   runtime_params <- switch(runtime,

@@ -62,7 +62,9 @@ Benkeser, D., & van der Laan, M. J. (2016). The highly adaptive lasso estimator.
 The \code{hal9001} package: \url{https://github.com/tlverse/hal9001}
 }
 \author{
-  Michael Schomaker, Han Bao
+  Original authors of the \code{hal9001} package: see reference above.
+
+  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
   The HAL model may be computationally intensive for large datasets or many predictor variables. Adjusting the \code{fit_control} settings or selecting an appropriate \code{runtime} option can help optimize performance.
@@ -71,29 +73,16 @@ The \code{hal9001} package: \url{https://github.com/tlverse/hal9001}
   \code{\link[hal9001]{fit_hal}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-  # Generate a synthetic dataset
-  set.seed(123)
-  n <- 200 # number of observations
-  p <- 10  # number of predictors
-  data_matrix <- matrix(rnorm(n * p), nrow = n, ncol = p)
-  colnames(data_matrix) <- paste0("X", 1:p)
-  response <- 3 * data_matrix[,1] - 2 * data_matrix[,2] + rnorm(n) # Generate response variable
-
-  # Split the data into training and testing sets
-  set.seed(123) # for reproducibility of the split
-  train_indices <- sample(1:n, size = 0.7 * n) # 70% for training
-  test_indices <- setdiff(1:n, train_indices) # Remaining 30% for testing
-
-  # Create training and testing datasets
-  X_train <- data_matrix[train_indices, ]
-  Y_train <- response[train_indices]
-  X_test <- data_matrix[test_indices, ]
-
-  # Test the function with the split data
-  result <- SL.hal(Y = Y_train, X = X_train, newX = X_test, family = stats::gaussian())
-
-  # Print the predicted values
-  print(result$pred)
+library(SuperLearner)
+data(EFV)
+result1 <- SL.hal(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.hal(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.hal", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
   
 }
 \keyword{model}

@@ -56,7 +56,9 @@ R Documentation for \code{step}: \url{https://stat.ethz.ch/R-manual/R-devel/libr
 SuperLearner Package: \url{https://cran.r-project.org/package=SuperLearner}
 }
 \author{
-Michael Schomaker, Han Bao
+  Original authors of the \code{glm} and \code{step} package: see reference above.
+
+  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
 The \code{SL.step.interaction_boost} function requires the \code{stats} package, which is included with base R.
@@ -68,24 +70,16 @@ The \code{SL.step.interaction_boost} function requires the \code{stats} package,
 \code{\link[stats]{glm}}, \code{\link[stats]{step}}, \code{\link[SuperLearner]{SuperLearner}}
 }
 \examples{
-# Example usage of SL.step.interaction_boost
-
-# Simulate some data
-set.seed(123)
-n <- 100 # Number of observations
-p <- 5   # Number of predictors
-X <- data.frame(matrix(rnorm(n * p), nrow = n, ncol = p))
-Y <- rnorm(n) # Generate response variable
-
-# New data for predictions
-newX <- data.frame(matrix(rnorm(20 * p), nrow = 20, ncol = p))
-
-# Use SL.step.interaction_boost to fit model and make predictions
-fit_result <- SL.step.interaction_boost(Y = Y, X = X, newX = newX, family = gaussian())
-
-# Print the fitted model and predictions
-print(fit_result$fit$object) # Fitted stepwise model
-print(fit_result$pred) # Predictions for new data
+library(SuperLearner)
+data(EFV)
+result1 <- SL.step.interaction_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.step.interaction_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.step.interaction_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
 \keyword{regression}
 \keyword{interaction}

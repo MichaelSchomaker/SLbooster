@@ -77,7 +77,9 @@ Milborrow, S. (2021). earth: Multivariate Adaptive Regression Spline Models. R p
 Friedman, J. H. (1991). Multivariate Adaptive Regression Splines. The Annals of Statistics, 19(1), 1-67.
 }
 \author{
-Michael Schomaker, Han Bao
+  Original authors of the \code{earth} package: see reference above.
+
+  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
 Ensure that \code{earth} is installed and loaded correctly, as this function relies on the MARS model implemented in the \code{earth} package.
@@ -87,28 +89,16 @@ Ensure that \code{earth} is installed and loaded correctly, as this function rel
 \code{\link[earth]{earth}}, \code{\link[SuperLearner]{SuperLearner}}, \code{\link[SuperLearner]{SL.glm}}
 }
 \examples{
-# Generate synthetic data
-set.seed(123)
-n <- 200 # Number of observations
-p <- 10  # Number of predictors
-X <- matrix(rnorm(n * p), nrow = n, ncol = p)
-colnames(X) <- paste0("X", 1:p)
-Y <- 3 * X[, 1] - 2 * X[, 2] + rnorm(n) # Generate response variable
-
-# Split the data into training and testing sets
-train_indices <- sample(1:n, size = 0.7 * n) # 70% for training
-test_indices <- setdiff(1:n, train_indices) # Remaining 30% for testing
-
-# Create training and testing datasets
-X_train <- X[train_indices, ]
-Y_train <- Y[train_indices]
-X_test <- X[test_indices, ]
-
-# Fit the model using SL.earth_boost
-fit_result <- SL.earth_boost(Y = Y_train, X = X_train, newX = X_test, family = list(family = "gaussian"))
-
-# Print predictions
-print(fit_result$pred)
+library(SuperLearner)
+data(EFV)
+result1 <- SL.earth_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                                     newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = stats::binomial())
+result2 <- SL.earth_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                                         newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.earth_boost", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)
 }
 \keyword{MARS}
 \keyword{regression}
