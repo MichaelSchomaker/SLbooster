@@ -10,6 +10,7 @@ export("predict.SL.dbarts",
        "SL.dbarts", "SL.earth_boost",
        "SL.gam_boost", "SL.glmnet_boost",
        "SL.hal", "SL.median", "SL.mgcv",
+	   "SL.orm",
        "SL.randomForest_boost",
        "SL.rpart_boost",
        "SL.step.interaction_boost",
@@ -17,6 +18,7 @@ export("predict.SL.dbarts",
 S3method(predict, SL.dbarts)
 S3method(predict, SL.hal)
 S3method(predict, SL.mgcv)
+S3method(predict, SL.orm)
 S3method(predict, SL.earth_boost)
 S3method(predict, SL.median)
 S3method(predict, SL.step.interaction_boost)

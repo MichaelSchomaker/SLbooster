@@ -37,6 +37,7 @@ g=list("SL.glm")
 attr(ll$Q, "return.fit") <- TRUE
 
 ################################################################################
+# Example 1: use learner set directly with SuperLearner
 
 # Super Learning Test (family=gaussian)
 sl1 <- SuperLearner(Y=EFV$weight.4, X=EFV[,1:20],verbose=F,SL.library=ll$Q)
@@ -49,7 +50,7 @@ sl2$coef
 sl2$whichScreen
 
 ################################################################################
-# ltmle test
+# Example 2: use learner set indirectly in ltmle
 # binary outcome
 library(ltmle)
 ltmle1 <- ltmle(EFV,
@@ -67,10 +68,12 @@ ltmle1 <- ltmle(EFV,
 # 30 models. Why? It is 5 Q models. For each Q-model we have V=5 splits and 1 on the full data. 6*5=30.
 # The g-models (SL.glm) give no output
 # Note: with longitudinal TMLE, as of the second iteration, the iterated outcome is proportional data rather than 0/1 data
+#      -> This is why the adapted glmnet-learner uses a gaussian family here, despite it is a binary outcome 
 ltmle1$estimates
 ltmle1$fit$Q
 
 # small test for cont. Y (illustrative, no treatment effect)
+# Note: ltmle uses a quasibinomial family, even for continuous outcomes (they are transformed beforehand)
 ltmle2 <- ltmle(EFV[,1:9],
                 Lnodes  = c("VL.0","adherence.1"),
                 Anodes  = c("efv.0"),
@@ -83,10 +86,10 @@ ltmle2$estimates
 ltmle2$fit$Q
 
 ################################################################################
-# lmtp test
+# Example 3: use learner set indirectly in lmtp
 library(lmtp)
 
-# multiple time points
+# binary outcome
 lmtp1 <- lmtp_tmle(data = EFV,
                    trt = c("efv.0","efv.1","efv.2","efv.3","efv.4"), 
                    outcome = c("VL.4"), 
@@ -104,11 +107,9 @@ lmtp1 <- lmtp_tmle(data = EFV,
                    control = lmtp_control(.learners_outcome_folds = 5, .learners_trt_folds = 5)
 )
 lmtp1
-# results differ quite a lot from ltmle, but confidence interval is wide, so it might be okay?
-# Michael: to discuss after update
-# Katy: still 0.159 (tmle, CI: 0.092151-0.22529) vs. 0.1049 (lmtp, CI 0.0249-0.185)
 
-# continuous Y
+
+# continuous outcome 
 lmtp2 <- lmtp_sdr(data = EFV[,1:9], 
                   trt = "efv.0", 
                   outcome = "weight.1", 
@@ -124,35 +125,58 @@ lmtp2 <- lmtp_sdr(data = EFV[,1:9],
 lmtp2
 
 ################################################################################
-# tmle test
-
+# Example 4: use learner set indirectly in tmle
 library(tmle)
-#
-  # @Han: ToDo
 
-# tmle only allows binary treatment
-# A: VL.0
-# Y: efv.1
-# L: sex, metabolic, log_age, NRTI, weight.0
-tmle_1 <- tmle(Y = EFV[["efv.1"]],
-               A = EFV[["VL.0"]],
+# binary outcome
+tmle_1 <- tmle(Y = EFV[["VL.0"]],
+               A = EFV[["eff.0"]],
                W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
                g.SL.library = ll$g
 )
 tmle_1
 
-# A: VL.1
-# Y: efv.2
-# L: sex, metabolic, log_age, NRTI, weight.0, adherence.1, weight.1, efv.1, VL.0
-tmle_2 <- tmle(Y = EFV[["efv.2"]],
-               A = EFV[["VL.1"]],
-               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0",
-                          "adherence.1", "weight.1", "efv.1", "VL.0")],
+# continuous outcome
+tmle_2 <- tmle(Y = EFV[["weight.1"]],
+               A = EFV[["efv.0"]],
+               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
-               g.SL.library = ll$g
+               g.SL.library = ll$g,
+               cvQinit=F, V.Q=5,V.g=5 
 )
 tmle_2
+
+################################################################################
+
+# Example 5: bigger learner set based on what is available in SLbooster
+#            -> try on any of the above examples 
+
+# below, only defaults are used. Use create.Learner as above to setup in detail, and tune     
+
+# define learner list
+ll2 <- list(Q=list(
+  c("SL.median"),
+  c("SL.glm"),
+  c("SL.glm","screen.glmnet_nVar"),
+  c("SL.glm","screen.glmnet_boost"),
+  c("SL.glm","screen.cramersv"),
+  c("SL.glm","screen.randomForest_boost"),
+  c("SL.glmnet_boost"),
+  c("SL.dbarts"),
+  c("SL.earth_boost"),
+  c("SL.gam_boost"),
+  # c("SL.hal","screen.cramersv"),
+  c("SL.median"),
+  c("SL.mgcv"),
+  # c("SL.orm"),
+  c("SL.randomForest_boost"),
+  c("SL.rpart_boost"),
+  c("SL.step.interaction_boost","screen.cramersv")
+),
+g=list("SL.glm")
+)
+
 
 
 
