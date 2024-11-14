@@ -1,9 +1,8 @@
 \name{SL.hal}
 \alias{SL.hal}
-\title{SuperLearner Wrapper for Highly Adaptive Lasso Estimation}
+\title{Wrapper for HAL}
 \description{
-  A wrapper function for the \code{SuperLearner} package that enables the use of the \code{hal9001} package for Highly Adaptive Lasso (HAL) estimation. This integration allows users to fit models and make predictions using HAL within the SuperLearner framework, facilitating advanced modeling techniques for various types of data.
-}
+  Wrapper for the highly adaptive lasso using hal(), from the package hal9001}
 \usage{
 SL.hal(Y, X, newX = NULL, verbose = T, family = stats::gaussian(),
         runtime = c("default", "fast", "slow", "custom"),
@@ -62,9 +61,9 @@ Benkeser, D., & van der Laan, M. J. (2016). The highly adaptive lasso estimator.
 The \code{hal9001} package: \url{https://github.com/tlverse/hal9001}
 }
 \author{
-  Original authors of the \code{hal9001} package: see reference above.
+  Original wrapper from the \code{hal9001} package: Jeremy Coyle, Nima Hejazi, Rachael Phillips, Lars van der Laan, David Benkeser, Oleg Sofrygin, Weixin Cai, Mark van der Laan.
 
-  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+  Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
   The HAL model may be computationally intensive for large datasets or many predictor variables. Adjusting the \code{fit_control} settings or selecting an appropriate \code{runtime} option can help optimize performance.
@@ -88,4 +87,4 @@ print(result1$pred)
 \keyword{model}
 \keyword{regression}
 \concept{Highly Adaptive Lasso}
-\concept{SuperLearner}
+

@@ -1,12 +1,11 @@
 \name{SL.dbarts}
 \alias{SL.dbarts}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Bayesian Additive Regression Tree (SL.dbarts)
-}
+\title{Wrapper for dbarts}
 \description{
-The \code{SL.dbarts} function is a wrapper for the Bayesian Additve Regression Tree (BART) of the \code{dbarts} package used within the \code{SuperLearner} framework. It fits a BART model and calculates the prediction if the supplied \code{family} argument is either gaussian or binomial.
+Wrapper for Bayesian Additive Regression Trees using \code{dbarts}.
 }
+
 \usage{
 SL.dbarts(Y, X, newX, family, obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
             sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
@@ -120,14 +119,11 @@ The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/Su
 }
 
   \author{
-original authors of dbarts: 
-Hugh Chipman, Robert McCulloch, Vincent Dorie
+The wrapper is based on the wrapper from package \pkg{tmle}, writenn by Susan Gruber.
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
-  \note{
-Ensure that \code{dbarts} is installed and loaded correctly, as this function relies on the BART model implemented in the \code{dbarts} package.
-}
+
 
   \seealso{
 \code{\link[dbarts]{dbarts}}, \code{\link[SuperLearner]{SuperLearner}}
@@ -143,7 +139,7 @@ result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "
                         cvControl = SuperLearner.CV.control(V = 3L))
 print(result1$pred)
 }
-  \keyword{bart}
+  \keyword{BART}
   \keyword{regression}
   \keyword{classification}
   \concept{Bayesian Additive Regression Trees}

@@ -34,16 +34,14 @@ Benkeser, D., & van der Laan, M. J. (2016). The highly adaptive lasso estimator.
 The \code{hal9001} package: \url{https://github.com/tlverse/hal9001}
 }
 \author{
-  Original authors of the \code{hal9001} package: see reference above.
+  Original function from the \code{hal9001} package: Jeremy Coyle, Nima Hejazi, Rachael Phillips, Lars van der Laan, David Benkeser, Oleg Sofrygin, Weixin Cai, Mark van der Laan.
 
-  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+  Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-Ensure that the \code{object} provided is a valid \code{SL.hal} object, as this function specifically relies on the structure of the HAL model fitted by the \code{SL.hal} function.
-}
+
 
 \seealso{
-\code{\link{SL.hal}}, \code{\link[hal9001]{fit_hal}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link{SL.hal}}, \code{\link[hal9001]{fit_hal}}
 }
 \examples{
 data(EFV)
@@ -54,4 +52,3 @@ predict(object = result$fit, newdata = EFV[, c("efv.0", "metabolic", "weight.0")
 \keyword{prediction}
 \keyword{regression}
 \concept{Highly Adaptive Lasso}
-\concept{SuperLearner}

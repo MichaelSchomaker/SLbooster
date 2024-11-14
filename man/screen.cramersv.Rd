@@ -4,7 +4,7 @@
 Screening using Cramer's V
 }
 \description{
-The \code{screen.cramersv} function selects a subset of variables from \code{X} based on their association with the outcome \code{Y} using Cramer's V statistic. Continuous variables are discretized before calculating Cramer's V. The function allows selecting the top \code{nscreen} variables with the highest Cramer's V values.
+The \code{screen.cramersv} screening algorithm selects a subset of variables from \code{X} based on their association with the outcome \code{Y} using Cramer's V statistic (=standardized chi-square-statistic). 
 }
 \usage{
 screen.cramersv(Y, X, nscreen = 4, num_cat = 10, verbose = T, ...)
@@ -31,13 +31,13 @@ Additional arguments passed to the function, currently unused.
 }
 }
 \details{
-The function calculates Cramer's V statistic between each predictor in \code{X} and the response variable \code{Y}. Continuous variables are first discretized into categories using quantiles, ensuring they can be handled by Cramer's V. The top \code{nscreen} variables with the highest Cramer's V are selected, and the function returns a logical vector indicating which variables are retained.
+The function calculates Cramer's V statistic between each predictor in \code{X} and the response variable \code{Y}. Continuous variables are first discretized into categories using quintiles. The top \code{nscreen} variables with the highest Cramer's V statistic are selected.
 }
 \value{
 \code{whichVariable} A logical vector with the length equal to the number of columns in \code{X}. \code{TRUE} indicates the variable (column of \code{X}) should be included.
 }
 \references{
-Agresti A (2007). \emph{An Introduction to Categorical Data Analysis}. Wiley.
+Heumann, C., M. Schomaker, and Shalabh, Introduction to Statistics and Data Analysis - With Exercises, Solutions and Applications in R Second updated and extended edition ed. 2023, Cham: Springer.
 
 The \code{vcd} package documentation: \url{https://cran.r-project.org/web/packages/vcd/index.html}
 }
@@ -45,15 +45,13 @@ The \code{vcd} package documentation: \url{https://cran.r-project.org/web/packag
 Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-This function is particularly useful in situations where the relationship between categorical variables needs to be explored. It works with both categorical and continuous variables by first converting continuous variables to categories.
+This is a particularly stable screening algorithm, that can be used as an escape strategy if other -statistically more advanced- screening algorithms fail.
 }
 \seealso{
-\code{\link{screen.glmnet_nVar}}, \code{\link{SuperLearner}}
+\code{\link{screen.glmnet_nVar}}
 }
 \examples{
-# Example usage of screen.cramersv:
 library(SuperLearner)
-library(vcd)
 data(EFV)
 result1 <- screen.cramersv(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")],
                            family = stats::binomial(), nscreen = 2)

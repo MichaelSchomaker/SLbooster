@@ -1,12 +1,11 @@
 \name{SL.gam_boost}
 \alias{SL.gam_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Generalized Additive Model (GAM) with Boosting for SuperLearner 
-}
+\title{Wrapper for gam}
 \description{
-The \code{SL.gam_boost} function fits a Generalized Additive Model (GAM) using the \code{gam} package and adds boosting for model improvement. It automatically adjusts for metric and categorical predictors and applies smoothing splines to variables with more than \code{cts.num} unique values.
+Wrapper for generalized additive models via \code{gam()}.
 }
+
 \usage{
 SL.gam_boost(Y, X, newX, family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
 }
@@ -36,11 +35,11 @@ The minimum number of unique values a variable must have for it to be considered
 Logical flag indicating whether to print progress and timing information. The default is \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments currently unused.
+Additional arguments, currently unused.
 }
 }
 \details{
-The \code{SL.gam_boost} function automatically determines whether each predictor in \code{X} should be treated as a categorical or metric variable based on the number of unique values. If a predictor has more than \code{cts.num} unique values, it is treated as metric, and a smoothing spline is added using the \code{s()} function from the \code{gam} package. For categorical variables, no splines are applied. If the model fails to converge, an intercept-only model is fitted as a fallback.
+The \code{SL.gam_boost} function automatically determines whether each predictor in \code{X} should be treated as a categorical or metric variable based on the number of unique values. If a predictor has more than \code{cts.num} unique values, it is treated as metric, and a smoothing spline is added using the \code{s()} function from the \code{gam} package. For categorical variables, no splines are applied. If the model fails to converge, an intercept-only model is fitted as an escape strategy.
 }
 \value{
 A list containing:
@@ -52,11 +51,10 @@ Hastie T., Tibshirani R. (1990). \emph{Generalized Additive Models}. Chapman & H
 The \code{gam} package documentation: \url{https://cran.r-project.org/web/packages/gam/index.html}
 }
 \author{
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Original wrapper in \pkg{SuperLearner} by Eric Polley.
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
-\note{
-This function requires the \code{gam} package to be installed and loaded. It uses smoothing splines for continuous variables with more than a specified number of unique values.
-}
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -81,5 +79,5 @@ print(result1$pred)
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 \keyword{regression}
 \keyword{SuperLearner}
-\concept{generalized additive models}
-\concept{boosting}
+\concept{Generalized Additive Models}
+

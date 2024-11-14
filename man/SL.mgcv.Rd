@@ -2,10 +2,10 @@
 \alias{SL.mgcv}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Generalized Additive Model (SL.mgcv)
+Wrapper for gam(), from mgcv
 }
 \description{
-Fits a generalized additive model (GAM) to data with smooth terms. If the fitting fails on the provided variables \code{X}, an intercept only model is fitted.
+Fits a generalized additive model (GAM) to data with smooth terms, using the implementations from \pkg{mgcv}.
 }
 \usage{
 SL.mgcv(Y, X, newX, family, obsWeights = NULL, cts.num = 10, by = NA, verbose = T, ...)
@@ -38,7 +38,7 @@ Defaults to \code{NA}.
 A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
 }
   \item{\dots}{
-Additional arguments currently unused.
+Additional arguments, currently unused.
 }
 }
 \value{
@@ -47,7 +47,6 @@ A list containing:
   \item{fit}{The fitted GAM model.}
 }
 \references{
-
 Wood, S.N., N. Pya and B. Saefken (2016), Smoothing parameter and model selection for general
 smooth models (with discussion). Journal of the American Statistical Association 111, 1548-1575
 doi:10.1080/01621459.2016.1180986
@@ -56,16 +55,12 @@ Wood, S. N. (2020) Inference and computation with generalized additive models an
 Test 29(2): 307-339. doi:10.1007/s11749020007115
 
 The \code{mgcv} package: \url{https://cran.r-project.org/web/packages/mgcv/index.html}
-
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-original author of the mgcv package: Simon Wood
-
 Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-Ensure that \code{mgcv} is installed and loaded correctly, as this function relies on the GAM model implemented in the \code{mgcv} package.
+If fitting fails, an intercept only model is fitted.
 }
 
 \seealso{
@@ -84,8 +79,6 @@ result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "
 print(result1$pred)
 }
 
-  \keyword{gam}
-  \keyword{regression}
-  \keyword{classification}
-  \concept{Generalized Additive Models}
-  \concept{SuperLearner}
+\keyword{mgcv}
+\keyword{regression}
+\concept{Generalized Additive Models}

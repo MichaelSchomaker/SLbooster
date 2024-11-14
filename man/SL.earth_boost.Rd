@@ -2,11 +2,10 @@
 \alias{SL.earth_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-SL.earth_boost: SuperLearner Wrapper for Boosted Earth Models
+Wrapper for earth
 }
 \description{
-This function serves as a wrapper for the \code{earth} function within the \code{SuperLearner} framework, enabling the use of Multivariate Adaptive Regression Splines (MARS) with boosting for regression and classification tasks. It fits an \code{earth} model (MARS) to the data and generates predictions for new observations.
-}
+Wrapper for Multiadaptive Regression Splines (MARS), using the earth implementiation.}
 \usage{
 SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
                nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, 
@@ -63,9 +62,7 @@ SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, pen
   Additional arguments currently unused.
 }
 }
-\details{
-The \code{SL.earth_boost} function fits an \code{earth} model (MARS) to the data using specified parameters and generates predictions for new data. It supports both regression and classification tasks and provides a flexible set of options for model tuning, including boosting through cross-validation repetitions.
-}
+
 \value{
 A \code{list} containing:
 \item{pred}{A \code{numeric} vector of predicted values for the new data (\code{newX}).}
@@ -77,12 +74,9 @@ Milborrow, S. (2021). earth: Multivariate Adaptive Regression Spline Models. R p
 Friedman, J. H. (1991). Multivariate Adaptive Regression Splines. The Annals of Statistics, 19(1), 1-67.
 }
 \author{
-  Original authors of the \code{earth} package: see reference above.
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley. 
 
-  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
-}
-\note{
-Ensure that \code{earth} is installed and loaded correctly, as this function relies on the MARS model implemented in the \code{earth} package.
+Extended by  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
 
 \seealso{
@@ -101,7 +95,8 @@ result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "
 print(result1$pred)
 }
 \keyword{MARS}
+\keyword{EARTH}
 \keyword{regression}
 \keyword{classification}
 \concept{Multivariate Adaptive Regression Splines}
-\concept{SuperLearner}
+

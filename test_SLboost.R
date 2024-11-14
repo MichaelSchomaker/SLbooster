@@ -133,7 +133,8 @@ tmle_1 <- tmle(Y = EFV[["VL.0"]],
                A = EFV[["eff.0"]],
                W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
-               g.SL.library = ll$g
+               g.SL.library = ll$g,
+               cvQinit=F, V.Q=5,V.g=5 
 )
 tmle_1
 
@@ -166,10 +167,10 @@ ll2 <- list(Q=list(
   c("SL.dbarts"),
   c("SL.earth_boost"),
   c("SL.gam_boost"),
-  # c("SL.hal","screen.cramersv"),
+  c("SL.hal","screen.cramersv"),
   c("SL.median"),
   c("SL.mgcv"),
-  # c("SL.orm"),
+  c("SL.orm"),
   c("SL.randomForest_boost"),
   c("SL.rpart_boost"),
   c("SL.step.interaction_boost","screen.cramersv")

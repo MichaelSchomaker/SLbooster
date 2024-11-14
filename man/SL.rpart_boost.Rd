@@ -2,10 +2,10 @@
 \alias{SL.rpart_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Recursive Partitioning
+Wrapper for recursive partitioning
 }
 \description{
-Using the \code{rpart} package, fits a decision tree model using ANOVA for both regression and classification tasks, handles binary and continuous outcomes, and provides options for cross-validation and tree depth control. 
+Wrapper for recursive partitioning using the \code{rpart} package 
 }
 \usage{
 SL.rpart_boost(Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
@@ -72,23 +72,18 @@ Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification
 Trees. Wadsworth.
 
 The \code{rpart} package: \url{https://cran.r-project.org/web/packages/rpart/index.html}
-
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-rpart package:
-Terry Therneau,
-Beth Atkinson,
-Brian Ripley
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley.  
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
 \note{
 Ensure that \code{rpart} is installed and loaded correctly, as this function relies on the Tree model implemented in the \code{rpart} package.
 }
 
 \seealso{
-\code{\link[rpart]{rpart}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link[rpart]{rpart}}
 }
 \examples{
 library(SuperLearner)
@@ -106,4 +101,3 @@ print(result1$pred)
   \keyword{regression}
   \keyword{classification}
   \concept{Tree Models}
-  \concept{SuperLearner}

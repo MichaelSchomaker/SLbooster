@@ -11,7 +11,10 @@
 
 ## What’s `SLbooster`?
 
-Description
+The package includes both modified learning and screening algorithms from the R-package SuperLearner and
+other algorithms as well. The provided wrappers are meant to be stable even when confronted with complex/unusual data structures and 
+provide additional output, such as the time used by the respective algorithms, or variables screened by learners.
+
 ------------------------------------------------------------------------
 
 ## Installation

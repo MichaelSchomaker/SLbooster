@@ -5,8 +5,7 @@
 Variable Screening using Elastic Net Regularization with Cross-Validation
 }
 \description{
-Performs variable selection using the Elastic Net regularization via \code{glmnet} with cross-validation. If Elastic Net fails to select any variables, the function falls back on Cramer's V for screening.
-
+Performs variable selection using the Elastic Net regularization via \code{glmnet}.
 }
 \usage{
 screen.glmnet_boost(Y, X, family = list(), alpha = 1, verbose = T, nfolds = 10, nlambda = 200, nscreen = 2, ...)
@@ -42,7 +41,9 @@ screen.glmnet_boost(Y, X, family = list(), alpha = 1, verbose = T, nfolds = 10, 
   }
 }
 \details{
-The function first attempts variable selection using Elastic Net regularization via \code{glmnet}. If the model fails to select any variables (due to overly strong penalization), a fallback method based on Cramer's V is used to screen variables. The function accommodates factors by converting them into dummy variables and adjusts for variable selection by considering factor levels as a group.
+The function first attempts variable selection using Elastic Net regularization via \code{glmnet} (by default, LASSO is used). 
+If the model fitting fails, the following escape strategies are use: i) penalization is altered (using log(lambda)), ii) \code{\link{screen.cramersv}} is used. The latter is also used if all variables are screened away by Elastic Net/LASSO.
+The function takes into account that factor levels of a specific variable ``belong together'', and rather stay in together (if at least one factor level is selected) or are removed altogether.
 }
 \value{
 Returns a logical vector indicating which variables are selected by the screening process. If a variable is selected, the corresponding position in the vector is \code{TRUE}.
@@ -51,30 +52,23 @@ Returns a logical vector indicating which variables are selected by the screenin
 \code{glmnet}: Friedman, J., Hastie, T., & Tibshirani, R. (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22.
 }
 \author{
-Michael Schomaker, Han Bao
+Screening algorithm from \pkg{SuperLearner} package, written by Eric Polley.  
+
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-Use this function when performing feature selection in the context of regression or binary classification tasks.
-}
+
 \seealso{
 \code{\link[glmnet]{cv.glmnet}}, \code{\link{screen.cramersv}}
 }
 \examples{
-# Example usage:
-
-# Generating sample data
-set.seed(123)
-n <- 100
-p <- 10
-X <- data.frame(matrix(rnorm(n * p), nrow = n))
-Y <- rnorm(n)
-
-# Running the screen.glmnet_boost function
-selected_vars <- screen.glmnet_boost(Y, X, family = stats::gaussian())
-
-# Display selected variables
-print(selected_vars)
+library(SuperLearner)
+data(EFV)
+result1 <- screen.glmnet_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")],
+                           family = stats::binomial())
+result2 <- screen.glmnet_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                           family = stats::gaussian())
 }
 \keyword{variable selection}
 \keyword{elastic net}
 \keyword{cross-validation}
+\keyword{screening}

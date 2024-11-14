@@ -2,10 +2,10 @@
 \alias{SL.median}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-SL.median: SuperLearner Wrapper for Weighted Median Predictions
+Wrapper using the median
 }
 \description{
-The \code{SL.median} function is a wrapper for calculating weighted median predictions within the \code{SuperLearner} framework. This function calculates the weighted median of the response variable \code{Y} using the observation weights and generates constant predictions based on this median for new data.
+Wrapper for calculating the (weighted) median for (constant) predictions.
 }
 \usage{
 SL.median(Y, X, newX, family, obsWeights, id, ...)
@@ -33,26 +33,19 @@ SL.median(Y, X, newX, family, obsWeights, id, ...)
   Additional arguments currently unused.
 }
 }
-\details{
-The \code{SL.median} function computes the weighted median of the outcome variable \code{Y} using the weights specified in \code{obsWeights}. This weighted median is then used as a constant prediction for all new observations in \code{newX}. This function is useful in ensemble learning as a simple, robust base learner.
-}
+
 \value{
 A \code{list} containing:
 \item{pred}{A \code{numeric} vector of constant predictions equal to the weighted median of \code{Y} for each observation in \code{newX}.}
 \item{fit}{An object of class \code{"SL.mean"} containing the computed weighted median of \code{Y}.}
 }
 \references{
-- R Documentation for the \code{matrixStats} package: \url{https://cran.r-project.org/package=matrixStats}
-- SuperLearner Package: \url{https://cran.r-project.org/package=SuperLearner}
+Documentation for the \code{matrixStats} package: \url{https://cran.r-project.org/package=matrixStats}
 }
 \author{
-Original authors of the \code{weightedMedian}: see reference above.
-
 Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-This function requires the \code{matrixStats} package for computing the weighted median.
-}
+
 
 \seealso{
 \code{\link[matrixStats]{weightedMedian}}, \code{\link[SuperLearner]{SuperLearner}}
@@ -69,8 +62,4 @@ result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "
                         cvControl = SuperLearner.CV.control(V = 3L))
 print(result1$pred)
 }
-\keyword{median}
-\keyword{robust}
-\keyword{SuperLearner}
-\concept{Weighted Median}
-\concept{Ensemble Learning}
+\keyword{Median}

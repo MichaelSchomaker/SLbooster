@@ -2,11 +2,10 @@
 \alias{SL.step.interaction_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-SL.step.interaction_boost: Stepwise Regression with Interaction Terms for SuperLearner
+Wrapper for stepwise model selection with information criteria
 }
 \description{
-The \code{SL.step.interaction_boost} function is a wrapper for performing stepwise regression with interaction terms within the \code{SuperLearner} framework. This function fits a generalized linear model (GLM) to the data, applies stepwise selection of main effects and interaction terms, and generates predictions for new data.
-}
+Wrapper fits generalized models including all possible interaction terms, and then performs model selection}
 \usage{
 SL.step.interaction_boost(Y, X, newX, family, direction = "both", trace = 0, k = 2, verbose = T, ...)
 }
@@ -41,7 +40,8 @@ SL.step.interaction_boost(Y, X, newX, family, direction = "both", trace = 0, k =
 }
 }
 \details{
-The \code{SL.step.interaction_boost} function first fits a generalized linear model (GLM) to the provided data using the specified family. It then applies the \code{step} function to perform stepwise model selection, including interaction terms (up to the second degree). The direction of stepwise selection can be controlled using the \code{direction} argument. The final model is used to generate predictions on the new data (\code{newX}). This approach allows for flexible modeling of complex relationships in the data by considering both main effects and interactions.
+The \code{SL.step.interaction_boost} function first fits a generalized linear model (GLM) to the provided data using the specified family. It then applies the \code{step} function to perform stepwise model selection, including interaction terms (up to the second degree). 
+To control the computational complexity, it is recommended to use this learner together with variable screening, e.g. \code{\link{screen.glmnet_nVar}}. 
 }
 \value{
 A \code{list} containing:
@@ -49,25 +49,16 @@ A \code{list} containing:
 \item{fit}{An object of class \code{"SL.step"} containing the fitted stepwise model.}
 }
 \references{
-R Documentation for \code{glm}: \url{https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html}
-
 R Documentation for \code{step}: \url{https://stat.ethz.ch/R-manual/R-devel/library/stats/html/step.html}
-
-SuperLearner Package: \url{https://cran.r-project.org/package=SuperLearner}
 }
 \author{
-  Original authors of the \code{glm} and \code{step} package: see reference above.
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley.  
 
-  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
-\note{
-The \code{SL.step.interaction_boost} function requires the \code{stats} package, which is included with base R.
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link[stats]{glm}}, \code{\link[stats]{step}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link[stats]{step}}
 }
 \examples{
 library(SuperLearner)
@@ -83,6 +74,5 @@ print(result1$pred)
 }
 \keyword{regression}
 \keyword{interaction}
-\keyword{SuperLearner}
 \concept{Stepwise Selection}
 \concept{Generalized Linear Models}

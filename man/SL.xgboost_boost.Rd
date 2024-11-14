@@ -1,11 +1,9 @@
 \name{SL.xgboost_boost}
 \alias{SL.xgboost_boost}
 \title{
-SL.xgboost_boost: Extreme Gradient Boosting for SuperLearner}
+Wrapper for Extreme Gradient Boosting}
 \description{
-The \code{SL.xgboost_boost} function trains an XGBoost model for regression, binary classification, or multinomial classification tasks within the \code{SuperLearner} framework.
-It includes additional features, such as printing progress information (e.g., tree depth, number of trees, and execution time), and provides flexibility in configuring parameters like the learning rate
-and maximum tree depth. 
+Wrapper for fitting Extreme Gradient Boosting with \pkg{xgboost}. 
 }
 \usage{
 SL.xgboost_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, ntrees = 1000, max_depth = 4, eta = 0.1, minobspernode = 10, params = list(), nthread = 1, verb = 0, save_period = NULL, verbose = T, ...)
@@ -73,10 +71,10 @@ A list with two elements:
 T. Chen and C. Guestrin (2016). "XGBoost: A Scalable Tree Boosting System". Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pp. 785-794.
 }
 \author{
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr}
-\note{
-This function is specifically designed for integration into the \pkg{SuperLearner} ensemble learning framework, allowing XGBoost to be one of the candidate learners.
-}
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley.  
+
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr}
+
 \seealso{
 See also \code{\link{SuperLearner}}, \code{\link{xgboost}}.
 }
@@ -94,4 +92,4 @@ head(result1$pred)
 }
 \keyword{xgboost}
 \concept{Extreme Gradient Boosting}
-\concept{SuperLearner}
+

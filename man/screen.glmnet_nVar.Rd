@@ -51,31 +51,26 @@ Friedman J, Hastie T, Tibshirani R (2010). \emph{Regularization Paths for Genera
 The \code{glmnet} package documentation: \url{https://cran.r-project.org/web/packages/glmnet/index.html}
 }
 \author{
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
-}
-\note{
-This function requires the \code{glmnet} package to be installed and loaded. It is designed to screen variables using elastic net regularization and cross-validation within the \code{SuperLearner} framework.
-}
+Screening algorithm from \pkg{SuperLearner} package, written by Eric Polley.  
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+}
 
 \seealso{
 \code{\link{SuperLearner}}, \code{\link{cv.glmnet}}, \code{\link{glmnet}}
 }
 \examples{
-## Example usage of screen.glmnet_nVar:
 library(SuperLearner)
-library(glmnet)
 data(EFV)
 result1 <- screen.glmnet_nVar(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")],
                            family = stats::binomial(), nVar = 2)
 result2 <- screen.glmnet_nVar(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
-                           family = stats::gaussian(), nnVar = 2)
+                           family = stats::gaussian(), nVar = 2)
 print(result1)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
+
 \keyword{variable selection}
 \keyword{SuperLearner}
+\keyword{screening}
 \concept{elastic net}
 \concept{cross-validation}

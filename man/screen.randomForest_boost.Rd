@@ -5,7 +5,7 @@
 Variable Screening using Random Forests
 }
 \description{
-Performs variable selection by identifying the most important predictor variables based on their contribution to predictive accuracy, using a random forest model. This function supports both regression and classification tasks, and returns the indices of the selected variables based on their importance scores.
+Performs variable selection by identifying the most important predictor variables based on their contribution to predictive accuracy, using a random forest model. 
 }
 \usage{
 screen.randomForest_boost(Y, X, family = list(), nVar = 8, ntree = 200, verbose = T, mtry = ifelse(family$family == "gaussian", floor(sqrt(ncol(X))), max(floor(ncol(X)/3), 1)), nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, ...)
@@ -52,20 +52,16 @@ Breiman, L. (2001), Random Forests, Machine Learning 45(1), 5-32.
 Breiman, L (2002), ``Manual On Setting Up, Using, And Understanding Random Forests V3.1'', https://www.stat.berkeley.edu/~breiman/Using_random_forests_V3.1.pdf.
 
 The \code{randomForest} package: \url{https://cran.r-project.org/web/packages/randomForest/index.html}
-
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-Fortran original by Leo Breiman and Adele Cutler, R port by Andy Liaw and MatthewWiener.
+Screening algorithm from \pkg{SuperLearner} package, written by Eric Polley.  
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-Ensure that \code{randomForest} is installed and loaded correctly, as this function relies on the Random Forest model implemented in the \code{randomForest} package.
-}
+
 
 \seealso{
-\code{\link[randomForest]{randomForest}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link[randomForest]{randomForest}}
 }
 \examples{
 data(EFV)

@@ -2,11 +2,10 @@
 \alias{SL.randomForest_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Random Forest for SuperLearner
+Wrapper for randomForest
 }
 \description{
-The \code{SL.randomForest_boost} function fits a Random Forest using the \code{randomForest} package and adds boosting for model improvement. If the fitting procedure fails, the mean of \code{Y} is provided as the prediction.
-}
+Wrapper for random forests using the package \pkg{randomForest}.}
 \usage{
 SL.randomForest_boost(Y, X, newX, family, verbose = T, mtry = ifelse(family$family == "gaussian", max(floor(ncol(X)/3), 1), floor(sqrt(ncol(X)))), ntree = 100, nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, importance = FALSE, ...)
 }
@@ -57,16 +56,14 @@ Breiman, L. (2001), Random Forests, Machine Learning 45(1), 5-32.
 Breiman, L (2002), ``Manual On Setting Up, Using, And Understanding Random Forests V3.1'', https://www.stat.berkeley.edu/~breiman/Using_random_forests_V3.1.pdf.
 
 The \code{randomForest} package: \url{https://cran.r-project.org/web/packages/randomForest/index.html}
-
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-Fortran original by Leo Breiman and Adele Cutler, R port by Andy Liaw and MatthewWiener.
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley.  
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
 \note{
-Ensure that \code{randomForest} is installed and loaded correctly, as this function relies on the Random Forest model implemented in the \code{randomForest} package.
+If the fitting procedure fails, the mean of \code{Y} is provided as the prediction.
 }
 
 \seealso{
@@ -88,4 +85,3 @@ print(result1$pred)
   \keyword{regression}
   \keyword{classification}
   \concept{Random Forest}
-  \concept{SuperLearner}

@@ -2,15 +2,14 @@
 \alias{SL.glmnet_boost}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Elastic Net Generalized Linear Model
+Wrapper for glmnet
 }
 \description{
-Fits a Generalized Linear Model (GLM) with Elastic Net regularization. The parameter lambda, which is used for regularization, is found via cross validation. The mixing parameter alpha is fixed.
+Wrapper for fitting Generalized Linear Models (GLM) with Elastic Net (Lasso, Ridge) regularization. 
 }
 \usage{
 SL.glmnet_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
 The response variable, which can be numeric or binary.
@@ -35,8 +34,7 @@ The elastic net mixing parameter. Must be between 0 (Ridge) and 1 (Lasso). Defau
 }
   \item{nfolds}{
 Number of folds. Although nfolds can be as large as the sample
-size (leave-one-out CV), it is not recommended for large datasets. Smallest
-value allowable is nfolds=3. Default is \code{10}.
+size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds=3. Default is \code{10}.
 }
   \item{nlambda}{
 The number of lambda (controlling regularization) values. Default is \code{100}.
@@ -81,17 +79,11 @@ Hazards Model via Coordinate Descent, Journal of Statistical Software, Vol. 39(5
 doi:10.18637/jss.v039.i05.
 
 The \code{glmnet} package: \url{https://cran.r-project.org/web/packages/glmnet/index.html}
-
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
-original authors of glmnet
-Jerome Friedman, Trevor Hastie and Rob Tibshirani
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley.  
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
-}
-\note{
-Ensure that \code{glmnet} is installed and loaded correctly, as this function relies on the elastic net generalized linear model implemented in the \code{glmnet} package.
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
 
 \seealso{
@@ -113,4 +105,3 @@ print(result1$pred)
   \keyword{regression}
   \keyword{classification}
   \concept{Elastic Net}
-  \concept{SuperLearner}

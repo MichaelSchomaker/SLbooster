@@ -3,10 +3,12 @@
 \alias{SLbooster}
 \docType{package}
 \title{
-SLbooster: Enhanced Learning with Boosted Screening and GAM Models for SuperLearner 
+SLbooster: additional, and extended, learning and screening algorithms for \code{SuperLearner}
 }
 \description{
-The \code{SLbooster} package extends the \code{SuperLearner} framework by providing additional learners and screening functions. It integrates advanced algorithms like Generalized Additive Models (GAM), Elastic Net, and boosted learning techniques. The package also includes custom screening methods such as Cramer's V-based screening and variable selection using Elastic Net with cross-validation. These functions are designed to enhance predictive performance, particularly in settings with complex interactions between continuous and categorical variables.
+The \code{SLbooster} package includes both modified learning and screening algorithms from \code{SuperLearner} and
+other algorithms as well. The provided wrappers are meant to be stable even when confronted with complex/unusual data structures and 
+provide additional output, such as the time used by the respective algorithms, or variables screened by learners.
 }
 
 \details{
@@ -14,12 +16,12 @@ The \code{SLbooster} package extends the \code{SuperLearner} framework by provid
 Package: \tab SLbooster\cr
 Type: \tab Package\cr
 Version: \tab 0.9\cr
-Date: \tab 2024-07-03\cr
+Date: \tab 2024-11-13\cr
 License: \tab GPL-2\cr
 Depends: \tab R (>= 4.0), SuperLearner\cr
 Imports: \tab mgcv, gam, rms, glmnet, dbarts, randomForest, xgboost, rpart, hal9001, vcd, earth, matrixStats\cr
+Suggests: \tab tmle, ltmle, lmtp
 }
-This package provides a set of custom learners and screening methods for use within the \code{SuperLearner} ensemble modeling framework. It is particularly suited for scenarios involving complex data, where traditional learners may struggle with non-linear relationships or high-dimensional features. The primary goal of the package is to offer robust and efficient tools to boost model performance by combining different learners and incorporating specialized screening algorithms.
 }
 
 \author{
@@ -30,98 +32,183 @@ Maintainer: Michael Schomaker <michael.schomaker@stat.uni-muenchen.de>
 
 \examples{
 \donttest{
-# Example of creating a custom learner with SLbooster
-library(SuperLearner)
-library(SLbooster)
 data(EFV)
 
-# Create a custom learner using 'SL.glmnet' from SuperLearner package with SLbooster
-create_glmnet_boost <- create.Learner("SL.glmnet_boost", 
-                                      params=list(nfolds=5),
-                                      tune=list(alpha=c(0.8,1)),
-                                      detailed_names = TRUE)
+ 
+################################################################################
 
-# Define the library with the different customized 'glmnet_boost' learners and use original 'SL.mean' from SuperLearner
-SL.library1 <- c("SL.mean", create_glmnet_boost$names)
+# create Learner
+# from SuperLearner package
+create_glmnet <- create.Learner("SL.glmnet", params=list(nfolds=5),
+                                            tune=list(alpha=c(0.8,1)),
+                                            detailed_names = T)
+create_glmnet
+create_glmnet$names
 
-# Fit the SuperLearner model on 'EFV' data with continous outcome 'EFV$weight.4'
-fit1 <- SuperLearner(Y = EFV$weight.4, X = EFV[,1:20], verbose = FALSE, SL.library = SL.library1, family= "gaussian")
-fit1$coef
-fit1$whichScreen
-# Same library but on binary outcome 'EFV$VL.4'
-fit1B <- SuperLearner(Y = EFV$VL.4, X = EFV[,1:22], verbose = FALSE, SL.library = SL.library1, family = "binomial")
-fit1B$coef
-fit1B$whichScreen
+# updated version from SLbooster package (default: verbose=TRUE)
+create_glmnet_boost <- create.Learner("SL.glmnet_boost", params=list(nfolds=5),
+                                tune=list(alpha=c(0.8,1)),
+                                detailed_names = T)
 
-
-
-# Create custom screening algorithm from SLbooster package (default: verbose=TRUE)
+# create screening algorithm from SLbooster package (default: verbose=TRUE)
 screen_glmnet_nvar <- create.Learner("screen.glmnet_nVar", tune = list(nVar=c(4:6)),
                                      detailed_names = T)
 
-# Create custom 'SL.gam_boost' learners from SLbooster package
-create_gam_boost <- create.Learner("SL.gam_boost",
-               tune=list(df.gam=c(2,3,4)),
-               detailed_names = T)
 
-SL.library2 <- list(c(("SL.gam_boost_2"), "screen.glmnet_nVar_4"), 
-                    c(("SL.gam_boost_3"), "screen.glmnet_nVar_5"), 
-                    c(("SL.gam_boost_4"), "screen.glmnet_nVar_6"), 
-                    c(("SL.mean"), "screen.glmnet_nVar_4"),
-                    c("SL.glmnet_boost_1")
-                    )
+################################################################################
+
+# define learner list
+ll <- list(Q=list(
+  c("SL.median"),
+  c("SL.glm"),
+  c("SL.glm","screen.glmnet_nVar_6"),
+  c("SL.glmnet_boost_1")
+),
+g=list("SL.glm")
+)
+attr(ll$Q, "return.fit") <- TRUE
+
+################################################################################
+# Example 1: use learner set directly with SuperLearner
+
+# Super Learning Test (family=gaussian)
+sl1 <- SuperLearner(Y=EFV$weight.4, X=EFV[,1:20],verbose=F,SL.library=ll$Q)
+sl1$coef
+sl1$whichScreen
+
+# Super Learning Test (family=binomial)
+sl2 <- SuperLearner(Y=EFV$VL.4, X=EFV[,1:22],verbose=F,SL.library=ll$Q, family="binomial")
+sl2$coef
+sl2$whichScreen
+
+################################################################################
+# Example 2: use learner set indirectly in ltmle
+# binary outcome
+library(ltmle)
+ltmle1 <- ltmle(EFV,
+                         Lnodes  = c("adherence.1","weight.1",
+                                     "adherence.2","weight.2",
+                                     "adherence.3","weight.3",
+                                     "adherence.4","weight.4"
+                         ),
+                         Ynodes  = c("VL.0","VL.1","VL.2","VL.3","VL.4"),
+                         Anodes  = c("efv.0","efv.1","efv.2","efv.3","efv.4"),
+                         abar=rep(0,5), survivalOutcome = F, SL.cvControl = list(V=5),
+                         estimate.time=F, gcomp=F,
+                         SL.library= ll
+                )
+# 30 models. Why? It is 5 Q models. For each Q-model we have V=5 splits and 1 on the full data. 6*5=30.
+# The g-models (SL.glm) give no output
+# Note: with longitudinal TMLE, as of the second iteration, the iterated outcome is proportional data rather than 0/1 data
+#      -> This is why the adapted glmnet-learner uses a gaussian family here, despite it is a binary outcome 
+ltmle1$estimates
+ltmle1$fit$Q
+
+# small test for cont. Y (illustrative, no treatment effect)
+# Note: ltmle uses a quasibinomial family, even for continuous outcomes (they are transformed beforehand)
+ltmle2 <- ltmle(EFV[,1:9],
+                Lnodes  = c("VL.0","adherence.1"),
+                Anodes  = c("efv.0"),
+                Ynodes  = c("weight.1"),
+                abar=0, SL.cvControl = list(V=5),
+                estimate.time=F, gcomp=F,
+                SL.library= ll
+)
+ltmle2$estimates
+ltmle2$fit$Q
+
+################################################################################
+# Example 3: use learner set indirectly in lmtp
+library(lmtp)
+
+# binary outcome
+lmtp1 <- lmtp_tmle(data = EFV,
+                   trt = c("efv.0","efv.1","efv.2","efv.3","efv.4"), 
+                   outcome = c("VL.4"), 
+                   baseline = c("sex", "metabolic", "log_age", "NRTI"),
+                   time_vary = list(c("weight.0"),
+                                    c("adherence.1","weight.1", "VL.0"),
+                                    c("adherence.2","weight.2", "VL.1"),
+                                    c("adherence.3","weight.3", "VL.2"),
+                                    c("adherence.4","weight.4", "VL.3")),
+                   shift = static_binary_off, # abar = c(0,0,0,0,0) 
+                   folds = 1,
+                   outcome_type = "binomial",
+                   learners_trt = ll$g, 
+                   learners_outcome = ll$Q,
+                   control = lmtp_control(.learners_outcome_folds = 5, .learners_trt_folds = 5)
+)
+lmtp1
 
 
-# Fit the SuperLearner model on 'EFV' data with continous outcome 'EFV$weight.4'
-fit2 <- SuperLearner(Y = EFV$weight.4, X = EFV[,1:20], verbose = FALSE, SL.library = SL.library2, family = "gaussian")
-fit2$coef
-fit2$whichScreen
-# Same library but on binary outcome 'EFV$VL.4'
-fit2B <- SuperLearner(Y = EFV$VL.4, X = EFV[,1:22], verbose = FALSE, SL.library = SL.library2, family = "binomial")
-fit2B$coef
-fit2B$whichScreen
+# continuous outcome 
+lmtp2 <- lmtp_sdr(data = EFV[,1:9], 
+                  trt = "efv.0", 
+                  outcome = "weight.1", 
+                  baseline = c("sex", "metabolic", "log_age", "NRTI", "weight.0"),
+                  time_vary = list(c("VL.0","adherence.1")),
+                  shift = static_binary_off, # abar = 0
+                  folds = 1, 
+                  outcome_type = "continuous",
+                  learners_trt = ll$g, 
+                  learners_outcome = ll$Q,
+                  control = lmtp_control(.learners_outcome_folds = 5, .learners_trt_folds = 5)
+)
+lmtp2
 
-
-# usage in TMLE
-# tmle only allows binary treatment
+################################################################################
+# Example 4: use learner set indirectly in tmle
 library(tmle)
 
-# create custom 'SL.earth' learner with SLbooster
-create_earth <- create.Learner("SL.earth_boost",
-                               tune=list(degree=c(2,3),
-                                         penalty=c(2,3)),
-                               detailed_names = T)
-
-# Define library for Q and g functions
-# 'Sl.median', 'SL.mean', 'Sl.glm' are from SuperLearner package
-ll <- list(Q=list(
-  "SL.mean",
-  c("SL.glm","screen.glmnet_nVar_6"),  # 'screen.glmnet_nVar_6' needs to be created first (see code above)
-  c("SL.earth_boost_2_2")
-),
-g=list(c(("SL.earth_boost_2_2"), "screen.glmnet_nVar_4"),
-       c(("SL.earth_boost_3_2"), "screen.glmnet_nVar_4"),
-       "SL.glm", "SL.median")
-)
-
-
-
-# ontinous outcome 'EFV$weight.4'
-tmle_1 <- tmle(Y = EFV$weight.4,
-               A = EFV$VL.3,
-               W = EFV[,1:18],
+# binary outcome
+tmle_1 <- tmle(Y = EFV[["VL.0"]],
+               A = EFV[["eff.0"]],
+               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
-               g.SL.library = ll$g
+               g.SL.library = ll$g,
+               cvQinit=F, V.Q=5,V.g=5 
 )
 tmle_1
 
-# binary outcome 'EFV$efv.4'
-tmle_2 <- tmle(Y = EFV$efv.4,
-               A = EFV$VL.3,
-               W = EFV[,1:18],
+# continuous outcome
+tmle_2 <- tmle(Y = EFV[["weight.1"]],
+               A = EFV[["efv.0"]],
+               W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
-               g.SL.library = ll$g
+               g.SL.library = ll$g,
+               cvQinit=F, V.Q=5,V.g=5 
 )
 tmle_2
+
+################################################################################
+
+# Example 5: bigger learner set based on what is available in SLbooster
+#            -> try on any of the above examples 
+
+# below, only defaults are used. Use create.Learner as above to setup in detail, and tune     
+
+# define learner list
+ll2 <- list(Q=list(
+  c("SL.median"),
+  c("SL.glm"),
+  c("SL.glm","screen.glmnet_nVar"),
+  c("SL.glm","screen.glmnet_boost"),
+  c("SL.glm","screen.cramersv"),
+  c("SL.glm","screen.randomForest_boost"),
+  c("SL.glmnet_boost"),
+  c("SL.dbarts"),
+  c("SL.earth_boost"),
+  c("SL.gam_boost"),
+  c("SL.hal","screen.cramersv"),
+  c("SL.median"),
+  c("SL.mgcv"),
+  c("SL.orm"),
+  c("SL.randomForest_boost"),
+  c("SL.rpart_boost"),
+  c("SL.step.interaction_boost","screen.cramersv")
+),
+g=list("SL.glm")
+)
+
 }
 }

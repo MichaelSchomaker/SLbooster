@@ -35,17 +35,8 @@ The \code{rms} package: \url{https://cran.r-project.org/web/packages/rms/index.h
 \author{
 Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-The function requires the \code{rms} package to be installed and loaded. It assumes that the \code{object} argument contains a valid ordinal regression model from the \code{SL.orm} function.
-}
+
 \seealso{
-\code{\link{SL.orm}}, \code{\link{predict.orm}}, \code{\link{SuperLearner}}
+\code{\link{SL.orm}}, \code{\link{predict.orm}}
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{prediction}
-% \keyword{regression}
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ordinal regression}
-% \concept{ensemble learning}
+

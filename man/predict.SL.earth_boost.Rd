@@ -31,14 +31,13 @@ The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/Su
 The \code{earth} package: \url{https://cran.r-project.org/web/packages/earth/index.html}
 }
 \author{
-Authors of SuperLearner package and contributors.
-}
-\note{
-Ensure that the \code{object} provided is a valid \code{SL.earth_boost} object, as this function specifically relies on the structure of the model fitted by the \code{SL.earth_boost} function.
+Wrapper from \pkg{SuperLearner} package, written by Eric Polley. 
+
+Extended by  Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
 
 \seealso{
-\code{\link{SL.earth_boost}}, \code{\link[earth]{earth}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link{SL.earth_boost}}, \code{\link[earth]{earth}}
 }
 \examples{
 data(EFV)

@@ -31,17 +31,12 @@ Chipman, H., George, E., and McCulloch, R. (2009) BART: Bayesian Additive Regres
 The \code{dbarts} package: \url{https://cran.r-project.org/web/packages/dbarts/index.html}
 }
 \author{
-original authors of dbarts: 
-Hugh Chipman, Robert McCulloch, Vincent Dorie
+The function is based on the wrapper from package \pkg{tmle}, writenn by Susan Gruber.
 
-Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
+Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }
-\note{
-Ensure that the \code{object} provided is a valid \code{SL.dbarts} object, as this function specifically relies on the structure of the BART model fitted by the \code{SL.dbarts} function.
-}
-
 \seealso{
-\code{\link{SL.dbarts}}, \code{\link[dbarts]{bart}}, \code{\link[SuperLearner]{SuperLearner}}
+\code{\link{SL.dbarts}}, \code{\link[dbarts]{bart}}
 }
 \examples{
 data(EFV)
@@ -53,4 +48,3 @@ predict(object = result$fit, newdata = EFV[, c("efv.0", "metabolic", "weight.0")
   \keyword{regression}
   \keyword{classification}
   \concept{Bayesian Additive Regression Trees}
-  \concept{SuperLearner}

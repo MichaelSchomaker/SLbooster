@@ -2,18 +2,17 @@
 \alias{SL.orm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Ordinal Regression Model (SL.orm)
+Wrapper for Ordinal Regression Models 
 }
 \description{
-The \code{SL.orm} function is a wrapper for the ordinal regression model (ORM) used within the \code{SuperLearner} framework. It fits an ORM when the response is ordinal and uses alternative models (GLM or mean) when the outcome is binary or insufficient for ORM.
-}
+Wrapper for fitting ordinal regression models using \code{orm()} in package \pkg{rms}.}
 \usage{
 SL.orm(Y, X, newX, family, obsWeights = NULL, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-The response variable, which can be binary or ordinal. If the outcome is binary, a GLM is used instead of an ordinal regression model.
+The response variable. If the outcome is binary, a GLM is used instead of an ordinal regression model.
 }
   \item{X}{
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
@@ -45,36 +44,29 @@ A list containing:
 }
 \references{
 Harrell FE Jr. (2023). \emph{Regression Modeling Strategies}. Springer Series in Statistics.
-The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 \author{
 Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 }
-\note{
-This function is a part of the \code{SuperLearner} package. It automatically selects the appropriate model (ORM, GLM, or mean) depending on the characteristics of the response variable \code{Y}.
-}
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{SuperLearner}}, \code{\link{SL.glm}}, \code{\link{orm}}, \code{\link{SL.mean}}
+\code{\link{orm}}
 }
 \examples{
-# Load necessary packages
-#library(SuperLearner)
-#library(SLbooster)
-#data(EFV)
-#result1 <- SL.orm(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
-#                  newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = "binomial")
-#result2 <- SL.orm(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
-#                  newX = EFV[, c("sex", "metabolic", "log_age")], family = "gaussian")
-#result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
-#                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.orm", 
-#                        cvControl = SuperLearner.CV.control(V = 3L))
-#print(result1$pred)}
+library(SuperLearner)
+data(EFV)
+result1 <- SL.orm(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "weight.0")], 
+                  newX = EFV[, c("efv.0", "metabolic", "weight.0")], family = "binomial")
+result2 <- SL.orm(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
+                  newX = EFV[, c("sex", "metabolic", "log_age")], family = "gaussian")
+result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.orm", 
+                        cvControl = SuperLearner.CV.control(V = 3L))
+print(result1$pred)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 \keyword{regression}
-\keyword{SuperLearner}
 \concept{ordinal regression}
-\concept{ensemble learning}
