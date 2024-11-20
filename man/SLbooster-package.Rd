@@ -16,7 +16,7 @@ provide additional output, such as the time used by the respective algorithms, o
 Package: \tab SLbooster\cr
 Type: \tab Package\cr
 Version: \tab 0.9\cr
-Date: \tab 2024-11-13\cr
+Date: \tab 2024-11-20\cr
 License: \tab GPL-2\cr
 Depends: \tab R (>= 4.0), SuperLearner\cr
 Imports: \tab mgcv, gam, rms, glmnet, dbarts, randomForest, xgboost, rpart, hal9001, vcd, earth, matrixStats\cr

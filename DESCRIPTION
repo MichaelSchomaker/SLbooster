@@ -1,14 +1,12 @@
 Package: SLbooster
 Type: Package
-Title: What it does
+Title: SLbooster: additional, and extended, learning and screening algorithms for SuperLearner
 Version: 0.9
-Date: 2024-06-22
+Date: 2024-11-20
 Author: Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: This package offers a collection of tools for data manipulation,
-    visualization, and statistical analysis. It aims to simplify the data
-    analysis workflow for researchers and data scientists.
+Maintainer: Michael Schomaker <michael.schomaker@stat.uni-muenchen.de>
+Description: This package includes both modified learning and screening algorithms from SuperLearner and other algorithms as well. The provided wrappers are meant to be stable even when confronted with complexor unusual data structures and provide additional output, such as the time used by the respective algorithms, or variables screened by learners.
 Depends: R (>= 4.0), SuperLearner
 Imports: mgcv, gam, rms, glmnet, dbarts, randomForest, xgboost, rpart, hal9001, vcd, earth, matrixStats
 Suggests: tmle, ltmle, lmtp
-License: GPL-2
+License: GPL-2 
