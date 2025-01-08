@@ -7,6 +7,12 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
   start_time <- Sys.time()
   SuperLearner:::.SL.require("hal9001")
   #
+  if (all(Y == 0 | Y == 1)) {
+    family$family <- "binomial"
+  } else {
+    family$family <- "gaussian"
+  }
+  #
   preprocess_data <- function(data) {
     data <- data.frame(lapply(data, function(x) {
         as.numeric(x) 
