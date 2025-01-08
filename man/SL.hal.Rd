@@ -11,7 +11,7 @@ SL.hal(Y, X, newX = NULL, verbose = T, family = stats::gaussian(),
 }
 \arguments{
   \item{Y}{
-    A \code{numeric} vector of observed outcome values. For \code{family = "mgaussian"}, \code{Y} should be a matrix of outcome observations.
+    A \code{numeric} vector of observed outcome values.
   }
   \item{X}{
     A \code{matrix} or \code{data.frame} of predictor variables, where rows correspond to observations and columns correspond to predictors. The input will be converted to a matrix if it is not already in that format.
