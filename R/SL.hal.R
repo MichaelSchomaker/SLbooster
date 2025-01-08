@@ -54,19 +54,21 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
       family = family$family,
       smoothness_order = runtime_params$smoothness_order,
       max_degree = runtime_params$max_degree,
-      num_knots = hal9001:::num_knots_generator(
-        max_degree = runtime_params$max_degree,
-        smoothness_order = runtime_params$smoothness_order,
-        base_num_knots_0 = runtime_params$base_num_knots_0,
-        base_num_knots_1 = runtime_params$base_num_knots_1
+      num_knots = sapply(
+        seq_len(runtime_params$max_degree), 
+        function(d) {
+          base_num_knots <- if (all(runtime_params$smoothness_order > 0)) {
+            runtime_params$base_num_knots_1
+          } else {
+            runtime_params$base_num_knots_0
+          }
+          round(base_num_knots / 2^(d - 1))
+        }
       ),
       fit_control = list(
         cv_select = TRUE,
         nfolds = 10,
         weights = obsWeights,
-        foldid = NULL,
-        use_min = TRUE,
-        lambda.min.ratio = 1e-04,
         prediction_bounds = "default"
       )
     ), 
