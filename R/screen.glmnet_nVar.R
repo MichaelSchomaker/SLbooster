@@ -68,11 +68,12 @@ screen.glmnet_nVar <- function(Y, X, family = list(), alpha = 1, nfolds = 5,
       # metric variables only
       whichVariable <- coefs[-1] != 0
     }
-    if (nVar != sum(whichVariable) & verbose==T) {cat("Note: exactly", nVar, "variables could not be screened, instead", sum(whichVariable), "vars were screened. \n")}
+    if(sum(whichVariable)==0){whichVariable<-NULL}
+    if (nVar != sum(whichVariable) & verbose==T & sum(whichVariable)!=0) {cat("Note: exactly", nVar, "variables could not be screened, instead", sum(whichVariable), "vars were screened. \n")}
   }
   #
   if(is.null(whichVariable)){
-    whichVariable<-screen.cramersv(Y,X)
+    whichVariable<-screen.cramersv(Y,X,nscreen=nVar)
     if(verbose==T){cat("Lasso failed and screening was based on Cramer's V\n")}}
   #
   if(verbose==T){cat("screened ",sum(whichVariable)," variables: ",paste(colnames(saveX)[whichVariable]),"\n",sep=" ");
