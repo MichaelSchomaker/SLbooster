@@ -9,7 +9,7 @@ Wrapper for Multiadaptive Regression Splines (MARS), using the earth implementia
 \usage{
 SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
                nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, 
-               minspan = 0, endspan = 0, verbose = F, ...)
+               minspan = 0, endspan = 0, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
