@@ -1,6 +1,6 @@
 SL.earth_boost <- function(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3,
                           nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0,
-                          ncross = 1, minspan = 0, endspan = 0, verbose=F, ...) {
+                          ncross = 1, minspan = 0, endspan = 0, verbose=T, ...) {
   #
   if(verbose==T){cat("SL.earth_boost started (degrees=", degree,"). ", sep="")}
   start_time <- Sys.time()
