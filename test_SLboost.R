@@ -130,7 +130,7 @@ library(tmle)
 
 # binary outcome
 tmle_1 <- tmle(Y = EFV[["VL.0"]],
-               A = EFV[["eff.0"]],
+               A = EFV[["efv.0"]],
                W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
                g.SL.library = ll$g,
