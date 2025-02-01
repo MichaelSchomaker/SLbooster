@@ -5,7 +5,7 @@ SL.rpart_boost <- function (Y, X, newX, family, obsWeights = NULL, cp = 0.01, mi
   #
   if(verbose==T){cat("SL.rpart started with minsplit=", minsplit, ", maxdepth=", maxdepth, ", and ", xval, "-fold CV (0=no CV). ", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("rpart")
+  SLbooster.require("rpart")
   # for ltmle 
   fam.init <- family$family
   Y <- as.vector(as.matrix(Y))

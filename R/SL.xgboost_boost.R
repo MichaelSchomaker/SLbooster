@@ -5,7 +5,7 @@ SL.xgboost_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL, 
   #
   if(verbose==T){cat("SL.xgboost (tree booster) started with max. tree depth of ", max_depth, ", ", ntrees, " trees, eta=", eta, ". ", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("xgboost")
+  SLbooster.require("xgboost")
   #
   if (!is.matrix(X)) {
     X = model.matrix(~. - 1, X)

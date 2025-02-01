@@ -4,7 +4,7 @@ SL.earth_boost <- function(Y, X, newX, family, obsWeights = NULL, id = NULL, deg
   #
   if(verbose==T){cat("SL.earth_boost started (degrees=", degree,"). ", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("earth")
+  SLbooster.require("earth")
   #
   if (family$family == "gaussian") {
     fit.earth <- earth::earth(

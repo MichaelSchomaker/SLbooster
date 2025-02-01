@@ -1,7 +1,7 @@
 screen.cramersv <- function(Y, X, nscreen = 4, num_cat = 10, verbose = T, ...) {
   if(verbose==T){cat("screen.cramersv for", nscreen, "variables; ")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("vcd")
+  SLbooster.require("vcd")
   #
   if (ncol(X) > nscreen) {
     dat <- cbind(Y, X)

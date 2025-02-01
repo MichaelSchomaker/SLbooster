@@ -9,7 +9,7 @@ SL.dbarts <-
     #
     if(verbose==T){cat("SL.dbarts started with ", ntree, " trees and k=", k, ". ", sep="")}
     start_time <- Sys.time()
-    SuperLearner:::.SL.require("dbarts")
+    SLbooster.require("dbarts")
     #
     model <- try(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
                               sigest = sigest, sigdf = sigdf, sigquant = sigquant, 

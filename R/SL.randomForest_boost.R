@@ -5,7 +5,8 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
   #
   if(verbose==T){cat("SL.randomForest with ", ntree," trees started. ", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("randomForest")
+  SLbooster.require("randomForest")
+  
   # avoid infinite search for split points in trees
   if (all(suppressWarnings(apply(X,2,var) == 0))) {
     fit.rf <- "Empty"

@@ -3,7 +3,7 @@ screen.glmnet_nVar <- function(Y, X, family = list(), alpha = 1, nfolds = 5,
   if(verbose==T){cat("screen.glmnet_nVar with alpha=", alpha, ", ", nfolds, " fold CV and selecting ", nVar,  " variables \n", sep="")}
   if(nVar<1){stop("nVar needs to be greater or equal to one")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("glmnet")
+  SLbooster.require("glmnet")
   # relevant for column names but shouldnt be a matrix anyways
   X <- as.data.frame(X)
   

@@ -4,7 +4,7 @@ SL.gam_boost <- function(Y, X, newX, family, obsWeights = NULL,
   #
   if(verbose==T){cat("SL.gam with ", df.gam," df for smoothing spline started (>", cts.num, " unique values = spline added). ", sep="")}
   start_time <- Sys.time()
-  #SuperLearner:::.SL.require("gam")
+  SLbooster.require("gam")
   #
   s <- gam::s # s() is also used by 'mgcv' package - avoid clash
   # adjust model formula for metric and categorical predictors

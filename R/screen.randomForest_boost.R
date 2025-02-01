@@ -6,7 +6,7 @@ screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 2
   if(verbose==T){cat("screen.randomForest with ntree=", ntree, ", mtry=", mtry, " and selecting ", nVar,  " variables \n", sep="")}
   if(nVar<1){stop("nVar needs to be greater or equal to one")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("randomForest")
+  SLbooster.require("randomForest")
   # chose family dependent upon response variable
   Y <- as.vector(as.matrix(Y))
   if (all(Y == 0 | Y == 1)) {

@@ -1,5 +1,6 @@
 
 SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
+  SLbooster.require("rms")
   # Check if outcome is binary numeric or binary factor
   is_binary_numeric <- is.numeric(Y) && all(Y == 0 | Y == 1)
   is_binary_factor <- is.factor(Y) && length(levels(Y)) == 2
@@ -21,7 +22,6 @@ SL.orm <- function (Y, X, newX, family, obsWeights = NULL, verbose = T, ...) {
       cat("SL.orm started.\n")
     }
     start_time <- Sys.time()
-    requireNamespace("rms")
     
     # Determine the number of unique values based on Y's type
     if (is.factor(Y)) {

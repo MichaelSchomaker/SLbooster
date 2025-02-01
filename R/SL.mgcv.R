@@ -5,7 +5,7 @@ SL.mgcv <- function(Y, X, newX, family, obsWeights = NULL,
   if(verbose==T & is.na(by)){cat("SL.mgcv started (if >", cts.num, " unique values = spline added). ", sep="")}
   if(verbose==T & !is.na(by)){cat("SL.mgcv started (if >", cts.num, " unique values = spline added; it interacts with: ", by, "). ", sep="")}
   start_time <- Sys.time()
-  requireNamespace("mgcv") # require("mgcv")
+  SLbooster.require("mgcv") # require("mgcv")
   #
   if(all(by %in% colnames(X))==FALSE & !is.na(by)){if(verbose==T){cat(paste(by, "not in column names of X. `by=NA' is used.\n"))};by<-NA}
   #

@@ -5,7 +5,7 @@ SL.glmnet_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL,
   #
   if(verbose==T){cat("SL.glmnet started with alpha=", alpha, ", ", nfolds, "-fold CV, and ", nlambda, " candidate lambdas. ", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("glmnet")
+  SLbooster.require("glmnet")
   # for ltmle 
   fam.init <- family$family
   Y <- as.vector(as.matrix(Y))

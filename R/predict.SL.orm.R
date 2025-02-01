@@ -1,6 +1,6 @@
 predict.SL.orm <- function(object, newdata, ...) {
   # Load necessary package
-  requireNamespace("rms") # require("rms")
+  SLbooster.require("rms") # require("rms")
   
   # Check if the input model is of class "SL.orm"
   if (!inherits(object, "SL.orm")) {

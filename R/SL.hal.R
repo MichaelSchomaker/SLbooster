@@ -5,6 +5,7 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
   #
   if(verbose==T){cat("SL.hal started. ")}
   start_time <- Sys.time()
+  SLbooster.require("hal9001")
   # SuperLearner:::.SL.require("hal9001")
   #
   if (all(Y == 0 | Y == 1)) {

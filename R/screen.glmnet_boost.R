@@ -2,7 +2,7 @@ screen.glmnet_boost <- function(Y, X, family = list(), alpha = 1, verbose=T,
                                nfolds = 10, nlambda = 200, nscreen=2, ...){
   if(verbose==T){cat("screen.glmnet with alpha=", alpha, " and ", nfolds, " fold CV \n", sep="")}
   start_time <- Sys.time()
-  SuperLearner:::.SL.require("glmnet")
+  SLbooster.require("glmnet")
   # relevant for column names but shouldn't be a matrix anyways
   X <- as.data.frame(X)
   # chose family dependent upon response

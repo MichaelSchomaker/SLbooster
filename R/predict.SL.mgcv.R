@@ -1,6 +1,6 @@
 predict.SL.mgcv <- function (object, newdata, ...) 
 {
-  requireNamespace("mgcv") # require("mgcv")
+  SLbooster.require("mgcv") 
   pred <- mgcv::predict.gam(object = object$object, newdata = newdata, 
                             type = "response")
   
