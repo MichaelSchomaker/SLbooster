@@ -18,7 +18,7 @@ SL.dbarts <-
                               nskip = nskip, printevery = printevery, keepevery = keepevery, 
                               keeptrainfits = keeptrainfits, usequants = usequants, 
                               numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
-                              keepcall = keepcall, keeptrees = TRUE, verbose = verb))
+                              keepcall = keepcall, keeptrees = TRUE, verbose = F))
 
     if (family$family == "gaussian") {
       pred = model$yhat.test.mean

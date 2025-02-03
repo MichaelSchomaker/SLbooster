@@ -1,6 +1,6 @@
 SL.rpart_boost <- function (Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20, 
-                           xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose=T,
-                           ...) 
+                            xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose=T,
+                            ...) 
 {
   #
   if(verbose==T){cat("SL.rpart started with minsplit=", minsplit, ", maxdepth=", maxdepth, ", and ", xval, "-fold CV (0=no CV). ", sep="")}

@@ -173,7 +173,8 @@ ll2 <- list(Q=list(
   c("SL.orm"),
   c("SL.randomForest_boost"),
   c("SL.rpart_boost"),
-  c("SL.step.interaction_boost","screen.cramersv")
+  c("SL.step.interaction_boost","screen.cramersv"),
+  c("SL.xgboost_boost","screen.cramersv")
 ),
 g=list("SL.glm")
 )

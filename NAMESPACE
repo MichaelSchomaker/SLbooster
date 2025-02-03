@@ -4,6 +4,8 @@ export("predict.SL.dbarts",
        "predict.SL.median",
        "predict.SL.step.interaction_boost",
 	   "predict.SL.orm",
+	   "predict.SL.glmnet_boost",
+	   "predict.SL.rpart_boost",
        "screen.cramersv",
        "screen.glmnet_boost",
        "screen.glmnet_nVar",
@@ -21,6 +23,8 @@ S3method(predict, SL.hal)
 S3method(predict, SL.mgcv)
 S3method(predict, SL.orm)
 S3method(predict, SL.earth_boost)
+S3method(predict, SL.glmnet_boost)
+S3method(predict, SL.rpart_boost)
 S3method(predict, SL.median)
 S3method(predict, SL.step.interaction_boost)
 import(SuperLearner)

@@ -26,10 +26,14 @@ SL.glmnet_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL,
   pred <- predict(fitCV, newx = newX, type = "response", 
                   s = ifelse(useMin, "lambda.min", "lambda.1se"))
   #
-  if(fam.init=="binomial" & fam.end=="gaussian"){if(any(pred<0)){pred[pred<0]<-0};if(any(pred>1)){pred[pred>1]<-1};if(verbose==T){cat("\n Note: predictions falling outside [0,1] have been set as 0/1 \n")}}
+  if(fam.init=="binomial" & fam.end=="gaussian"){
+    if(any(pred<0)){pred[pred<0]<-0}
+    if(any(pred>1)){pred[pred>1]<-1}
+    if((any(pred<0) | any(pred>1)) & verbose==T){cat("\n Note: predictions falling outside [0,1] have been set as 0/1 \n")}
+    }
   #
-  fit <- list(object = fitCV, useMin = useMin)
-  class(fit) <- "SL.glmnet"
+  fit <- list(object = fitCV, useMin = useMin, fam.init=fam.init, fam.end=fam.end)
+  class(fit) <- "SL.glmnet_boost"
   out <- list(pred = pred, fit = fit)
   #
   end_time <- Sys.time()
