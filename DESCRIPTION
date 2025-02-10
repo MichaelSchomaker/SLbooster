@@ -1,8 +1,8 @@
 Package: SLbooster
 Type: Package
 Title: SLbooster: additional, and extended, learning and screening algorithms for SuperLearner
-Version: 0.9
-Date: 2024-11-20
+Version: 1.0
+Date: 2025-02-10
 Author: Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr
 Maintainer: Michael Schomaker <michael.schomaker@stat.uni-muenchen.de>
 Description: This package includes both modified learning and screening algorithms from SuperLearner and other algorithms as well. The provided wrappers are meant to be stable even when confronted with complexor unusual data structures and provide additional output, such as the time used by the respective algorithms, or variables screened by learners.

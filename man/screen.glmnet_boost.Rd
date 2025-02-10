@@ -8,7 +8,8 @@ Variable Screening using Elastic Net Regularization with Cross-Validation
 Performs variable selection using the Elastic Net regularization via \code{glmnet}.
 }
 \usage{
-screen.glmnet_boost(Y, X, family = list(), alpha = 1, verbose = T, nfolds = 10, nlambda = 200, nscreen = 2, ...)
+screen.glmnet_boost(Y, X, family = list(), alpha = 1, verbose = T, nfolds = 10,
+                    nlambda = 200, nscreen = 2, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

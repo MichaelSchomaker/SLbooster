@@ -7,7 +7,7 @@ SLbooster: additional, and extended, learning and screening algorithms for \code
 }
 \description{
 The \code{SLbooster} package includes both modified learning and screening algorithms from \code{SuperLearner} and
-other algorithms as well. The provided wrappers are meant to be stable even when confronted with complex/unusual data structures and 
+other algorithms as well. The provided wrappers are meant to be stable even when confronted with complex or unusual data structures and 
 provide additional output, such as the time used by the respective algorithms, or variables screened by learners.
 }
 
@@ -15,8 +15,8 @@ provide additional output, such as the time used by the respective algorithms, o
 \tabular{ll}{
 Package: \tab SLbooster\cr
 Type: \tab Package\cr
-Version: \tab 0.9\cr
-Date: \tab 2024-11-20\cr
+Version: \tab 1.0\cr
+Date: \tab 2025-02-10\cr
 License: \tab GPL-2\cr
 Depends: \tab R (>= 4.0), SuperLearner\cr
 Imports: \tab mgcv, gam, rms, glmnet, dbarts, randomForest, xgboost, rpart, hal9001, vcd, earth, matrixStats\cr
@@ -205,7 +205,8 @@ ll2 <- list(Q=list(
   c("SL.orm"),
   c("SL.randomForest_boost"),
   c("SL.rpart_boost"),
-  c("SL.step.interaction_boost","screen.cramersv")
+  c("SL.step.interaction_boost","screen.cramersv"),
+  c("SL.xgboost","screen.cramersv")
 ),
 g=list("SL.glm")
 )

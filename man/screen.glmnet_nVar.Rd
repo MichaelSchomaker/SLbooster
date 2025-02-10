@@ -5,10 +5,11 @@
 Variable Screening Using Elastic Net and Cross-Validation in SuperLearner
 }
 \description{
-The \code{screen.glmnet_nVar} function performs variable selection using elastic net regularization with cross-validation. It selects a user-specified number of variables (\code{nVar}) based on the deviance from the \code{glmnet} model, with options for both continuous and categorical data.
+The \code{screen.glmnet_nVar} function performs variable selection using elastic net regularization with cross-validation. It selects a user-specified number of variables (\code{nVar}) based on the LASSO/Elastic net path, i.e. the first nVar variables that are selected based on Elastic Net/LASSO.
 }
 \usage{
-screen.glmnet_nVar(Y, X, family = list(), alpha = 1, nfolds = 5, nlambda = 150, nVar = 6, verbose = T, ...)
+screen.glmnet_nVar(Y, X, family = list(), alpha = 1, nfolds = 5, nlambda = 150,
+                   nVar = 6, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,7 +42,7 @@ Additional arguments passed to the underlying \code{cv.glmnet} function for fine
 }
 }
 \details{
-The \code{screen.glmnet_nVar} function uses elastic net regularization to perform variable selection. It performs \code{nfolds}-fold cross-validation to find the optimal lambda and selects \code{nVar} variables based on the deviance from the cross-validated model. If no variables are selected, it will adjust lambda values or use Cramer's V for screening categorical variables.
+The \code{screen.glmnet_nVar} function uses elastic net regularization to perform variable selection. In case of technical failures, it has the same escape strategies as \code{\link{screen.glmnet_boost}}, i.e. it first adjusts the smoothing parameters and then reverst back to using Cramer's V via \code{\link{screen.cramersv}}.
 }
 \value{
 A logical vector indicating which variables in \code{X} were selected (\code{TRUE}) and which were not (\code{FALSE}).

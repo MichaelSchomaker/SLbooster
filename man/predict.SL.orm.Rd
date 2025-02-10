@@ -23,7 +23,7 @@ Additional arguments passed to the underlying prediction function from the \code
 }
 }
 \details{
-The \code{predict.SL.orm} function works specifically with objects created by the \code{SL.orm} function. It uses the \code{predict.orm} method from the \code{rms} package to predict the expected mean of ordinal outcomes based on the new data provided. If the \code{SL.orm} model used a GLM or a mean-based model instead of an ordinal regression, the predictions will reflect that.
+The \code{predict.SL.orm} function works with objects created by the \code{SL.orm} function. It uses the \code{predict.orm} method from the \code{rms} package to predict the expected mean of ordinal outcomes based on the new data provided. If \code{SL.orm} used a simple GLM (in case of failure of orm), the predictions will reflect that.
 }
 \value{
 A vector of predicted values representing the expected means of the ordinal categories for each observation in \code{newdata}.

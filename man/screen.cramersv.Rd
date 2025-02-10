@@ -18,10 +18,10 @@ The response variable, typically a categorical variable or factor. It represents
 A data frame or matrix of predictor variables. Each column represents a potential feature for screening.
 }
   \item{nscreen}{
-The number of variables to screen and retain based on the highest Cramer's V values. Defaults to 4.
+The number of variables to screen and retain based on the highest Cramer's V values. Default is 4 variables.
 }
   \item{num_cat}{
-The threshold for the number of unique values a variable must have to be considered continuous. Variables with more unique values than \code{num_cat} are discretized into quantiles. Defaults to 10.
+The threshold for the number of unique values a variable must have to be considered continuous. Variables with more unique values than \code{num_cat} are discretized into quantiles. 
 }
   \item{verbose}{
 Logical indicating whether to print progress messages and timing information. Defaults to \code{TRUE}.

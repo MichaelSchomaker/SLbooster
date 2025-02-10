@@ -5,7 +5,7 @@
 Prediction Method for SL.step.interaction_boost objects
 }
 \description{
-This function provides a prediction method for objects of class \code{SL.step.interaction_boost}, which are fitted models using stepwise interactions with boosting, wrapped within the \code{SuperLearner} framework. It uses the fitted model to generate predictions on new data.
+This function provides a prediction method for objects of class \code{SL.step.interaction_boost}, which are fitted GLMs with interactions using stepwise model selection interactions. It uses the fitted model to generate predictions on new data.
 }
 \usage{
 \method{predict}{SL.step.interaction_boost}(object, newdata, ...)

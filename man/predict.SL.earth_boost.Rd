@@ -5,7 +5,7 @@
 Prediction Method for SL.earth_boost Objects
 }
 \description{
-This function provides a prediction method for objects of class \code{SL.earth_boost}, which are fitted models using boosted Multivariate Adaptive Regression Splines (MARS), wrapped within the \code{SuperLearner} framework. It uses the fitted model to generate predictions on new data.
+This function provides a prediction method for objects of class \code{SL.earth_boost}, which are fitted models using Multivariate Adaptive Regression Splines (MARS), wrapped within the \code{SuperLearner} framework. It uses the fitted model to generate predictions on new data.
 }
 \usage{
 \method{predict}{SL.earth_boost}(object, newdata, ...)

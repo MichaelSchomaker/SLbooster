@@ -40,7 +40,7 @@ abacavir, stavudine or zidovudine.}
 }
 
 \references{
-Schomaker M, McIlleron H, Denti P, Diaz I. (2024) \emph{Causal Inference for Continuous Multiple Time Point Interventions}, Statistics in Medicine, in press, also: \emph{https://arxiv.org/abs/2305.06645}.
+Schomaker M, McIlleron H, Denti P, Diaz I. (2024) \emph{Causal Inference for Continuous Multiple Time Point Interventions}, Statistics in Medicine, 43(28):5380-5400, also: \emph{https://arxiv.org/abs/2305.06645}.
 
 Bienczak et al. (2017) \emph{Determinants of virological outcome and adverse events in African children treated with paediatric nevirapine fixed-dose-combination tablets}, AIDS, \emph{31:905-915}
 }
