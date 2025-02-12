@@ -1,7 +1,7 @@
 SL.randomForest_boost <- function(Y, X, newX, family, verbose=T, 
                                  mtry = ifelse(family$family =="gaussian", max(floor(ncol(X) / 3), 1), floor(sqrt(ncol(X)))),
                                  ntree = 100, nodesize = ifelse(family$family == "gaussian",5, 1), 
-                                 maxnodes = NULL, importance = FALSE, ...) {
+                                 maxnodes = ifelse(nrow(X)<1000,200,300), importance = FALSE, ...) {
   #
   if(verbose==T){cat("SL.randomForest with ", ntree," trees started. ", sep="")}
   start_time <- Sys.time()

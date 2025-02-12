@@ -7,9 +7,9 @@ Wrapper for earth
 \description{
 Wrapper for Multiadaptive Regression Splines (MARS), using the earth implementiation.}
 \usage{
-SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, penalty = 3, 
-               nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", nfold = 0, ncross = 1, 
-               minspan = 0, endspan = 0, verbose = T, ...)
+SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, 
+               penalty = 3, nk = max(21, 2 * ncol(X) + 1), pmethod = "backward", 
+               nfold = 0, ncross = 1, minspan = 0, endspan = 0, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,7 +56,7 @@ SL.earth_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, degree = 2, pen
   Minimum number of observations required between the end of the data and the nearest knot. Default is \code{0}.
 }
   \item{verbose}{
-  Logical; if \code{TRUE}, the function prints detailed progress messages. Default is \code{FALSE}.
+ Logical. Indicates whether additional information and timing is printed. The default is \code{TRUE}.
 }
   \item{\dots}{
   Additional arguments currently unused.
@@ -90,7 +90,8 @@ result1 <- SL.earth_boost(Y = EFV[, "VL.1"], X = EFV[, c("efv.0", "metabolic", "
 result2 <- SL.earth_boost(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")],
                                          newX = EFV[, c("sex", "metabolic", "log_age")], family = stats::gaussian())
 result3 <- SuperLearner(Y = EFV[, "weight.0"], X = EFV[, c("sex", "metabolic", "log_age")], 
-                        newX = EFV[, c("sex", "metabolic", "log_age")], SL.library="SL.earth_boost", 
+                        newX = EFV[, c("sex", "metabolic", "log_age")], 
+                        SL.library="SL.earth_boost", 
                         cvControl = SuperLearner.CV.control(V = 3L))
 print(result1$pred)
 }

@@ -7,7 +7,10 @@ Wrapper for randomForest
 \description{
 Wrapper for random forests using the package \pkg{randomForest}.}
 \usage{
-SL.randomForest_boost(Y, X, newX, family, verbose = T, mtry = ifelse(family$family == "gaussian", max(floor(ncol(X)/3), 1), floor(sqrt(ncol(X)))), ntree = 100, nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, importance = FALSE, ...)
+SL.randomForest_boost(Y, X, newX, family, verbose = T,
+mtry = ifelse(family$family == "gaussian", max(floor(ncol(X)/3), 1), floor(sqrt(ncol(X)))),
+            ntree = 100, nodesize = ifelse(family$family == "gaussian", 5, 1), 
+            maxnodes = ifelse(nrow(X)<1000,200,300), importance = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,19 +24,19 @@ A data frame or matrix of predictor variables used to fit the model. Each column
 A data frame or matrix of new predictor data used for generating predictions.  
 }
   \item{family}{
-If \code{family = list(family = "binomial")}, classification is assumed, with \code{family = list(family = "gaussian")} regression is assumed. 
+String. Either "binomial" or "gaussian". 
 }
   \item{verbose}{
-A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
+Logical. Indicates whether additional information and timing is printed. The default is \code{TRUE}.
 }
   \item{mtry}{
 Number of variables randomly sampled as candidates at each split. Note that the default values are different for classification (sqrt(p) where p is number of variables in \code{X}) and regression (p/3).
 }
   \item{ntree}{
-Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times. Defaults to \code{100}.
+Number of trees to grow. 
 }
   \item{nodesize}{
-Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5).
+Minimum size of terminal nodes. Setting this number to larger values causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5).
 }
   \item{maxnodes}{
 Maximum number of terminal nodes that trees in the forest can have. If not given, trees are grown to the maximum possible (subject to limits by \code{nodesize}). If set larger than maximum possible, a warning is issued. Defaults to \code{NULL}.
@@ -42,7 +45,7 @@ Maximum number of terminal nodes that trees in the forest can have. If not given
 Should importance of predictors be assessed? Defaults to \code{FALSE}.
 }
   \item{\dots}{
-Additional arguments currently unused.
+Additional arguments.
 }
 }
 \value{

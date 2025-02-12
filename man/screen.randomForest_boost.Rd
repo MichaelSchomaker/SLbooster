@@ -8,7 +8,8 @@ Variable Screening using Random Forests
 Performs variable selection by identifying the most important predictor variables based on their contribution to predictive accuracy, using a random forest model. 
 }
 \usage{
-screen.randomForest_boost(Y, X, family = list(), nVar = 8, ntree = 200, verbose = T, mtry = ifelse(family$family == "gaussian", floor(sqrt(ncol(X))), max(floor(ncol(X)/3), 1)), nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, ...)
+screen.randomForest_boost(Y, X, family = list(), nVar = 8, ntree = 200, verbose = T,
+                          mtry = ifelse(family$family == "gaussian", floor(sqrt(ncol(X))), max(floor(ncol(X)/3), 1)), nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,22 +20,22 @@ A response vector.
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{family}{
-If \code{family = list(family = "binomial")}, classification is assumed, with \code{family = list(family = "gaussian")} regression is assumed. Defaults to \code{list()}. The family is internally inferred from the data, so this argument only influences the default values of \code{mtry} and \code{nodesize}.
+Either \code{family = list(family = "binomial")} or \code{family = list(family = "gaussian")}. The family is internally inferred from the data, so this argument only influences the default values of \code{mtry} and \code{nodesize}.
 }
   \item{nVar}{
 How many variables should be selected. Default is \code{8}.
 }
   \item{ntree}{
-Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times. Defaults to \code{200}.
+Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times. Default is \code{200}.
 }
   \item{verbose}{
-A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
+A logical value indicating whether to print detailed information during the execution of the function. Default is \code{TRUE}.
 }
   \item{mtry}{
 Number of variables randomly sampled as candidates at each split. Note that the default values are different for classification (sqrt(p) where p is number of variables in \code{X}) and regression (p/3).
 }
   \item{nodesize}{
-Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5).
+Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for binary classification (1) and regression (5).
 }
   \item{maxnodes}{
 Maximum number of terminal nodes that trees in the forest can have. If not given, trees are grown to the maximum possible (subject to limits by \code{nodesize}). If set larger than maximum possible, a warning is issued. Defaults to \code{NULL}.
@@ -74,6 +75,7 @@ print(result1)
   \keyword{randomforest}
   \keyword{regression}
   \keyword{classification}
+  \keyword{screening}
   \concept{Random Forest}
   \concept{SuperLearner}
   \concept{Variable Selection}

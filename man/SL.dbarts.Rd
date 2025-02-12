@@ -8,16 +8,16 @@ Wrapper for Bayesian Additive Regression Trees using \code{dbarts}.
 
 \usage{
 SL.dbarts(Y, X, newX, family, obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
-            sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
-            ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
-            keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
+            sigquant = 0.9, k = 2, power = 2.5, base = 0.9, binaryOffset = 0, 
+            ntree = 75, ndpost = 200, nskip = 100, printevery = 100, 
+            keepevery = 5, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
             printcutoffs = 0, nthread = 1, keepcall = TRUE, verb=T, verbose = TRUE, 
             ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-The response variable, which can be numeric or binary. In the numeric case errors are treated as normal. In the binary case, a probit link is fit. 
+The response variable, which can be numeric or binary. In the numeric case, errors are treated as normal. In the binary case, a probit link is fit. 
 }
   \item{X}{
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
@@ -92,7 +92,7 @@ Logical; if \code{FALSE}, returned object will have \code{call} set to \code{cal
 Logical value indicating whether the underlying \code{bart} function is verbose; if \code{FALSE} supress printing. Defaults to \code{FALSE}.
 }
   \item{verbose}{
-A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
+Logical. Indicates whether additional information and timing is printed. The default is \code{TRUE}.
 }
 
   \item{\dots}{
@@ -111,15 +111,13 @@ Chipman, H., George, E., and McCulloch R. (2006) Bayesian Ensemble Learning. Adv
 Neural Information Processing Systems 19, Scholkopf, Platt and Hoffman, Eds., MIT Press, Cambridge,
 MA, 265-272.
 
-Friedman, J.H. (1991) Multivariate adaptive regression splines. The Annals of Statistics, 19, 1-67.
-
 The \code{dbarts} package: \url{https://cran.r-project.org/web/packages/dbarts/index.html}
 
 The \code{SuperLearner} package: \url{https://cran.r-project.org/web/packages/SuperLearner/index.html}
 }
 
   \author{
-The wrapper is based on the wrapper from package \pkg{tmle}, writenn by Susan Gruber.
+The wrapper is based on the wrapper from package \pkg{tmle}, written by Susan Gruber.
 
 Extensions by Michael Schomaker, Philipp Baumann, Han Bao, Katharina Ring, Christoph Wiederkehr.
 }

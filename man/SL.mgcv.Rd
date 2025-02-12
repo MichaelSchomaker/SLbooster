@@ -28,7 +28,7 @@ As well as the standard families (of class \code{family}) documented in \code{fa
 An optional vector of observation-specific weights to be used in the fitting process. Defaults to \code{NULL}.
 }
   \item{cts.num}{
-Determines the threshold for treating a variable as continuous and therefore introducing a smooth term in the \code{formula}. Defaults to \code{10}.
+The minimum number of unique values a variable must have for it to be considered a continuous (metric) variable and have a spline added. The default is 10.
 }
   \item{by}{
   Either a string describing one variable that is passed to all smooth terms as an interaction term or a vector of strings providing an interaction variable for each smooth term. See more under \code{mgcv::s}.

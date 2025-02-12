@@ -1,8 +1,8 @@
 SL.dbarts <- 
   function (Y, X, newX, family, obsWeights = NULL, id = NULL, sigest = NA, sigdf = 3, 
-            sigquant = 0.9, k = 2, power = 2, base = 0.95, binaryOffset = 0, 
-            ntree = 200, ndpost = 1000, nskip = 100, printevery = 100, 
-            keepevery = 1, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
+            sigquant = 0.9, k = 2, power = 2.5, base = 0.9, binaryOffset = 0, 
+            ntree = 75, ndpost = 200, nskip = 100, printevery = 100, 
+            keepevery = 5, keeptrainfits = TRUE, usequants = FALSE, numcut = 100, 
             printcutoffs = 0, nthread = 1, keepcall = TRUE, verb=T, verbose = TRUE, 
             ...) 
   {

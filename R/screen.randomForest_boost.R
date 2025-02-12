@@ -42,7 +42,10 @@ screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 2
       }
     }
     
-  })else{stop("number of variables to select is greater than number of columns")}
+  })else{
+    if(verbose==T){cat("screened all", ncol(X), "variables \n")}
+    whichVariable <- rep(TRUE, ncol(X))
+    }
   if(class(rank.rf.fit)[1]=="try-error"){
     whichVariable <- screen.cramersv(Y,X)
     if(verbose==T){cat("Random forest failed and screening was based on Cramer's V\n")}}

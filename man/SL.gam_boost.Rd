@@ -7,14 +7,15 @@ Wrapper for generalized additive models via \code{gam()}.
 }
 
 \usage{
-SL.gam_boost(Y, X, newX, family, obsWeights = NULL, df.gam = 2, cts.num = 10, verbose = T, ...)
+SL.gam_boost(Y, X, newX, family, obsWeights = NULL, df.gam = 2, cts.num = 10,
+             verbose = T, ...)
 }
  \arguments{
   \item{Y}{
 The response variable. This is typically a numeric vector or factor representing the outcome of interest.
 }
   \item{X}{
-A matrix or data frame of predictor variables. Each column represents a feature used in model fitting.
+A matrix or data frame of predictor variables. 
 }
   \item{newX}{
 A matrix or data frame of new predictor values for generating predictions.
@@ -32,7 +33,7 @@ Degrees of freedom for the smoothing splines applied to the metric variables in 
 The minimum number of unique values a variable must have for it to be considered a continuous (metric) variable and have a spline added. The default is 10.
 }
   \item{verbose}{
-Logical flag indicating whether to print progress and timing information. The default is \code{TRUE}.
+Logical. Indicates whether additional information and timing is printed. The default is \code{TRUE}.
 }
   \item{\dots}{
 Additional arguments, currently unused.

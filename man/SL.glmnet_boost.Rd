@@ -8,7 +8,9 @@ Wrapper for glmnet
 Wrapper for fitting Generalized Linear Models (GLM) with Elastic Net (Lasso, Ridge) regularization. 
 }
 \usage{
-SL.glmnet_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, alpha = 1, nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance", verbose = T, ...)
+SL.glmnet_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, alpha = 1,
+               nfolds = 10, nlambda = 100, useMin = TRUE, loss = "deviance",
+               verbose = T, ...)
 }
 \arguments{
   \item{Y}{
@@ -18,7 +20,7 @@ The response variable, which can be numeric or binary.
 A data frame or matrix of predictor variables used to fit the model. Each column represents a predictor.
 }
   \item{newX}{
-A data frame or matrix of new predictor data used for generating predictions. If not provided, the model will only be fitted on \code{X}. 
+A data frame or matrix of new predictor data used for generating predictions. 
 }
   \item{family}{
 A \code{list} describing how the prediction should be calculated. For numeric \code{Y}, use \code{family = list(family = "gaussian")}; for binary classification, use \code{family = list(family = "binomial")}. 
@@ -34,7 +36,7 @@ The elastic net mixing parameter. Must be between 0 (Ridge) and 1 (Lasso). Defau
 }
   \item{nfolds}{
 Number of folds. Although nfolds can be as large as the sample
-size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds=3. Default is \code{10}.
+size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowed is nfolds=3. Default is \code{10}.
 }
   \item{nlambda}{
 The number of lambda (controlling regularization) values. Default is \code{100}.
@@ -52,7 +54,7 @@ error. \code{type.measure="auc"} is for two-class logistic regression only,
 and gives area under the ROC curve. \code{type.measure="mse"} or \code{type.measure="mae"}
 (mean absolute error) can be used by all models except the "cox"; they measure
 the deviation from the fitted mean to the response. \code{type.measure="C"} is Harrel's
-concordance measure, only available for cox models.
+concordance measure, only available for Cox models.
 }
   \item{verbose}{
 A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.

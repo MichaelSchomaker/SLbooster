@@ -6,7 +6,9 @@ Wrapper for Extreme Gradient Boosting}
 Wrapper for fitting Extreme Gradient Boosting with \pkg{xgboost}. 
 }
 \usage{
-SL.xgboost_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, ntrees = 1000, max_depth = 4, eta = 0.1, minobspernode = 10, params = list(), nthread = 1, verb = 0, save_period = NULL, verbose = T, ...)
+SL.xgboost_boost(Y, X, newX, family, obsWeights = NULL, id = NULL, ntrees = 1000,
+                 max_depth = 4, eta = 0.1, minobspernode = 10, params = list(),
+                 nthread = 1, verb = 0, save_period = NULL, verbose = T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

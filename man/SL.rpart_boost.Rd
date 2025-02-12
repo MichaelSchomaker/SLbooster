@@ -8,7 +8,9 @@ Wrapper for recursive partitioning
 Wrapper for recursive partitioning using the \code{rpart} package 
 }
 \usage{
-SL.rpart_boost(Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20, xval = 0L, maxdepth = 30, minbucket = round(minsplit/3), verbose = T, ...)
+SL.rpart_boost(Y, X, newX, family, obsWeights = NULL, cp = 0.01, minsplit = 20,
+                xval = 0L, maxdepth = 30, minbucket = round(minsplit/3),
+                verbose = T, ...)
 }
 \arguments{
   \item{Y}{
@@ -53,7 +55,7 @@ one of \code{minbucket} or \code{minsplit} is specified, the code either sets \c
 \code{minbucket*3} or \code{minbucket} to \code{minsplit/3}, as appropriate. Defaults to \code{minsplit/3}.
 }
   \item{verbose}{
-A logical value indicating whether to print detailed information during the execution of the function. Defaults to \code{TRUE}.
+Logical. Indicates whether additional information and timing is printed. The default is \code{TRUE}.
 }
   \item{\dots}{
 Additional arguments currently unused.
