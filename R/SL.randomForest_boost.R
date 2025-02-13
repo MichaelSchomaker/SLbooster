@@ -22,12 +22,12 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
                                          mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
                                          importance = importance, ...
     ),silent=T)
-    try(pred <- fit.rf$test$predicted, silent = TRUE)
-    if (any(class(fit.rf) == "try-error")) {
-      pred <- rep(mean(Y), nrow(X))
-      if(verbose==T){"Random forest failed: simply predicting mean of Y."}
-    }
-    fit <- list(object = fit.rf)
+    if (any(class(fit.rf) == "try-error")){
+      out<-  SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+      if(verbose==T){"Random forest failed: simply using GLM."}
+    }else{pred <- fit.rf$test$predicted; fit <- list(object = fit.rf)
+    out <- list(pred = pred, fit = fit)
+    class(out$fit) <- c("SL.randomForest")}
   }
   if (family$family == "binomial" & !exists("fit.rf")) {
     fit.rf <- try(randomForest::randomForest(
@@ -36,15 +36,14 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
       mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
       importance = importance, ...
     ),silent=TRUE)
-    try(pred <- fit.rf$test$votes[, 2], silent = TRUE)
-    if (any(class(fit.rf) == "try-error")) {
-      pred <- rep(mean(Y), nrow(X))
-      if(verbose==T){"Random forest failed: simply predicting mean of Y."}
-    }
-    fit <- list(object = fit.rf)
+    if (any(class(fit.rf) == "try-error")){
+      out<-  SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+      if(verbose==T){"Random forest failed: simply using GLM."}
+    }else{pred <-  fit.rf$test$votes[, 2]; fit <- list(object = fit.rf)
+    out <- list(pred = pred, fit = fit)
+    class(out$fit) <- c("SL.randomForest")}
   }
-  out <- list(pred = pred, fit = fit)
-  class(out$fit) <- c("SL.randomForest")
+  
   #
   end_time <- Sys.time()
   if(verbose==T){cat("SL.randomForest finished. Time:", round(difftime(end_time, start_time, units="mins"), digits=4), "mins \n\n")}

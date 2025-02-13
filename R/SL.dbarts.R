@@ -11,14 +11,14 @@ SL.dbarts <-
     start_time <- Sys.time()
     SLbooster.require("dbarts")
     #
-    model <- suppressWarnings(try(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
+    model <- suppressWarnings(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
                               sigest = sigest, sigdf = sigdf, sigquant = sigquant, 
                               k = k, power = power, base = base, binaryOffset = binaryOffset, 
                               weights = obsWeights, ntree = ntree, ndpost = ndpost, 
                               nskip = nskip, printevery = printevery, keepevery = keepevery, 
                               keeptrainfits = keeptrainfits, usequants = usequants, 
                               numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
-                              keepcall = keepcall, keeptrees = TRUE, verbose = F), silent=TRUE))
+                              keepcall = keepcall, keeptrees = TRUE, verbose = F))
 
     if (family$family == "gaussian") {
       pred = model$yhat.test.mean
