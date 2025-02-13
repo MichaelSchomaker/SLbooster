@@ -76,20 +76,20 @@ ll <- list(
   c("SL.glm","screen.glmnet_boost"),
   c("SL.glm","screen.cramersv"),
   #c("SL.glm","screen.randomForest_boost"), PROBLEM
-  #c("SL.glmnet_boost"),PROBLEM as of T=2
+  c("SL.glmnet_boost"),
   #c("SL.dbarts"),PROBLEM as of T=2
   c("SL.earth_boost"),
   c("SL.gam_boost"),
   #c("SL.hal_1","screen.cramersv"), # slow, but o.k.
   c("SL.mgcv_1","screen.cramersv"), 
   #c("SL.orm"), learner o.k., but fails quite a bit
-  #c("SL.randomForest_boost"),PROBLEM as of T=2
-  #c("SL.rpart_boost"),PROBLEM as of T=3
+  #c("SL.randomForest_boost"), 
+  c("SL.rpart_boost"),
   c("SL.step.interaction_boost","screen.cramersv")
   #c("SL.xgboost_boost","screen.cramersv") PROBLEM
 )
 
-# needed when using parallelization
+# needed when using parallelization (and not part of SuperLearner)
 base.learners <- c("screen.glmnet_nVar", "screen.cramersv", "screen.glmnet_boost",
                    "screen.randomForest_boost",
                    #
@@ -112,14 +112,14 @@ base.learners <- c("screen.glmnet_nVar", "screen.cramersv", "screen.glmnet_boost
 N=500
 simdat   <- suppressWarnings(simcausal::sim(DAG = Dset, n = N, verbose=F)[,-1])
 
-cpus=1 # output messages with cpus=1, faster with >1
+cpus=7 # output messages with cpus=1, faster with >1
 est_sgf <- try(sgf(X=simdat,
                       Lnodes  = colnames(simdat)[grep("L",colnames(simdat))][-c(1,2)],
                       Ynodes  = colnames(simdat)[grep("Y",colnames(simdat))],
                       Anodes  = colnames(simdat)[grep("A",colnames(simdat))],
                       Cnodes  = colnames(simdat)[grep("C",colnames(simdat))],
                       survivalY=TRUE,
-                      abar =  seq(4,5), 
+                      abar =  seq(3,10,1), 
                       SL.library = ll, SL.export=base.learners,
                       Yweights = NULL, 
                       ncores=cpus, verbose=FALSE, seed=NULL

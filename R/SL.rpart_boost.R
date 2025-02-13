@@ -34,7 +34,7 @@ SL.rpart_boost <- function (Y, X, newX, family, obsWeights = NULL, cp = 0.01, mi
   #
   fit <- list(object = fit.rpart)
   out <- list(pred = pred, fit = fit)
-  class(out$fit) <- c("SL.rpart")
+  class(out$fit) <- c("SL.rpart_boost")
   #
   end_time <- Sys.time()
   if(verbose==T){cat("SL.rpart finished. Time:", round(difftime(end_time, start_time, units="mins"), digits=4), "mins \n\n")}
