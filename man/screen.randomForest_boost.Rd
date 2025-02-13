@@ -8,7 +8,7 @@ Variable Screening using Random Forests
 Performs variable selection by identifying the most important predictor variables based on their contribution to predictive accuracy, using a random forest model. 
 }
 \usage{
-screen.randomForest_boost(Y, X, family = list(), nVar = 8, ntree = 200, verbose = T,
+screen.randomForest_boost(Y, X, family = list(), nVar = 6, ntree = 200, verbose = T,
                           mtry = ifelse(family$family == "gaussian", floor(sqrt(ncol(X))), max(floor(ncol(X)/3), 1)), nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -23,7 +23,7 @@ A data frame or matrix of predictor variables used to fit the model. Each column
 Either \code{family = list(family = "binomial")} or \code{family = list(family = "gaussian")}. The family is internally inferred from the data, so this argument only influences the default values of \code{mtry} and \code{nodesize}.
 }
   \item{nVar}{
-How many variables should be selected. Default is \code{8}.
+How many variables should be selected. Default is \code{6}.
 }
   \item{ntree}{
 Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times. Default is \code{200}.

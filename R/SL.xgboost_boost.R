@@ -18,27 +18,27 @@ SL.xgboost_boost <- function (Y, X, newX, family, obsWeights = NULL, id = NULL, 
     else {
       objective <- "reg:linear"
     }
-    model = xgboost::xgboost(data = xgmat, objective = objective, 
+    model = try(xgboost::xgboost(data = xgmat, objective = objective, 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period)
+                             params = params, save_period = save_period),silent=FALSE)
   }
   if (family$family == "binomial") {
-    model = xgboost::xgboost(data = xgmat, objective = "binary:logistic", 
+    model = try(xgboost::xgboost(data = xgmat, objective = "binary:logistic", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, nthread = nthread, 
-                             params = params, save_period = save_period, eval_metric = "logloss")
+                             params = params, save_period = save_period, eval_metric = "logloss"),silent=TRUE)
   }
   if (family$family == "multinomial") {
-    model = xgboost::xgboost(data = xgmat, objective = "multi:softmax", 
+    model = try(xgboost::xgboost(data = xgmat, objective = "multi:softmax", 
                              nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 
                              eta = eta, verbose = verb, num_class = length(unique(Y)), 
-                             nthread = nthread, params = params, save_period = save_period)
+                             nthread = nthread, params = params, save_period = save_period),silent=TRUE)
   }
   if (!is.matrix(newX)) {
     newX = model.matrix(~. - 1, newX)
   }
-  pred = predict(model, newdata = newX)
+  pred = try(predict(model, newdata = newX),silent=TRUE)
   fit = list(object = model)
   class(fit) = c("SL.xgboost")
   out = list(pred = pred, fit = fit)

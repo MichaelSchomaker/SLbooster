@@ -16,12 +16,12 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
   }
   #
   if (family$family == "gaussian" & !exists("fit.rf")) {
-    fit.rf <- randomForest::randomForest(Y ~ .,
+    fit.rf <- try(randomForest::randomForest(Y ~ .,
                                          data = X,
                                          ntree = ntree, xtest = newX, keep.forest = TRUE,
                                          mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
                                          importance = importance, ...
-    )
+    ),silent=T)
     try(pred <- fit.rf$test$predicted, silent = TRUE)
     if (any(class(fit.rf) == "try-error")) {
       pred <- rep(mean(Y), nrow(X))
@@ -30,12 +30,12 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
     fit <- list(object = fit.rf)
   }
   if (family$family == "binomial" & !exists("fit.rf")) {
-    fit.rf <- randomForest::randomForest(
+    fit.rf <- try(randomForest::randomForest(
       y = as.factor(Y),
       x = X, ntree = ntree, xtest = newX, keep.forest = TRUE,
       mtry = mtry, nodesize = nodesize, maxnodes = maxnodes,
       importance = importance, ...
-    )
+    ),silent=TRUE)
     try(pred <- fit.rf$test$votes[, 2], silent = TRUE)
     if (any(class(fit.rf) == "try-error")) {
       pred <- rep(mean(Y), nrow(X))

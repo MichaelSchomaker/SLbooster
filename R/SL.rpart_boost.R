@@ -17,18 +17,22 @@ SL.rpart_boost <- function (Y, X, newX, family, obsWeights = NULL, cp = 0.01, mi
   fam.end <- family$family
   #
   if (family$family == "gaussian") {
-    fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
+    fit.rpart <- try(rpart::rpart(Y ~ ., data = data.frame(Y, 
                                                        X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
                                                                                           xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-                              method = "anova", weights = obsWeights)
-    pred <- predict(fit.rpart, newdata = newX)
+                              method = "anova", weights = obsWeights),silent=TRUE)
+    try(pred <- predict(fit.rpart, newdata = newX),silent=TRUE)
   }
   if (family$family == "binomial") {
-    fit.rpart <- rpart::rpart(Y ~ ., data = data.frame(Y, 
+    fit.rpart <- try(rpart::rpart(Y ~ ., data = data.frame(Y, 
                                                        X), control = rpart::rpart.control(cp = cp, minsplit = minsplit, 
                                                                                           xval = xval, maxdepth = maxdepth, minbucket = minbucket), 
-                              method = "class", weights = obsWeights)
-    pred <- predict(fit.rpart, newdata = newX)[, 2]
+                              method = "class", weights = obsWeights),silent=TRUE)
+    try(pred <- predict(fit.rpart, newdata = newX)[, 2],silent=TRUE)
+  }
+  if(any(class(fit.rpart) == "try-error")){
+    pred <- rep(mean(Y), nrow(X))
+    if(verbose==T){"rpart failed: simply predicting mean of Y."}
   }
   if(fam.init=="binomial" & fam.end=="gaussian"){if(any(pred<0)){pred[pred<0]<-0};if(any(pred>1)){pred[pred>1]<-1}}
   #

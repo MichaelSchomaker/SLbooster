@@ -1,4 +1,4 @@
-screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 200, verbose=T, 
+screen.randomForest_boost <- function(Y, X, family = list(), nVar = 6, ntree = 200, verbose=T, 
                                      mtry = ifelse(family$family == "gaussian", floor(sqrt(ncol(X))), max(floor(ncol(X) / 3), 1)),
                                      nodesize = ifelse(family$family == "gaussian", 5, 1), maxnodes = NULL,
                                      ...) {
@@ -45,6 +45,7 @@ screen.randomForest_boost <- function(Y, X, family = list(), nVar = 8, ntree = 2
   })else{
     if(verbose==T){cat("screened all", ncol(X), "variables \n")}
     whichVariable <- rep(TRUE, ncol(X))
+    rank.rf.fit <- NULL
     }
   if(class(rank.rf.fit)[1]=="try-error"){
     whichVariable <- screen.cramersv(Y,X)

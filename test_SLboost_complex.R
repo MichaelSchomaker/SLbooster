@@ -1,6 +1,6 @@
 library(SuperLearner)
 library(SLbooster)
-library(CICI); library(CICIplus)
+library(CICI); library(CICIplus) #remotes::install_github("MichaelSchomaker/CICIplus")
 library(simcausal)
 data(EFV)
 
@@ -75,21 +75,21 @@ ll <- list(
   c("SL.glm","screen.glmnet_nVar"),
   c("SL.glm","screen.glmnet_boost"),
   c("SL.glm","screen.cramersv"),
-  #c("SL.glm","screen.randomForest_boost"), PROBLEM
+  c("SL.glm","screen.randomForest_boost"), 
   c("SL.glmnet_boost"),
-  #c("SL.dbarts"),PROBLEM as of T=2
+  c("SL.dbarts"),
   c("SL.earth_boost"),
   c("SL.gam_boost"),
-  #c("SL.hal_1","screen.cramersv"), # slow, but o.k.
+  #c("SL.hal_1","screen.cramersv"), # slow, but o.k., Han checks predict function
   c("SL.mgcv_1","screen.cramersv"), 
-  #c("SL.orm"), learner o.k., but fails quite a bit
-  #c("SL.randomForest_boost"), 
+  c("SL.orm"), # learner o.k., but fails quite a bit, last check Christoph
+  c("SL.randomForest_boost"), 
   c("SL.rpart_boost"),
-  c("SL.step.interaction_boost","screen.cramersv")
-  #c("SL.xgboost_boost","screen.cramersv") PROBLEM
+  c("SL.step.interaction_boost","screen.cramersv"),
+  c("SL.xgboost_boost","screen.cramersv") 
 )
 
-# needed when using parallelization (and not part of SuperLearner)
+# needed when using parallelization (and learners not part of SuperLearner)
 base.learners <- c("screen.glmnet_nVar", "screen.cramersv", "screen.glmnet_boost",
                    "screen.randomForest_boost",
                    #
@@ -112,22 +112,52 @@ base.learners <- c("screen.glmnet_nVar", "screen.cramersv", "screen.glmnet_boost
 N=500
 simdat   <- suppressWarnings(simcausal::sim(DAG = Dset, n = N, verbose=F)[,-1])
 
-cpus=7 # output messages with cpus=1, faster with >1
+cpus=1 # output messages with cpus=1, faster with >1
 est_sgf <- try(sgf(X=simdat,
                       Lnodes  = colnames(simdat)[grep("L",colnames(simdat))][-c(1,2)],
                       Ynodes  = colnames(simdat)[grep("Y",colnames(simdat))],
                       Anodes  = colnames(simdat)[grep("A",colnames(simdat))],
                       Cnodes  = colnames(simdat)[grep("C",colnames(simdat))],
                       survivalY=TRUE,
-                      abar =  seq(3,10,1), 
+                      abar =  seq(4,8,1), 
                       SL.library = ll, SL.export=base.learners,
                       Yweights = NULL, 
                       ncores=cpus, verbose=FALSE, seed=NULL
 ))
 est_sgf
-plot(est_sgf)
+plot(est_sgf) # side note: some "complex learners" make things worse (in this example) 
 est_sgf$SL.weights
 
 
+
+
+# BONUS: weighted outcome version
+cs            <- c(2,1,0.01,0.001) 
+w.d <- calc.weights(X=simdat,
+                    Lnodes  = colnames(simdat)[grep("L",colnames(simdat))],
+                    Ynodes  = colnames(simdat)[grep("Y",colnames(simdat))],
+                    Anodes  = colnames(simdat)[grep("A",colnames(simdat))],
+                    Cnodes  = colnames(simdat)[grep("C",colnames(simdat))],
+                    abar=seq(4,8,1), c=cs,
+                    survival = TRUE, 
+                    d.method=c("parametric")
+)
+
+
+est_wsgf <- try(sgf(X=simdat,
+                   Lnodes  = colnames(simdat)[grep("L",colnames(simdat))][-c(1,2)],
+                   Ynodes  = colnames(simdat)[grep("Y",colnames(simdat))],
+                   Anodes  = colnames(simdat)[grep("A",colnames(simdat))],
+                   Cnodes  = colnames(simdat)[grep("C",colnames(simdat))],
+                   survivalY=TRUE,
+                   abar =  seq(4,8,1), 
+                   SL.library = ll, SL.export=base.learners,
+                   Yweights = w.d$`0.01`, 
+                   ncores=cpus, verbose=FALSE, seed=NULL
+))
+
+est_wsgf
+plot(est_wsgf)
+est_wsgf$SL.weights
 
 
