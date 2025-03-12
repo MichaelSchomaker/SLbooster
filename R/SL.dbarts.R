@@ -11,24 +11,31 @@ SL.dbarts <-
     start_time <- Sys.time()
     SLbooster.require("dbarts")
     #
-    model <- suppressWarnings(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
+    model <- try(suppressWarnings(dbarts::bart(x.train = X, y.train = Y, x.test = newX, 
                               sigest = sigest, sigdf = sigdf, sigquant = sigquant, 
                               k = k, power = power, base = base, binaryOffset = binaryOffset, 
                               weights = obsWeights, ntree = ntree, ndpost = ndpost, 
                               nskip = nskip, printevery = printevery, keepevery = keepevery, 
                               keeptrainfits = keeptrainfits, usequants = usequants, 
                               numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
-                              keepcall = keepcall, keeptrees = TRUE, verbose = F))
+                              keepcall = keepcall, keeptrees = TRUE, verbose = F)),silent=TRUE)
 
-    if (family$family == "gaussian") {
-      pred = model$yhat.test.mean
+    if (any(class(model) == "try-error")){
+      out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+      if(verbose==T){"dbarts failed: simply using GLM."}
     }
-    if (family$family == "binomial") {
-      pred = colMeans(stats::pnorm(model$yhat.test))
+    else {
+      if (family$family == "gaussian") {
+        pred = model$yhat.test.mean
+      }
+      if (family$family == "binomial") {
+        pred = colMeans(stats::pnorm(model$yhat.test))
+      }
+      fit = list(object = model)
+      class(fit) = c("SL.dbarts")
+      out = list(pred = pred, fit = fit)
     }
-    fit = list(object = model)
-    class(fit) = c("SL.dbarts")
-    out = list(pred = pred, fit = fit)
+
     #
     end_time <- Sys.time()
     if(verbose==T){cat("SL.dbarts finished. Time:", round(difftime(end_time, start_time, units="mins"), digits=4), "mins \n\n")}
