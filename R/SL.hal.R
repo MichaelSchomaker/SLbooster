@@ -7,12 +7,15 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
   start_time <- Sys.time()
   SLbooster.require("hal9001")
   # SuperLearner:::.SL.require("hal9001")
-  #
+  # for ltmle 
+  fam.init <- family$family
+  Y <- as.vector(as.matrix(Y))
   if (all(Y == 0 | Y == 1)) {
     family$family <- "binomial"
   } else {
     family$family <- "gaussian"
   }
+  fam.end <- family$family
   #
   preprocess_data <- function(data) {
     data <- data.frame(lapply(data, function(x) {
@@ -86,10 +89,18 @@ SL.hal <- function (Y, X, newX = NULL, verbose=T, family=stats::gaussian(),
     else {
       pred <- stats::predict(fit.hal, new_data = X)
     }
-    fit <- list(object = fit.hal)
+    fit <- list(object = fit.hal, fam.init=fam.init, fam.end=fam.end)
     class(fit) <- "SL.hal"
     out <- list(pred = pred, fit = fit)
   }
+  #
+  pred <- out$pred
+  if(fam.init=="binomial" & fam.end=="gaussian"){
+    if(any(pred<0)){pred[pred<0]<-0}
+    if(any(pred>1)){pred[pred>1]<-1}
+    if((any(pred<0) | any(pred>1)) & verbose==T){cat("\n Note: predictions falling outside [0,1] have been set as 0/1 \n")}
+  }
+  out$pred <- pred
   #
   end_time <- Sys.time()
   if(verbose==T){cat("SL.hal finished. Time:", round(difftime(end_time, start_time, units="mins"), digits=4), "mins \n\n")}
