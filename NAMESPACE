@@ -1,4 +1,4 @@
-export("predict.SL.dbarts",
+export("predict.SL.dbarts", "predict.SL.randomForest_boost",
        "predict.SL.hal", "predict.SL.mgcv",
        "predict.SL.earth_boost",
        "predict.SL.median",
@@ -23,6 +23,7 @@ S3method(predict, SL.hal)
 S3method(predict, SL.mgcv)
 S3method(predict, SL.orm)
 S3method(predict, SL.earth_boost)
+S3method(predict, SL.randomForest_boost)
 S3method(predict, SL.glmnet_boost)
 S3method(predict, SL.rpart_boost)
 S3method(predict, SL.median)

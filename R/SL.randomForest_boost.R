@@ -24,13 +24,12 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
                                          importance = importance, ...),silent=T)
     
     if (any(class(fit.rf) == "try-error")){
-      out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+      out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = NULL, ...)
       if(verbose==T){"Random forest failed: simply using GLM."}
-      }
-    else {
+      }else {
       pred <- fit.rf$test$predicted; fit <- list(object = fit.rf)
       out <- list(pred = pred, fit = fit)
-      class(out$fit) <- c("SL.randomForest")
+      class(out$fit) <- c("SL.randomForest_boost")
       }
   }
   if (family$family == "binomial" & !exists("fit.rf")) {
@@ -42,13 +41,12 @@ SL.randomForest_boost <- function(Y, X, newX, family, verbose=T,
       importance = importance, ...),silent=TRUE)
     
     if (any(class(fit.rf) == "try-error")){
-      out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
+      out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = NULL, ...)
       if(verbose==T){"Random forest failed: simply using GLM."}
-      }
-    else {
+      }else {
       pred <-  fit.rf$test$votes[, 2]; fit <- list(object = fit.rf)
       out <- list(pred = pred, fit = fit)
-      class(out$fit) <- c("SL.randomForest")}
+      class(out$fit) <- c("SL.randomForest_boost")}
   }
   
   #

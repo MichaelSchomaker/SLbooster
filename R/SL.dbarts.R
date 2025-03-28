@@ -23,8 +23,7 @@ SL.dbarts <-
     if (any(class(model) == "try-error")){
       out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
       if(verbose==T){"dbarts failed: simply using GLM."}
-    }
-    else {
+    }else {
       if (family$family == "gaussian") {
         pred = model$yhat.test.mean
       }
