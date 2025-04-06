@@ -30,4 +30,4 @@ remotes::install_github("MichaelSchomaker/SLbooster")
 
 ## Example
 
-For an example run [test_SLboost.R](https://github.com/MichaelSchomaker/SLbooster/blob/master/test_SLboost.R).
+For an example run [test_SLboost.R](https://github.com/MichaelSchomaker/SLbooster/blob/master/test_SLboost.R). 

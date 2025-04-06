@@ -19,7 +19,6 @@ SL.dbarts <-
                               keeptrainfits = keeptrainfits, usequants = usequants, 
                               numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
                               keepcall = keepcall, keeptrees = TRUE, verbose = F)),silent=TRUE)
-
     if (any(class(model) == "try-error")){
       out <- SuperLearner::SL.glm(Y = Y, X = X, newX = newX, family = family, obsWeights = obsWeights, ...)
       if(verbose==T){"dbarts failed: simply using GLM."}

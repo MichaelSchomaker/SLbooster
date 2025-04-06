@@ -1,4 +1,4 @@
-predict.SL.hal <- function (object, newdata, ...) 
+predict.SL.hal <- function (object, newdata, verbose=T, ...) 
 {
   preprocess_data <- function(data) {
     data <- data.frame(lapply(data, function(x) {

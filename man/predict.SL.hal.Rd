@@ -8,7 +8,7 @@ Prediction Method for SL.hal Objects
 This function provides a prediction method for objects of class \code{SL.hal}, which are fitted Highly Adaptive Lasso (HAL) models wrapped within the \code{SuperLearner} framework. It uses the fitted HAL model to generate predictions on new data.
 }
 \usage{
-\method{predict}{SL.hal}(object, newdata, ...)
+\method{predict}{SL.hal}(object, newdata, verbose=T, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,9 @@ This function provides a prediction method for objects of class \code{SL.hal}, w
 }
   \item{newdata}{
   A \code{matrix} or \code{data.frame} of new observations on which to obtain predictions. The new data will be automatically converted to a matrix if not already in that format.
+}
+\item{verbose}{
+  Logical. If TRUE, output may be printed.
 }
   \item{\dots}{
   Additional arguments (currently not used).

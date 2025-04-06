@@ -77,12 +77,12 @@ ll <- list(
   c("SL.glm","screen.cramersv"),
   c("SL.glm","screen.randomForest_boost"), 
   c("SL.glmnet_boost"),
-  #c("SL.dbarts"), # as in other example, very occasional problems
+  c("SL.dbarts"), 
   c("SL.earth_boost"),
   c("SL.gam_boost"),
-  #c("SL.hal_1","screen.cramersv"), # slow, but o.k., Han checks predict function
+  c("SL.hal_1","screen.cramersv"), 
   c("SL.mgcv_1","screen.cramersv"), 
-  c("SL.orm"), # learner o.k., but fails sometimes, last check Christoph for correct predictions
+  c("SL.orm"), 
   c("SL.randomForest_boost"),  
   c("SL.rpart_boost"),
   c("SL.step.interaction_boost","screen.cramersv"),

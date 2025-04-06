@@ -134,7 +134,8 @@ tmle_1 <- tmle(Y = EFV[["VL.0"]],
                W = EFV[,c("sex", "metabolic", "log_age", "NRTI", "weight.0")],
                Q.SL.library = ll$Q,
                g.SL.library = ll$g,
-               cvQinit=F, V.Q=5,V.g=5 
+               cvQinit=F, V.Q=5,V.g=5,
+               family="binomial"
 )
 tmle_1
 
@@ -164,14 +165,14 @@ ll2 <- list(Q=list(
   c("SL.glm","screen.cramersv"),
   c("SL.glm","screen.randomForest_boost"), 
   c("SL.glmnet_boost"),
-  c("SL.dbarts"), #issue for tmle_1 only, Katy will check
+  c("SL.dbarts"), 
   c("SL.earth_boost"),
   c("SL.gam_boost"),
   c("SL.hal","screen.cramersv"),
   c("SL.median"),
   c("SL.mgcv"),
   c("SL.orm"),
-  c("SL.randomForest_boost"), #sometimes R quits, maybe handling on what happens if randomForest fails, @katy
+  c("SL.randomForest_boost"), # very occasional problems with memory
   c("SL.rpart_boost"),
   c("SL.step.interaction_boost","screen.cramersv"),
   c("SL.xgboost_boost","screen.cramersv")
